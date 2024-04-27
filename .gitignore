@@ -1,0 +1,9 @@
+.idea
+.imi
+run
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+### Mac OS ###
+.DS_StoreC
