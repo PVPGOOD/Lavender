@@ -65,8 +65,8 @@ public class SettingsConfigs extends AbstractConfigs {
                                     if (((ColorValue) value).getValue()) {
                                         ((ColorValue) value).setAlpha(colorValueObject.get("Alpha").getAsFloat());
                                     }
-                                } else if (value instanceof ModeValue) {
-                                    loadModeValue(value, valueObject);
+                                } else if (value instanceof ModeValue modeValue) {
+                                    modeValue.setValue(valueObject.get(value.getName()).getAsString());
                                 } else if (value instanceof MultiBoolValue) {
                                     for (BoolValue boolValue : ((MultiBoolValue) value).getValue()) {
                                         boolValue.setValue(valueObject.get(value.getName()).getAsJsonObject().get(boolValue.getName()).getAsBoolean());
@@ -81,17 +81,6 @@ public class SettingsConfigs extends AbstractConfigs {
             }
         } catch (NullPointerException exception){
             exception.printStackTrace();
-        }
-    }
-
-    private <T extends Enum<T>> void loadModeValue(DefaultValue<?> option, JsonObject propertiesObject) {
-        var enumProperty = (ModeValue<T>) option;
-        var value = propertiesObject.getAsJsonPrimitive(option.getName()).getAsString();
-        for (T possibleValue : enumProperty.getValues()) {
-            if (possibleValue.name().equalsIgnoreCase(value)) {
-                enumProperty.setValue(possibleValue);
-                break;
-            }
         }
     }
 
@@ -110,8 +99,8 @@ public class SettingsConfigs extends AbstractConfigs {
              if (!elements.isEmpty()) {
                  var valueObject = new JsonObject();
                  for (DefaultValue<?> value : module.getOptions()) {
-                     if (value instanceof ModeValue<?> modeValue) {
-                         valueObject.add(value.getName(), new JsonPrimitive(modeValue.getValue().name()));
+                     if (value instanceof ModeValue modeValue) {
+                         valueObject.addProperty(value.getName(), modeValue.getValue());
                      } else if (value instanceof BoolValue) {
                          valueObject.addProperty(value.getName(), ((BoolValue) value).getValue());
                      } else if (value instanceof ColorValue) {

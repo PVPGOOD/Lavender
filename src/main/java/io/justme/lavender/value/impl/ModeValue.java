@@ -1,32 +1,41 @@
 package io.justme.lavender.value.impl;
 
 import io.justme.lavender.value.DefaultValue;
-
+import lombok.Getter;
+import java.util.Arrays;
 import java.util.function.Supplier;
 
-public class ModeValue<T extends Enum<T>> extends DefaultValue<T> {
+@Getter
+public class ModeValue extends DefaultValue<String> {
 
-    private final T[] values;
+    private final String[] modes;
 
-    public ModeValue(String name, T value, Supplier<Boolean> dependency) {
-        super(name, value, dependency);
-        this.values = getEnumConstants();
+    public ModeValue(String name, String[] modes, String value) {
+        super(name, value);
+        this.modes = modes;
+        this.setValue(value);
     }
 
-    public ModeValue(String name, T value) {
-        this(name, value, () -> true);
+    public ModeValue(String name, String[] modes, String value, Supplier<Boolean> displayable) {
+        super(name, value, displayable);
+        this.modes = modes;
+        this.setValue(value);
     }
 
-    private T[] getEnumConstants() {
-        return (T[]) value.getClass().getEnumConstants();
+    @Override
+    public String getValue() {
+        return super.getValue();
     }
 
-    public boolean isSelected(T value) {
-        return this.value == value;
+    public void setMode(String mode) {
+        Arrays.stream(modes)
+                .filter(e -> e.equalsIgnoreCase(mode))
+                .findFirst()
+                .ifPresent(this::setValue);
     }
 
-    public T[] getValues() {
-        return values;
+    public boolean isValid(String name) {
+        return Arrays.stream(modes)
+                .anyMatch(e -> e.equalsIgnoreCase(name));
     }
-
 }
