@@ -35,6 +35,7 @@ import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
 
 import io.justme.lavender.La;
+import io.justme.lavender.events.game.EventKey;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -1755,6 +1756,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                     {
                         this.entityRenderer.switchUseShader();
                     }
+
+                    La.getINSTANCE().getEventManager().call(new EventKey(k));
 
                     if (this.currentScreen != null)
                     {
