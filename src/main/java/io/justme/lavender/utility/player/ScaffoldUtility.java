@@ -81,30 +81,6 @@ public class ScaffoldUtility {
         return slot;
     }
 
-
-    public BlockData getBlockData(double y) {
-        final BlockPos belowBlockPos = new BlockPos(mc.thePlayer.posX, y - 1, mc.thePlayer.posZ);
-        if (mc.theWorld.getBlockState(belowBlockPos).getBlock() instanceof BlockAir) {
-            for (int x = 0; x < 4; x++) {
-                for (int z = 0; z < 4; z++) {
-                    for (int i = 1; i > -3; i -= 2) {
-                        final BlockPos blockPos = belowBlockPos.add(x * i, 0, z * i);
-                        if (mc.theWorld.getBlockState(blockPos).getBlock() instanceof BlockAir) {
-                            for (EnumFacing direction : EnumFacing.values()) {
-                                final BlockPos block = blockPos.offset(direction);
-                                final Material material = mc.theWorld.getBlockState(block).getBlock().getMaterial();
-                                if (material.isSolid() && !material.isLiquid()) {
-                                    return new BlockData(block, direction.getOpposite());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     private boolean isPosValid(BlockPos pos) {
         Block block = mc.theWorld.getBlockState(pos).getBlock();
         return (block.getMaterial().isSolid() || !block.isTranslucent() || block.isVisuallyOpaque() || block instanceof BlockLadder || block instanceof BlockCarpet
@@ -129,26 +105,278 @@ public class ScaffoldUtility {
         return blockCount;
     }
 
-    private Vec3 getVec3ByBlockData(BlockData data) {
-        BlockPos pos = data.getBlockPos();
-        double rand = .5 + (PlayerUtility.moving() ? (1) : 0);
-        double x = pos.getX() + rand;
-        double y = pos.getY() + rand;
-        double z = pos.getZ() + rand;
+    public void swap(int currentSlot, int targetSlot) {
+        mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, currentSlot, targetSlot, 2, mc.thePlayer);
+    }
+
+    public Vec3 getVec3(BlockPos pos, EnumFacing face) {
+        double x = (double) pos.getX() + 0.5;
+        double y = (double) pos.getY() + 0.5;
+        double z = (double) pos.getZ() + 0.5;
+        if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
+            x += randomNumber(0.3, -0.3);
+            z += randomNumber(0.3, -0.3);
+        } else {
+            y += randomNumber(0.3, -0.3);
+        }
+        if (face == EnumFacing.WEST || face == EnumFacing.EAST) {
+            z += randomNumber(0.3, -0.3);
+        }
+        if (face == EnumFacing.SOUTH || face == EnumFacing.NORTH) {
+            x += randomNumber(0.3, -0.3);
+        }
         return new Vec3(x, y, z);
     }
 
+    public double randomNumber(double max, double min) {
+        return Math.random() * (max - min) + min;
+    }
 
+    public int getSlot() {
+        int slot = -1;
+        int size = 0;
+        for (int i = 0; i < 9; i++) {
+            ItemStack stack = mc.thePlayer.inventory.mainInventory[i];
+            if (stack != null && stack.stackSize > 0 && stack.getItem() instanceof ItemBlock && ScaffoldUtility.isValid(( stack.getItem())) && size < stack.stackSize) {
+                size = stack.stackSize;
+                slot = i;
+            }
+        }
+        return slot;
+    }
 
-    public void swap(int currentSlot, int targetSlot) {
-        mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, currentSlot, targetSlot, 2, mc.thePlayer);
+    public BlockData getBlockData(BlockPos pos) {
+        if (isPosValid(pos.add(0, -1, 0))) {
+            return new BlockData(pos.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos.add(-1, 0, 0))) {
+            return new BlockData(pos.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos.add(1, 0, 0))) {
+            return new BlockData(pos.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos.add(0, 0, 1))) {
+            return new BlockData(pos.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos.add(0, 0, -1))) {
+            return new BlockData(pos.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos1 = pos.add(-1, 0, 0);
+        if (isPosValid(pos1.add(0, -1, 0))) {
+            return new BlockData(pos1.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos1.add(-1, 0, 0))) {
+            return new BlockData(pos1.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos1.add(1, 0, 0))) {
+            return new BlockData(pos1.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos1.add(0, 0, 1))) {
+            return new BlockData(pos1.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos1.add(0, 0, -1))) {
+            return new BlockData(pos1.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos2 = pos.add(1, 0, 0);
+        if (isPosValid(pos2.add(0, -1, 0))) {
+            return new BlockData(pos2.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos2.add(-1, 0, 0))) {
+            return new BlockData(pos2.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos2.add(1, 0, 0))) {
+            return new BlockData(pos2.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos2.add(0, 0, 1))) {
+            return new BlockData(pos2.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos2.add(0, 0, -1))) {
+            return new BlockData(pos2.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos3 = pos.add(0, 0, 1);
+        if (isPosValid(pos3.add(0, -1, 0))) {
+            return new BlockData(pos3.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos3.add(-1, 0, 0))) {
+            return new BlockData(pos3.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos3.add(1, 0, 0))) {
+            return new BlockData(pos3.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos3.add(0, 0, 1))) {
+            return new BlockData(pos3.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos3.add(0, 0, -1))) {
+            return new BlockData(pos3.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos4 = pos.add(0, 0, -1);
+        if (isPosValid(pos4.add(0, -1, 0))) {
+            return new BlockData(pos4.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos4.add(-1, 0, 0))) {
+            return new BlockData(pos4.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos4.add(1, 0, 0))) {
+            return new BlockData(pos4.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos4.add(0, 0, 1))) {
+            return new BlockData(pos4.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos4.add(0, 0, -1))) {
+            return new BlockData(pos4.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos19 = pos.add(-2, 0, 0);
+        if (isPosValid(pos1.add(0, -1, 0))) {
+            return new BlockData(pos1.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos1.add(-1, 0, 0))) {
+            return new BlockData(pos1.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos1.add(1, 0, 0))) {
+            return new BlockData(pos1.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos1.add(0, 0, 1))) {
+            return new BlockData(pos1.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos1.add(0, 0, -1))) {
+            return new BlockData(pos1.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos29 = pos.add(2, 0, 0);
+        if (isPosValid(pos2.add(0, -1, 0))) {
+            return new BlockData(pos2.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos2.add(-1, 0, 0))) {
+            return new BlockData(pos2.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos2.add(1, 0, 0))) {
+            return new BlockData(pos2.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos2.add(0, 0, 1))) {
+            return new BlockData(pos2.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos2.add(0, 0, -1))) {
+            return new BlockData(pos2.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos39 = pos.add(0, 0, 2);
+        if (isPosValid(pos3.add(0, -1, 0))) {
+            return new BlockData(pos3.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos3.add(-1, 0, 0))) {
+            return new BlockData(pos3.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos3.add(1, 0, 0))) {
+            return new BlockData(pos3.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos3.add(0, 0, 1))) {
+            return new BlockData(pos3.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos3.add(0, 0, -1))) {
+            return new BlockData(pos3.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos49 = pos.add(0, 0, -2);
+        if (isPosValid(pos4.add(0, -1, 0))) {
+            return new BlockData(pos4.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos4.add(-1, 0, 0))) {
+            return new BlockData(pos4.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos4.add(1, 0, 0))) {
+            return new BlockData(pos4.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos4.add(0, 0, 1))) {
+            return new BlockData(pos4.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos4.add(0, 0, -1))) {
+            return new BlockData(pos4.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos5 = pos.add(0, -1, 0);
+        if (isPosValid(pos5.add(0, -1, 0))) {
+            return new BlockData(pos5.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos5.add(-1, 0, 0))) {
+            return new BlockData(pos5.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos5.add(1, 0, 0))) {
+            return new BlockData(pos5.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos5.add(0, 0, 1))) {
+            return new BlockData(pos5.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos5.add(0, 0, -1))) {
+            return new BlockData(pos5.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos6 = pos5.add(1, 0, 0);
+        if (isPosValid(pos6.add(0, -1, 0))) {
+            return new BlockData(pos6.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos6.add(-1, 0, 0))) {
+            return new BlockData(pos6.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos6.add(1, 0, 0))) {
+            return new BlockData(pos6.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos6.add(0, 0, 1))) {
+            return new BlockData(pos6.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos6.add(0, 0, -1))) {
+            return new BlockData(pos6.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos7 = pos5.add(-1, 0, 0);
+        if (isPosValid(pos7.add(0, -1, 0))) {
+            return new BlockData(pos7.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos7.add(-1, 0, 0))) {
+            return new BlockData(pos7.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos7.add(1, 0, 0))) {
+            return new BlockData(pos7.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos7.add(0, 0, 1))) {
+            return new BlockData(pos7.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos7.add(0, 0, -1))) {
+            return new BlockData(pos7.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos8 = pos5.add(0, 0, 1);
+        if (isPosValid(pos8.add(0, -1, 0))) {
+            return new BlockData(pos8.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos8.add(-1, 0, 0))) {
+            return new BlockData(pos8.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos8.add(1, 0, 0))) {
+            return new BlockData(pos8.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos8.add(0, 0, 1))) {
+            return new BlockData(pos8.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos8.add(0, 0, -1))) {
+            return new BlockData(pos8.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        BlockPos pos9 = pos5.add(0, 0, -1);
+        if (isPosValid(pos9.add(0, -1, 0))) {
+            return new BlockData(pos9.add(0, -1, 0), EnumFacing.UP);
+        }
+        if (isPosValid(pos9.add(-1, 0, 0))) {
+            return new BlockData(pos9.add(-1, 0, 0), EnumFacing.EAST);
+        }
+        if (isPosValid(pos9.add(1, 0, 0))) {
+            return new BlockData(pos9.add(1, 0, 0), EnumFacing.WEST);
+        }
+        if (isPosValid(pos9.add(0, 0, 1))) {
+            return new BlockData(pos9.add(0, 0, 1), EnumFacing.NORTH);
+        }
+        if (isPosValid(pos9.add(0, 0, -1))) {
+            return new BlockData(pos9.add(0, 0, -1), EnumFacing.SOUTH);
+        }
+        return null;
     }
 
     @Getter
     @Setter
     public class BlockData {
-        private final BlockPos pos;
-        private final EnumFacing facing;
+        public final BlockPos pos;
+        public final EnumFacing facing;
 
         public BlockData(BlockPos pos, EnumFacing facing) {
             this.pos = pos;
