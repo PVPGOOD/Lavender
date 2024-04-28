@@ -2,11 +2,13 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
+import io.justme.lavender.module.impl.movements.Scaffold;
 import io.justme.lavender.module.impl.movements.Sprint;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
+import org.lwjglx.input.Keyboard;
 
 import java.util.Arrays;
 
@@ -17,8 +19,11 @@ import java.util.Arrays;
 @Getter
 public class ModuleManager extends Manager<Module> {
 
-    private final Sprint sprint = new Sprint();
+    //visual
     private final HUD hud = new HUD();
+    //movements
+    private final Scaffold scaffold = new Scaffold();
+    private final Sprint sprint = new Sprint();
 
     public void onInitialization(){
 
@@ -26,7 +31,8 @@ public class ModuleManager extends Manager<Module> {
                 //visual
                 getHud(),
                 //movements
-               getSprint()
+                getSprint(),
+                getScaffold()
         ));
 
         getElements().forEach(Module::reflectValues);
@@ -41,6 +47,10 @@ public class ModuleManager extends Manager<Module> {
     public void onKey(EventKey event) {
         for (Module module : getElements()) {
             if (module.key == event.getKeyCode()) module.setStatus(!module.isToggle());
+        }
+
+        if (event.getKeyCode() == Keyboard.KEY_L) {
+            La.getINSTANCE().getConfigsManager().load();
         }
     }
 }
