@@ -14,6 +14,12 @@ import net.minecraft.client.Minecraft;
 public class La {
     @Getter
     private final static La INSTANCE = new La();
+
+    //客户端相关
+    private final String La = "Lavender";
+    private final String author = "JustMe";
+    private final String version = "1.0";
+
     private EventManager eventManager;
 
     public void initialization() {
