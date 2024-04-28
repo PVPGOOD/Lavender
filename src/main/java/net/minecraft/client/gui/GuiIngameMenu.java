@@ -1,6 +1,9 @@
 package net.minecraft.client.gui;
 
 import java.io.IOException;
+
+import io.justme.lavender.ui.screen.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screen.multiplayer.GuiMultiplayer;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;

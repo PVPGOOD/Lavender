@@ -2,6 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
 import java.util.List;
+
+import io.justme.lavender.ui.screen.multiplayer.GuiMultiplayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
@@ -42,7 +44,7 @@ public class ServerSelectionList extends GuiListExtended
         }
     }
 
-    protected int getSize()
+    public int getSize()
     {
         return this.serverListInternet.size() + 1 + this.serverListLan.size();
     }
