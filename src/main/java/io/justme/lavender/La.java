@@ -1,7 +1,10 @@
 package io.justme.lavender;
 
+import io.justme.lavender.events.render.Event2DRender;
 import lombok.Getter;
 import net.lenni0451.asmevents.EventManager;
+import net.lenni0451.asmevents.event.EventTarget;
+import net.minecraft.client.Minecraft;
 
 /**
  * @author JustMe.
@@ -17,5 +20,10 @@ public class La {
         eventManager = new EventManager();
 
         eventManager.register(this);
+    }
+
+    @EventTarget
+    public void on2D(Event2DRender event2DRender) {
+        Minecraft.getMinecraft().fontRendererObj.drawString("Lavender",0,0,-1);
     }
 }

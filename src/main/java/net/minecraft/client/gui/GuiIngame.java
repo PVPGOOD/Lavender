@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import io.justme.lavender.La;
+import io.justme.lavender.events.render.Event2DRender;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -327,6 +329,8 @@ public class GuiIngame extends Gui
         {
             this.overlayPlayerList.updatePlayerList(false);
         }
+
+        La.getINSTANCE().getEventManager().call(new Event2DRender(scaledresolution,partialTicks, mc.displayWidth, mc.displayHeight));
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
