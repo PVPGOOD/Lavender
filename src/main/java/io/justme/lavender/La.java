@@ -1,11 +1,10 @@
 package io.justme.lavender;
 
-import io.justme.lavender.events.render.Event2DRender;
+import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.ModuleManager;
 import lombok.Getter;
 import net.lenni0451.asmevents.EventManager;
-import net.lenni0451.asmevents.event.EventTarget;
 
 /**
  * @author JustMe.
@@ -25,12 +24,18 @@ public class La {
     private FontManager fontManager;
     private ModuleManager moduleManager;
 
+    private ConfigsManager configsManager;
+
     public void initialization() {
         eventManager = new EventManager();
         fontManager = new FontManager();
         moduleManager = new ModuleManager();
         moduleManager.onInitialization();
 
+        configsManager = new ConfigsManager();
+        configsManager.load();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> configsManager.save()));
 
         eventManager.register(this);
     }
