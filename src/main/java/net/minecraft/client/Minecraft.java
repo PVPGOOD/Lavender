@@ -33,6 +33,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
+
+import io.justme.lavender.La;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -451,6 +453,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         GlStateManager.loadIdentity();
         GlStateManager.matrixMode(5888);
         this.checkGLError("Startup");
+        La.getINSTANCE().initialization();
         this.textureMapBlocks = new TextureMap("textures");
         this.textureMapBlocks.setMipmapLevels(this.gameSettings.mipmapLevels);
         this.renderEngine.loadTickableTexture(TextureMap.locationBlocksTexture, this.textureMapBlocks);

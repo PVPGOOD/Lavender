@@ -150,6 +150,22 @@
         </dependency>
         <!-- 本地 lwjgl natives end -->
 
+        <!-- asm -->
+        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>9.7</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-tree -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>9.7</version>
+        </dependency>
+        <!-- asm end -->
+
         <!-- https://mvnrepository.com/artifact/org.lwjgl/lwjgl -->
         <dependency>
             <groupId>org.lwjgl</groupId>
