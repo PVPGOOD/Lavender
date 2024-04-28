@@ -574,6 +574,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.prevRenderArmPitch = this.renderArmPitch;
             this.renderArmPitch = (float)((double)this.renderArmPitch + (double)(this.rotationPitch - this.renderArmPitch) * 0.5D);
             this.renderArmYaw = (float)((double)this.renderArmYaw + (double)(this.rotationYaw - this.renderArmYaw) * 0.5D);
+
+            rotationPitchHead = rotationPitch;
         }
     }
 
