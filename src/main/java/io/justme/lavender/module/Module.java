@@ -54,7 +54,7 @@ public class Module  {
                         field.getType().isAssignableFrom(ModeValue.class) ||
                         field.getType().isAssignableFrom(MultiBoolValue.class) ||
                         field.getType().isAssignableFrom(TextValue.class)) {
-                    if (field.canAccess(field))
+                    if (!field.isAccessible())
                         field.setAccessible(true);
                     options.add((DefaultValue<?>) field.get(this));
                 }
