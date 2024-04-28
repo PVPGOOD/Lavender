@@ -37,8 +37,6 @@ public class Module  {
     public void setStatus(boolean enable){
         this.toggle = enable;
 
-        System.out.println(name + toggle);
-
         if (enable){
             onEnable();
         } else {
@@ -68,15 +66,11 @@ public class Module  {
 
 
     public void onEnable(){
-        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
-            La.getINSTANCE().getEventManager().register(this);
-        }
+        La.getINSTANCE().getEventManager().register(this);
     }
 
     public void onDisable(){
-        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
-            La.getINSTANCE().getEventManager().unregister(this);
-        }
+        La.getINSTANCE().getEventManager().unregister(this);
     }
 
 }

@@ -16,13 +16,18 @@ public class Sprint extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        Minecraft.getMinecraft().thePlayer.setSprinting(true);
+
+        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
+            Minecraft.getMinecraft().thePlayer.setSprinting(true);
+        }
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        Minecraft.getMinecraft().thePlayer.setSprinting(false);
+        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
+            Minecraft.getMinecraft().thePlayer.setSprinting(false);
+        }
     }
 
 }
