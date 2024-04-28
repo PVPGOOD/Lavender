@@ -2,6 +2,7 @@ package io.justme.lavender;
 
 import io.justme.lavender.events.render.Event2DRender;
 import io.justme.lavender.fonts.FontManager;
+import io.justme.lavender.module.ModuleManager;
 import lombok.Getter;
 import net.lenni0451.asmevents.EventManager;
 import net.lenni0451.asmevents.event.EventTarget;
@@ -22,17 +23,16 @@ public class La {
 
     private EventManager eventManager;
     private FontManager fontManager;
+    private ModuleManager moduleManager;
 
     public void initialization() {
         eventManager = new EventManager();
         fontManager = new FontManager();
+        moduleManager = new ModuleManager();
+        moduleManager.onInitialization();
+
 
         eventManager.register(this);
-    }
-
-    @EventTarget
-    public void on2D(Event2DRender event2DRender) {
-        fontManager.getSFBold18().drawString("Lavender",0,0,-1);
     }
 
     public static io.justme.lavender.La getINSTANCE() {
