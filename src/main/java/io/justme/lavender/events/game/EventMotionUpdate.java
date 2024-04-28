@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.lenni0451.asmevents.event.IEvent;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.lenni0451.asmevents.event.types.ITypedEvent;
+import net.minecraft.client.Minecraft;
 
 /**
  * @author JustMe.
@@ -32,5 +33,18 @@ public class EventMotionUpdate implements IEvent, ITypedEvent {
     @Override
     public EnumEventType getType() {
         return this.type;
+    }
+
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+
+        Minecraft.getMinecraft().thePlayer.prevRenderYawOffset = yaw;
+        Minecraft.getMinecraft().thePlayer.rotationYawHead = yaw;
+        Minecraft.getMinecraft().thePlayer.renderYawOffset = yaw;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+        Minecraft.getMinecraft().thePlayer.rotationPitchHead = pitch;
     }
 }
