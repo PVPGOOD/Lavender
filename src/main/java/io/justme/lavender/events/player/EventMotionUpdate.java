@@ -1,4 +1,4 @@
-package io.justme.lavender.events.game;
+package io.justme.lavender.events.player;
 
 import lombok.Getter;
 import lombok.Setter;

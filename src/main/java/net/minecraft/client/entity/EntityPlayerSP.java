@@ -1,7 +1,7 @@
 package net.minecraft.client.entity;
 
 import io.justme.lavender.La;
-import io.justme.lavender.events.game.EventMotionUpdate;
+import io.justme.lavender.events.player.EventMotionUpdate;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
