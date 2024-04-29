@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import io.justme.lavender.La;
+import io.justme.lavender.events.player.EventSafeWalk;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -451,7 +453,13 @@ public abstract class Entity implements ICommandSender
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+
+            boolean ff = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+            EventSafeWalk safeWalkEvent = new EventSafeWalk();
+            safeWalkEvent.setCancel(ff);
+            La.getINSTANCE().getEventManager().call(safeWalkEvent);
+
+            boolean flag = safeWalkEvent.isCancelled();
 
             if (flag)
             {
