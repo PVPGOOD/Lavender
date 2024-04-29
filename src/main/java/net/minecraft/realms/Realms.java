@@ -5,7 +5,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.util.UUIDTypeAdapter;
 import java.net.Proxy;
 import net.minecraft.client.Minecraft;
-import io.justme.lavender.ui.screen.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.Session;
 import net.minecraft.world.WorldSettings;

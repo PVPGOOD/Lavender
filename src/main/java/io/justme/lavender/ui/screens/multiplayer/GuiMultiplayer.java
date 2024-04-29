@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screen.multiplayer;
+package io.justme.lavender.ui.screens.multiplayer;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;

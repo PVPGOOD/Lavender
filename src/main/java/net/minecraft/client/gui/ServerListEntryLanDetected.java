@@ -1,6 +1,6 @@
 package net.minecraft.client.gui;
 
-import io.justme.lavender.ui.screen.multiplayer.GuiMultiplayer;
+import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.LanServerDetector;
 import net.minecraft.client.resources.I18n;

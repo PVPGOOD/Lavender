@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.security.PublicKey;
 import javax.crypto.SecretKey;
 import net.minecraft.client.Minecraft;
-import io.justme.lavender.ui.screen.disconnect.GuiDisconnected;
+import io.justme.lavender.ui.screens.disconnect.GuiDisconnected;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;

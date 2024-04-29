@@ -1,6 +1,6 @@
-package io.justme.lavender.ui.screen.mainmenu;
+package io.justme.lavender.ui.screens.mainmenu;
 
-import io.justme.lavender.ui.screen.multiplayer.GuiMultiplayer;
+import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import java.io.IOException;

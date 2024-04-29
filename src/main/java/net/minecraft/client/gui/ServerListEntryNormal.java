@@ -2,7 +2,7 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Charsets;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.justme.lavender.ui.screen.multiplayer.GuiMultiplayer;
+import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;

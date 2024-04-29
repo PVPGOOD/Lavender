@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screen.disconnect;
+package io.justme.lavender.ui.screens.disconnect;
 
 import java.io.IOException;
 import java.util.List;

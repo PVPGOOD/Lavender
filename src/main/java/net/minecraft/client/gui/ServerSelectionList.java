@@ -3,7 +3,7 @@ package net.minecraft.client.gui;
 import com.google.common.collect.Lists;
 import java.util.List;
 
-import io.justme.lavender.ui.screen.multiplayer.GuiMultiplayer;
+import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
