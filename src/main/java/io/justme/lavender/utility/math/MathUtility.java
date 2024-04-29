@@ -1,0 +1,96 @@
+package io.justme.lavender.utility.math;
+
+import lombok.experimental.UtilityClass;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.SecureRandom;
+
+@UtilityClass
+public class MathUtility {
+
+    public int getRandomInRange(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public float getRandomInRange(float min, float max) {
+        SecureRandom random = new SecureRandom();
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public double getRandomInRange(double min, double max) {
+        SecureRandom random = new SecureRandom();
+        return random.nextDouble() * (max - min) + min;
+    }
+
+    public double lerp(double old, double newVal, double amount) {
+        return (1.0 - amount) * old + amount * newVal;
+    }
+
+    public Double interpolate(double oldValue, double newValue, double interpolationValue) {
+        return (oldValue + (newValue - oldValue) * interpolationValue);
+    }
+
+    public float interpolateFloat(float oldValue, float newValue, double interpolationValue) {
+        return interpolate(oldValue, newValue, (float) interpolationValue).floatValue();
+    }
+
+    public int interpolateInt(int oldValue, int newValue, double interpolationValue) {
+        return interpolate(oldValue, newValue, (float) interpolationValue).intValue();
+    }
+
+    public float calculateGaussianValue(float x, float sigma) {
+        double PI = 3.141592653;
+        double output = 1.0 / Math.sqrt(2.0 * PI * (sigma * sigma));
+        return (float) (output * Math.exp(-(x * x) / (2.0 * (sigma * sigma))));
+    }
+
+    public double roundToHalf(double d) {
+        return Math.round(d * 2) / 2.0;
+    }
+
+    public double round(double num, double increment) {
+        BigDecimal bd = new BigDecimal(num);
+        bd = (bd.setScale((int) increment, RoundingMode.HALF_UP));
+        return bd.doubleValue();
+    }
+
+    public double round(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException();
+        }
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public float getRandomFloat(float max, float min) {
+        SecureRandom random = new SecureRandom();
+        return random.nextFloat() * (max - min) + min;
+    }
+
+    public double getRandomDouble(double max, double min) {
+        SecureRandom random = new SecureRandom();
+        return random.nextDouble() * (max - min) + min;
+    }
+
+    public int getDifference(int target, int current) {
+        if (target - current < 0) {
+            return current - target;
+        }
+        return target - current;
+    }
+
+    public int limit(int value, int min, int max) {
+        return Math.max(Math.min(value, max), min);
+    }
+
+    public double limit(double value, double min, double max) {
+        return Math.max(Math.min(value, max), min);
+    }
+
+    public float limit(float value, float min, float max) {
+        return Math.max(Math.min(value, max), min);
+    }
+
+}
