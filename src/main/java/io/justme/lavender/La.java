@@ -3,6 +3,7 @@ package io.justme.lavender;
 import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.ModuleManager;
+import io.justme.lavender.ui.elements.ElementsManager;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
@@ -25,6 +26,7 @@ public class La {
     private EventManager eventManager;
     private FontManager fontManager;
     private ModuleManager moduleManager;
+    private ElementsManager elementsManager;
 
     private ConfigsManager configsManager;
 
@@ -33,6 +35,7 @@ public class La {
         fontManager = new FontManager();
         moduleManager = new ModuleManager();
         moduleManager.onInitialization();
+        elementsManager = new ElementsManager();
 
         configsManager = new ConfigsManager();
         configsManager.load();

@@ -13,7 +13,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractElements {
 
-    private float x, y, draggingX, draggingY;
+    private float posX, posY, draggingX, draggingY;
 
     private ElementsEnum elementsEnum;
 
@@ -25,11 +25,11 @@ public abstract class AbstractElements {
 
     public void onDrag(int mouseX, int mouseY){
         if (getDraggingX() == 0 && getDraggingY() == 0) {
-            setDraggingX(mouseX - getX());
-            setDraggingY(mouseY - getY());
+            setDraggingX(mouseX - getPosX());
+            setDraggingY(mouseY - getPosY());
         } else {
-            setX(mouseX - getDraggingX());
-            setY(mouseY - getDraggingY());
+            setPosX(mouseX - getDraggingX());
+            setPosY(mouseY - getDraggingY());
         }
     }
 
