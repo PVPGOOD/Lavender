@@ -1,33 +1,40 @@
 package io.justme.lavender.module.impl.movements;
 
+import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
+import io.justme.lavender.utility.player.PlayerUtility;
+import io.justme.lavender.value.impl.BoolValue;
+import lombok.Getter;
+import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
 
-/**
- * @author JustMe.
- * @since 2024/4/28
- **/
-
-@ModuleInfo(name = "Speed", description = "IDK.", category = Category.MOVEMENTS)
+@Getter
+@ModuleInfo(name = "Sprint", description = "Auto sprint.", category = Category.MOVEMENTS)
 public class Sprint extends Module {
 
-    @Override
-    public void onEnable() {
-        super.onEnable();
-
-        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
-            Minecraft.getMinecraft().thePlayer.setSprinting(true);
-        }
-    }
+    private final BoolValue
+            all = new BoolValue("all",false);
 
     @Override
     public void onDisable() {
+        if (Minecraft.getMinecraft().thePlayer != null) Minecraft.getMinecraft().thePlayer.setSprinting(false);
         super.onDisable();
-        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
-            Minecraft.getMinecraft().thePlayer.setSprinting(false);
-        }
     }
 
+    @EventTarget
+    public void onUpdate(EventUpdate event) {
+
+        var back = Minecraft.getMinecraft().gameSettings.keyBindBack.pressed;
+        var forward = Minecraft.getMinecraft().gameSettings.keyBindForward.pressed;
+        var left = Minecraft.getMinecraft().gameSettings.keyBindLeft.pressed;
+        var right = Minecraft.getMinecraft().gameSettings.keyBindRight.pressed;
+
+        if (getAll().getValue() ? forward || back || left || right : !(left || right || back) && PlayerUtility.moving()) {
+            if (!(Minecraft.getMinecraft().thePlayer.getFoodStats().getFoodLevel() <= 6)) {
+                Minecraft.getMinecraft().thePlayer.setSprinting(true);
+            }
+        }
+    }
 }
