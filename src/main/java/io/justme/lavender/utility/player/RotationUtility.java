@@ -30,6 +30,19 @@ public class RotationUtility {
         return new float[]{yaw, (float) (90.0 - pitch)};
     }
 
+    public float[] getRotationsToPosition(double x, double y, double z) {
+        var deltaX = x - mc.thePlayer.posX;
+        var deltaY = y - mc.thePlayer.posY - mc.thePlayer.getEyeHeight();
+        var deltaZ = z - mc.thePlayer.posZ;
+
+        var horizontalDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+
+        var yaw = (float) Math.toDegrees(-Math.atan2(deltaX, deltaZ));
+        var pitch = (float) Math.toDegrees(-Math.atan2(deltaY, horizontalDistance));
+
+        return new float[] {yaw, pitch};
+    }
+
     public float[] getRotationsBlock(BlockPos block, EnumFacing face) {
         double x = (double)block.getX() + 0.5 - mc.thePlayer.posX + (double)face.getFrontOffsetX() / 2.0;
         double z = (double)block.getZ() + 0.5 - mc.thePlayer.posZ + (double)face.getFrontOffsetZ() / 2.0;

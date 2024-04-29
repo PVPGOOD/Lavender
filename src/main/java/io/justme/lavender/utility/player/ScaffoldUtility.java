@@ -109,25 +109,6 @@ public class ScaffoldUtility {
         mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, currentSlot, targetSlot, 2, mc.thePlayer);
     }
 
-    public Vec3 getVec3(BlockPos pos, EnumFacing face) {
-        double x = (double) pos.getX() + 0.5;
-        double y = (double) pos.getY() + 0.5;
-        double z = (double) pos.getZ() + 0.5;
-        if (face == EnumFacing.UP || face == EnumFacing.DOWN) {
-            x += randomNumber(0.3, -0.3);
-            z += randomNumber(0.3, -0.3);
-        } else {
-            y += randomNumber(0.3, -0.3);
-        }
-        if (face == EnumFacing.WEST || face == EnumFacing.EAST) {
-            z += randomNumber(0.3, -0.3);
-        }
-        if (face == EnumFacing.SOUTH || face == EnumFacing.NORTH) {
-            x += randomNumber(0.3, -0.3);
-        }
-        return new Vec3(x, y, z);
-    }
-
     public double randomNumber(double max, double min) {
         return Math.random() * (max - min) + min;
     }
@@ -375,8 +356,9 @@ public class ScaffoldUtility {
     @Getter
     @Setter
     public class BlockData {
-        public final BlockPos pos;
-        public final EnumFacing facing;
+        public BlockPos pos;
+        public EnumFacing facing;
+        private Vec3 vec3;
 
         public BlockData(BlockPos pos, EnumFacing facing) {
             this.pos = pos;
@@ -389,6 +371,25 @@ public class ScaffoldUtility {
 
         public EnumFacing getEnumFacing() {
             return facing;
+        }
+
+        public Vec3 getVec3() {
+            double x = (double) pos.getX() + 0.5;
+            double y = (double) pos.getY() + 0.5;
+            double z = (double) pos.getZ() + 0.5;
+            if (getFacing() == EnumFacing.UP || getFacing() == EnumFacing.DOWN) {
+                x += randomNumber(0.3, -0.3);
+                z += randomNumber(0.3, -0.3);
+            } else {
+                y += randomNumber(0.3, -0.3);
+            }
+            if (getFacing() == EnumFacing.WEST || getFacing() == EnumFacing.EAST) {
+                z += randomNumber(0.3, -0.3);
+            }
+            if (getFacing() == EnumFacing.SOUTH || getFacing() == EnumFacing.NORTH) {
+                x += randomNumber(0.3, -0.3);
+            }
+            return new Vec3(x, y, z);
         }
     }
 }

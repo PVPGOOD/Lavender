@@ -1,7 +1,8 @@
 package io.justme.lavender.module.impl.movements;
 
 import io.justme.lavender.La;
-import io.justme.lavender.events.game.EventMotionUpdate;
+import io.justme.lavender.events.player.EventMotionUpdate;
+import io.justme.lavender.events.player.EventSafeWalk;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
@@ -10,16 +11,19 @@ import io.justme.lavender.utility.network.PacketUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.utility.player.RotationUtility;
 import io.justme.lavender.utility.player.ScaffoldUtility;
+import io.justme.lavender.utility.world.WorldUtility;
 import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.ModeValue;
 import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.*;
 
 /**
  * @author JustMe.
@@ -35,7 +39,7 @@ public class Scaffold extends Module {
     private int slot, prevSlot, towerTick;
 
     public final ModeValue
-            rotationModeValue = new ModeValue("Rotation", new String[]{"Normal", "NCP"}, "Normal"),
+            rotationModeValue = new ModeValue("Rotation", new String[]{"Normal"}, "Normal"),
             keepYModeValue = new ModeValue("keepY", new String[]{"Always", "None", "OnlySpeed"}, "None"),
             picks = new ModeValue("PickBlock", new String[]{"Silent", "SwitchTo"}, "Silent"),
             markMode = new ModeValue("Mark", new String[]{"Zeroday", "Basic"}, "Basic");
@@ -62,7 +66,7 @@ public class Scaffold extends Module {
 
     @Override
     public void onEnable() {
-        if (Minecraft.getMinecraft().thePlayer != null) posY = mc.thePlayer.posY;
+        if (Minecraft.getMinecraft().thePlayer != null) setPosY(mc.thePlayer.posY);
         super.onEnable();
     }
 
@@ -76,7 +80,7 @@ public class Scaffold extends Module {
                     break;
                 }
                 case "SwitchTo": {
-                    mc.thePlayer.inventory.currentItem = prevSlot;
+                    mc.thePlayer.inventory.currentItem = getPrevSlot();
                     break;
                 }
             }
@@ -116,9 +120,12 @@ public class Scaffold extends Module {
                 }
 
                 if (getPlaceTimer().hasTimeElapsed(getDelayValue().getValue() * 100L)) {
-                    place();
-                    getPlaceTimer().reset();
+                    if (canPlace()) {
+                        place();
+                    }
                 }
+
+                getPlaceTimer().reset();
             }
             case POST -> {
                 switch (getKeepYModeValue().getValue()) {
@@ -195,16 +202,44 @@ public class Scaffold extends Module {
         }
     }
 
+    private float yaw,pitch;
     private void rotation(EventMotionUpdate event) {
-
         switch (getRotationModeValue().getValue()) {
             case "Normal" : {
-                event.setYaw(RotationUtility.getMoveYaw(event.getYaw()) - 180);
-                event.setPitch(75.7F);
+                Block under = mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - .5F, mc.thePlayer.posZ)).getBlock();
+                if (under == Blocks.air || !under.isFullBlock()) {
+
+                    var vec = getBlockData().getVec3();
+
+                    float[] rotations = RotationUtility.getRotationsToPosition(vec.xCoord, vec.yCoord, vec.zCoord);
+
+                    var yaw = rotations[0];
+                    var pitch = 80f;
+
+                    if (getBlockData().getFacing() == EnumFacing.UP) {
+                        pitch = 90f;
+                    }
+
+                    for(float i = 75; i <= 85; i += 0.1F) {
+                        MovingObjectPosition movingObjectPosition = WorldUtility.raytrace(yaw, i);
+                        if(movingObjectPosition != null && movingObjectPosition.sideHit == getBlockData().getFacing()) {
+                            pitch = i;
+                            break;
+                        }
+                    }
+
+                    if (yaw < 0) yaw += 360;
+
+                    setYaw(yaw);
+                    setPitch(pitch);
+                }
+
+                event.setPitch(getPitch());
+                event.setYaw(getYaw());
             }
-
-            case "NCP" : {
-
+            case "Back" : {
+//                event.setYaw(RotationUtility.getMoveYaw(event.getYaw()) - 180);
+//                event.setPitch(75.7F);
             }
         }
     }
@@ -216,7 +251,7 @@ public class Scaffold extends Module {
                 mc.thePlayer.inventory.mainInventory[slot],
                 getBlockData().getBlockPos(),
                 getBlockData().getEnumFacing(),
-                ScaffoldUtility.getVec3(getBlockData().getBlockPos(), getBlockData().getEnumFacing()))) {
+                getBlockData().getVec3())) {
 
             if (getSwing().getValue()) {
                 mc.thePlayer.swingItem();
@@ -225,4 +260,26 @@ public class Scaffold extends Module {
             }
         }
     }
+
+    private boolean canPlace() {
+        return raytrace();
+    }
+
+    private boolean raytrace() {
+        var movingObjectPosition = WorldUtility.raytrace(getYaw(),getPitch());
+
+        //合法的hitVec
+        if(movingObjectPosition != null && movingObjectPosition.sideHit == getBlockData().getFacing() && movingObjectPosition.getBlockPos().equals(getBlockData().getPos())) {
+           getBlockData().setVec3(movingObjectPosition.hitVec);
+            return true;
+        }
+
+        return false;
+    }
+
+    @EventTarget
+    public void onSafeWalk(EventSafeWalk eventSafeWalk) {
+        eventSafeWalk.setCancel(getSafeWalkValue().getValue());
+    }
+
 }
