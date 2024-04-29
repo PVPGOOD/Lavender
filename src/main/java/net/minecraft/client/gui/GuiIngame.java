@@ -330,6 +330,14 @@ public class GuiIngame extends Gui
             this.overlayPlayerList.updatePlayerList(false);
         }
 
+        int width = scaledresolution.getScaledWidth();
+        int height = scaledresolution.getScaledHeight();
+        int mouseX = Mouse.getX() * width / Minecraft.getMinecraft().displayWidth;
+        int mouseY = height - Mouse.getY() * height / Minecraft.getMinecraft().displayHeight - 1;
+
+        La.getINSTANCE().setMouseX(mouseX);
+        La.getINSTANCE().setMouseY(mouseY);
+
         La.getINSTANCE().getEventManager().call(new Event2DRender(scaledresolution,partialTicks, mc.displayWidth, mc.displayHeight));
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

@@ -4,6 +4,7 @@ import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.ModuleManager;
 import lombok.Getter;
+import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
 
 /**
@@ -19,7 +20,8 @@ public class La {
     private final String La = "Lavender";
     private final String author = "JustMe";
     private final String version = "1.0";
-
+    @Setter
+    private int mouseX,mouseY;
     private EventManager eventManager;
     private FontManager fontManager;
     private ModuleManager moduleManager;
