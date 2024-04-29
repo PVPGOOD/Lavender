@@ -1,6 +1,7 @@
 package io.justme.lavender.module;
 
 import io.justme.lavender.La;
+import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.*;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Module  {
     public Category category;
     public int key;
     private boolean toggle;
+    private final Animation animation = new Animation();
     private final ArrayList<DefaultValue<?>> options = new ArrayList<>();
 
     public Module(){

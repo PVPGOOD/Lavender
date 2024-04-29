@@ -1,11 +1,11 @@
 package io.justme.lavender.ui.elements;
 
+import io.justme.lavender.ui.elements.impl.ArrayList;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 @Setter
 public class ElementsManager extends Manager<AbstractElements> {
 
+    private final ArrayList arrayList = new ArrayList();
 
     public ElementsManager() {
 
         getElements().addAll(Arrays.asList(
-
+                getArrayList()
         ));
-
     }
 
     public List<AbstractElements> getVisibleElements() {
