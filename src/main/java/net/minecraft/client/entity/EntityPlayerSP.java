@@ -2,6 +2,7 @@ package net.minecraft.client.entity;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
+import io.justme.lavender.events.player.EventUpdate;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -115,7 +116,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
         {
             super.onUpdate();
-
+            La.getINSTANCE().getEventManager().call(new EventUpdate());
             if (this.isRiding())
             {
                 this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
