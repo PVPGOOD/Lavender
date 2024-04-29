@@ -2,6 +2,7 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
+import io.justme.lavender.module.impl.movements.SafeWalk;
 import io.justme.lavender.module.impl.movements.Scaffold;
 import io.justme.lavender.module.impl.movements.Sprint;
 import io.justme.lavender.module.impl.visual.HUD;
@@ -24,6 +25,7 @@ public class ModuleManager extends Manager<Module> {
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
+    private final SafeWalk safeWalk = new SafeWalk();
 
     public void onInitialization(){
 
@@ -32,7 +34,8 @@ public class ModuleManager extends Manager<Module> {
                 getHud(),
                 //movements
                 getSprint(),
-                getScaffold()
+                getScaffold(),
+                getSafeWalk()
         ));
 
         getElements().forEach(Module::reflectValues);
