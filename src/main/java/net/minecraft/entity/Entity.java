@@ -73,7 +73,7 @@ public abstract class Entity implements ICommandSender
     public float rotationPitch;
     public float prevRotationYaw;
     public float prevRotationPitch;
-    private AxisAlignedBB boundingBox;
+    public AxisAlignedBB boundingBox;
     public boolean onGround;
     public boolean isCollidedHorizontally;
     public boolean isCollidedVertically;
@@ -457,9 +457,10 @@ public abstract class Entity implements ICommandSender
             boolean ff = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
             EventSafeWalk safeWalkEvent = new EventSafeWalk();
             safeWalkEvent.setCancel(ff);
+
             La.getINSTANCE().getEventManager().call(safeWalkEvent);
 
-            boolean flag = safeWalkEvent.isCancelled();
+            boolean flag = safeWalkEvent.isCancelled() && onGround && this instanceof EntityPlayer;
 
             if (flag)
             {
@@ -1222,7 +1223,7 @@ public abstract class Entity implements ICommandSender
         }
     }
 
-    protected final Vec3 getVectorForRotation(float pitch, float yaw)
+    public final Vec3 getVectorForRotation(float pitch, float yaw)
     {
         float f = MathHelper.cos(-yaw * 0.017453292F - (float)Math.PI);
         float f1 = MathHelper.sin(-yaw * 0.017453292F - (float)Math.PI);
