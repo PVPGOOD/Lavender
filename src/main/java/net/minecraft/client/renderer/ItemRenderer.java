@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer;
 
+import io.justme.lavender.La;
+import io.justme.lavender.module.impl.visual.BlockStyle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -58,6 +60,11 @@ public class ItemRenderer
             Item item = heldStack.getItem();
             Block block = Block.getBlockFromItem(item);
             GlStateManager.pushMatrix();
+            var animations = (BlockStyle) La.getINSTANCE().getModuleManager().getModuleByName("BlockStyle");
+            GL11.glScalef(
+                    animations.getScale().getValue().floatValue(),
+                    animations.getScale().getValue().floatValue(),
+                    animations.getScale().getValue().floatValue());
 
             if (this.itemRenderer.shouldRenderItemIn3D(heldStack))
             {
@@ -318,8 +325,14 @@ public class ItemRenderer
             this.rotateArroundXAndY(f2, f3);
             this.setLightMapFromPlayer(abstractclientplayer);
             this.rotateWithPlayerRotations((EntityPlayerSP)abstractclientplayer, partialTicks);
+            var animations = (BlockStyle) La.getINSTANCE().getModuleManager().getModuleByName("BlockStyle");
+//            GlStateManager.translate(
+//                    animations.getPosX().getValue().floatValue(),
+//                    animations.getPosY().getValue().floatValue(),
+//                    animations.getPosZ().getValue().floatValue());
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
+
 
             if (this.itemToRender != null)
             {
@@ -344,8 +357,38 @@ public class ItemRenderer
                             break;
 
                         case BLOCK:
-                            this.transformFirstPersonItem(f, 0.0F);
-                            this.doBlockTransformations();
+
+                            switch (animations.getStyle().getValue()) {
+                                case "None" -> {
+                                    this.transformFirstPersonItem(f, 0.0F);
+                                    this.doBlockTransformations();
+                                }
+
+                                case "Type1" -> {
+                                    this.genCustom(f, f1);
+                                    this.doBlockTransformations();
+                                }
+
+                                case "Type2" -> {
+                                    this.avatar(f2, f1);
+                                    GL11.glTranslated(-0.10000000149011612D, 0.15000000596046448D, 0.0D);
+                                    GL11.glTranslated(0.10000000149011612D, -0.20000000298023224D, 0.0D);
+                                    this.doBlockTransformations();
+                                }
+
+                                case "Type3" -> {
+                                    this.transformFirstPersonItem(f / 2, f1);
+                                    float sin;
+                                    sin = MathHelper.sin(MathHelper.sqrt_float(f1) * 3.1415927F);
+                                    GlStateManager.rotate(sin * 30.0F, -sin, -0.0F, 9.0F);
+                                    GlStateManager.rotate(sin * 40.0F, 1.0F, -sin, -0.0F);
+                                    this.doBlockTransformations();
+                                    GL11.glTranslatef(-0.05F, this.mc.thePlayer.isSneaking() ? -0.2F : 0.0F, 0.1F);
+                                }
+                            }
+
+//                            this.transformFirstPersonItem(f, 0.0F);
+//                            this.doBlockTransformations();
                             break;
 
                         case BOW:
@@ -370,6 +413,28 @@ public class ItemRenderer
             GlStateManager.disableRescaleNormal();
             RenderHelper.disableStandardItemLighting();
         }
+    }
+
+    private void avatar(float equipProgress, float swingProgress) {
+        GlStateManager.translate(0.6F, -0.48F, -0.79999995F);
+        GlStateManager.translate(0.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
+        float f = MathHelper.sin(swingProgress * swingProgress * 3.1415927F);
+        float f1 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * 3.1415927F);
+        GlStateManager.rotate(f1 * -40.0F, 1.0F, -0.2F, 0.2F);
+        GlStateManager.scale(0.4F, 0.4F, 0.4F);
+    }
+
+    private void genCustom(float p_178096_1_, float p_178096_2_) {
+        GlStateManager.translate(0.56f, -0.52f, -0.71999997f);
+        GlStateManager.translate(0.0f, p_178096_1_ * -0.6f, 0.0f);
+        GlStateManager.rotate(45.0f, 0.0f, 1.0f, 0.0f);
+        float var3 = MathHelper.sin(p_178096_2_ * p_178096_2_ * 3.1415927f);
+        float var4 = MathHelper.sin(MathHelper.sqrt_float(p_178096_2_) * 3.1415927f);
+        GlStateManager.rotate(var3 * -34.0f, 0.0f, 1.0f, 0.2f);
+        GlStateManager.rotate(var4 * -20.7f, 0.2f, 0.1f, 1.0f);
+        GlStateManager.rotate(var4 * -68.6f, 1.3f, 0.1f, 0.2f);
+        GlStateManager.scale(0.4f, 0.4f, 0.4f);
     }
 
     public void renderOverlays(float partialTicks)

@@ -6,6 +6,7 @@ import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.movements.SafeWalk;
 import io.justme.lavender.module.impl.movements.Scaffold;
 import io.justme.lavender.module.impl.movements.Sprint;
+import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class ModuleManager extends Manager<Module> {
     private final KillAura killAura = new KillAura();
     //visual
     private final HUD hud = new HUD();
+    private BlockStyle blockStyle = new BlockStyle();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -37,6 +39,7 @@ public class ModuleManager extends Manager<Module> {
                 getKillAura(),
                 //visual
                 getHud(),
+                getBlockStyle(),
                 //movements
                 getSprint(),
                 getScaffold(),
