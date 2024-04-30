@@ -2,6 +2,7 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
+import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.movements.SafeWalk;
 import io.justme.lavender.module.impl.movements.Scaffold;
 import io.justme.lavender.module.impl.movements.Sprint;
@@ -20,6 +21,8 @@ import java.util.Arrays;
 @Getter
 public class ModuleManager extends Manager<Module> {
 
+    //fight
+    private final KillAura killAura = new KillAura();
     //visual
     private final HUD hud = new HUD();
     //movements
@@ -30,6 +33,8 @@ public class ModuleManager extends Manager<Module> {
     public void onInitialization(){
 
         getElements().addAll(Arrays.asList(
+                //fight
+                getKillAura(),
                 //visual
                 getHud(),
                 //movements
