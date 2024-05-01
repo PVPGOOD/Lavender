@@ -2,8 +2,12 @@ package io.justme.lavender.module.impl.fight;
 
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
+import io.justme.lavender.events.player.EventAttack;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
@@ -21,6 +25,7 @@ import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
+import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,6 +38,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.WorldSettings;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -50,7 +56,7 @@ public class KillAura extends Module implements IMinecraft {
     private final TimerUtility attackTimer = new TimerUtility(), switchTimer = new TimerUtility();
     private final ArrayList<EntityLivingBase> targets = new ArrayList<>();
     private final PacketUtility packetUtility = new PacketUtility();
-    private EntityLivingBase target, blockingTarget;
+    private EntityLivingBase target;
     private int index;
 
     private final BoolValue
@@ -71,13 +77,11 @@ public class KillAura extends Module implements IMinecraft {
             new BoolValue("Animals", false)
     );
 
-    private final ModeValue attackTimingModeValue = new ModeValue("Attack Timing", new String[]{"Post", "Pre"}, "Pre");
-    private final ModeValue blockTimingModeValue = new ModeValue("Block Timing", new String[]{"Post", "Pre"}, "Pre");
+    private final ModeValue blockTimingModeValue = new ModeValue("Block Timing", new String[]{"Post", "Pre","BeforeAttack","AfterAttack"}, "Pre");
 
-    private final ModeValue blockModeValue = new ModeValue("Block Mode", new String[]{"Watchdog", "Key"}, "Key");
+    private final ModeValue blockModeValue = new ModeValue("Block Mode", new String[]{"Watchdog", "Key","Visual"}, "Key");
 
-    private boolean blocking;
-    private boolean attacking, entityInBlockRange;
+    private boolean attacking,blocking;
 
     @Override
     public void onDisable() {
@@ -95,6 +99,7 @@ public class KillAura extends Module implements IMinecraft {
         if (Minecraft.getMinecraft().thePlayer == null) return;
 
         if (isBlocking()) {
+            La.getINSTANCE().print(String.format("unBlock (%s)" , "resetStatus"));
             doUnblock();
         }
 
@@ -133,42 +138,79 @@ public class KillAura extends Module implements IMinecraft {
             setTarget(getTargets().get(getAttackMode().getValue().equalsIgnoreCase("Switch") ? getIndex() : 0));
         }
 
+        if (getTarget() != null) {
+            event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
+            event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
 
-        switch (event.getType()) {
-            case PRE -> {
+            var shouldAttack = getAttackTimer().hasTimeElapsed(cpsMs);
+            setAttacking(shouldAttack);
 
-                if (getTarget() != null) {
-                    setAttacking(!getTargets().isEmpty());
+            var shouldBlock = getAutoBlock().getValue() && getTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue() && PlayerUtility.isHoldingSword();
 
-                    setEntityInBlockRange(getAutoBlock().getValue() && PlayerUtility.isHoldingSword() &&
-                            getBlockingTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue());
+            switch (event.getType()) {
+                case PRE -> {
 
-
-
-                    event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
-                    event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
-
-                    if (getBlockingTarget() != null) {
-                        if (isEntityInBlockRange()) {
-                            doBlock();
-                        } else {
-                            if (isBlocking()) doUnblock();
-                        }
-                    } else doUnblock();
-
-                    if (getAttackTimer().hasTimeElapsed(cpsMs) && Objects.equals(getAttackTimingModeValue().getValue(), "Pre")) {
+                    if (getAttackTimer().hasTimeElapsed(cpsMs)) {
+                        final var preAttack = new EventAttack(EnumEventType.PRE);
+                        La.getINSTANCE().getEventManager().call(preAttack);
                         doAttack();
                         resetKillAuraTimer(true, false);
+                        final var postAttack = new EventAttack(EnumEventType.POST);
+                        La.getINSTANCE().getEventManager().call(postAttack);
+                    }
+
+                    if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Pre")) {
+                        if (shouldBlock) {
+                            La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
+                            doBlock();
+                        }
                     }
 
                 }
 
+                case POST -> {
+
+                    if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Post")) {
+                        if (shouldBlock) {
+                            La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
+                            doBlock();
+                        }
+                    }
+
+                }
             }
+        } else {
+            if (isBlocking()) {
+                La.getINSTANCE().print(String.format("unBlock (%s)" , "on the end"));
+                doUnblock();
+            }
+        }
+    }
+
+    @EventTarget
+    public void onAttack(EventAttack eventAttack) {
+
+        var shouldBlock = getAutoBlock().getValue() && getTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue() && PlayerUtility.isHoldingSword();
+
+        switch (eventAttack.getTypes()) {
+            case PRE -> {
+                La.getINSTANCE().print(String.format("Attack (%s)" ,eventAttack.getTypes()));
+
+                if (getBlockTimingModeValue().getValue().equalsIgnoreCase("BeforeAttack")) {
+                    if (shouldBlock) {
+                        La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
+                        doBlock();
+                    }
+                }
+            }
+
             case POST -> {
-                if (getTarget() != null) {
-                    if (getAttackTimer().hasTimeElapsed(cpsMs) && Objects.equals(getAttackMode().getValue(), "Post")) {
-                        doAttack();
-                        resetKillAuraTimer(true, false);
+                La.getINSTANCE().print(String.format("Attack (%s)" ,eventAttack.getTypes()));
+
+                if (getBlockTimingModeValue().getValue().equalsIgnoreCase("AfterAttack")) {
+                    if (shouldBlock) {
+                        La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
+                        doBlock();
                     }
                 }
             }
@@ -176,8 +218,24 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void doAttack() {
-        Minecraft.getMinecraft().thePlayer.swingItem();
+        if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            mc.thePlayer.swingItem();
+            attackPacket();
+        } else {
+            attackPacket();
+            mc.thePlayer.swingItem();
+        }
+    }
+
+    private void attackPacket() {
+//        Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
+
         getPacketUtility().sendPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
+
+//        if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR)
+//        {
+//            Minecraft.getMinecraft().thePlayer.attackTargetEntityWithCurrentItem(getTarget());
+//        }
     }
 
     private void doBlock(){
@@ -185,37 +243,33 @@ public class KillAura extends Module implements IMinecraft {
 
         switch (getBlockModeValue().getValue()) {
             case "Watchdog" -> {
-                mc.thePlayer.itemInUseCount = 114514;
+                mc.thePlayer.itemInUseCount = 1;
                 if (mc.isSingleplayer()) return;
                 mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
-                PacketWrapper useItemOff = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
-                useItemOff.write(Type.VAR_INT, 1);
-
+//                PacketWrapper useItemOff = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
+//                useItemOff.write(Type.VAR_INT, 1);
             }
-            case "Key" -> {
-                mc.gameSettings.keyBindUseItem.pressed = true;
-            }
+            case "Key" -> mc.gameSettings.keyBindUseItem.pressed = true;
+            case "Visual" ->  mc.thePlayer.itemInUseCount = 1;
         }
     }
 
     private void doUnblock(){
+
         setBlocking(false);
         switch (getBlockModeValue().getValue()) {
             case "Watchdog" -> {
                 mc.thePlayer.itemInUseCount = 0;
                 mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             }
-            case "Key" -> {
-                mc.gameSettings.keyBindUseItem.pressed = false;
-            }
+            case "Key" -> mc.gameSettings.keyBindUseItem.pressed = false;
+            case "Visual" ->  mc.thePlayer.itemInUseCount = 0;
         }
-        mc.thePlayer.itemInUseCount = 0;
     }
 
     private void cleanTargets() {
         setTarget(null);
         getTargets().clear();
-        setBlockingTarget(null);
     }
 
     private void resetKillAuraTimer(boolean attack, boolean switchTi) {
@@ -227,22 +281,19 @@ public class KillAura extends Module implements IMinecraft {
 
         for (Entity entity : mc.theWorld.getLoadedEntityList()) {
             if (entity instanceof EntityLivingBase livingBase) {
-                if (!valid(livingBase, false)) continue;
+                if (!valid(livingBase)) continue;
                 getTargets().add(livingBase);
                 break;
             }
         }
-
-
-        if (!getTargets().isEmpty()) blockingTarget = getTargets().get(0);
     }
 
-    private boolean valid(EntityLivingBase entity, boolean block) {
+    private boolean valid(EntityLivingBase entity) {
         if (!mc.thePlayer.isEntityAlive()
                 || mc.thePlayer.isPlayerSleeping()
                 || mc.thePlayer.isDead
                 || mc.thePlayer.getHealth() <= 0
-                || mc.thePlayer.getDistanceToEntity(entity) > (block ? blockRange.getValue() : range.getValue().floatValue())
+                || mc.thePlayer.getDistanceToEntity(entity) > ((double) range.getValue().floatValue())
                 || !entity.isEntityAlive()
                 || entity.isDead
                 || entity.getHealth() <= 0

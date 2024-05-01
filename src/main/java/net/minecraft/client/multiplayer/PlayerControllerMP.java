@@ -39,7 +39,7 @@ public class PlayerControllerMP
     private float stepSoundTickCounter;
     private int blockHitDelay;
     private boolean isHittingBlock;
-    private WorldSettings.GameType currentGameType = WorldSettings.GameType.SURVIVAL;
+    public WorldSettings.GameType currentGameType = WorldSettings.GameType.SURVIVAL;
     private int currentPlayerItem;
 
     public PlayerControllerMP(Minecraft mcIn, NetHandlerPlayClient netHandler)
@@ -326,7 +326,7 @@ public class PlayerControllerMP
         return pos.equals(this.currentBlock) && flag;
     }
 
-    private void syncCurrentPlayItem()
+    public void syncCurrentPlayItem()
     {
         int i = this.mc.thePlayer.inventory.currentItem;
 
