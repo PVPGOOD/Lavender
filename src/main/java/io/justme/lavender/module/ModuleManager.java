@@ -4,10 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
-import io.justme.lavender.module.impl.movements.SafeWalk;
-import io.justme.lavender.module.impl.movements.Scaffold;
-import io.justme.lavender.module.impl.movements.Sprint;
-import io.justme.lavender.module.impl.movements.iII1IiiII1IIii1i;
+import io.justme.lavender.module.impl.movements.*;
 import io.justme.lavender.module.impl.player.ChestStealer;
 import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
@@ -36,6 +33,7 @@ public class ModuleManager extends Manager<Module> {
     private final Sprint sprint = new Sprint();
     private final iII1IiiII1IIii1i noslow = new iII1IiiII1IIii1i();
     private final SafeWalk safeWalk = new SafeWalk();
+    private final KeepSprint keepSprint = new KeepSprint();
     //player
     private final ChestStealer stealer = new ChestStealer();
 
@@ -53,6 +51,7 @@ public class ModuleManager extends Manager<Module> {
                 getSprint(),
                 getScaffold(),
                 getSafeWalk(),
+                getKeepSprint(),
                 //player
                 getStealer()
         ));

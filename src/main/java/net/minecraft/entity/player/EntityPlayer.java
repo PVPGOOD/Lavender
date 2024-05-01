@@ -3,6 +3,8 @@ package net.minecraft.entity.player;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
+import io.justme.lavender.La;
+import io.justme.lavender.module.impl.movements.KeepSprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -1152,12 +1154,17 @@ public abstract class EntityPlayer extends EntityLivingBase
 
                     if (flag2)
                     {
+
                         if (i > 0)
                         {
+
                             targetEntity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F));
-                            this.motionX *= 0.6D;
-                            this.motionZ *= 0.6D;
-                            this.setSprinting(false);
+                            KeepSprint keepSprint = (KeepSprint) La.getINSTANCE().getModuleManager().getModuleByName("KeepSprint");
+                            if (!keepSprint.isToggle()) {
+                                this.motionX *= 0.6D;
+                                this.motionZ *= 0.6D;
+                                this.setSprinting(false);
+                            }
                         }
 
                         if (targetEntity instanceof EntityPlayerMP && targetEntity.velocityChanged)
