@@ -1,5 +1,10 @@
 package io.justme.lavender.module.impl.fight;
 
+import com.viaversion.viarewind.protocol.protocol1_8to1_9.Protocol1_8To1_9;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.type.Type;
+import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
@@ -25,6 +30,11 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C02PacketUseEntity;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -91,7 +101,21 @@ public class KillAura extends Module implements IMinecraft {
 
         cleanTargets();
         resetKillAuraTimer(true, true);
-        setIndex(0);;
+        setIndex(0);
+    }
+
+    @EventTarget
+    public void onTick(EventTick eventTick) {
+
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+
+        if (getBlockingTarget() != null) {
+            if (isEntityInBlockRange()) {
+                doBlock();
+            } else {
+                if (isBlocking()) doUnblock();
+            }
+        } else doUnblock();
     }
 
     @EventTarget
@@ -100,29 +124,33 @@ public class KillAura extends Module implements IMinecraft {
                 1000 / getCps().getValue() + MathUtility.getRandomDouble(5,10),
                 1000 / getCps().getValue() - MathUtility.getRandomDouble(3,5));
 
+        cleanTargets();
+
+        getTargetsInWorld();
+
+        if (getSwitchTimer().hasTimeElapsed(getSwitchDelay().getValue().intValue() * 100L) && getTargets().size() > 1) {
+            resetKillAuraTimer(false, true);
+            ++index;
+        }
+
+        if (getIndex() >= getTargets().size()) {
+            setIndex(0);
+        }
+
+        if (!getTargets().isEmpty()) {
+            setTarget(getTargets().get(getAttackMode().getValue().equalsIgnoreCase("Switch") ? getIndex() : 0));
+        }
+
+
         switch (event.getType()) {
             case PRE -> {
-                cleanTargets();
-                getTargetsInWorld();
-
-                if (getSwitchTimer().hasTimeElapsed(getSwitchDelay().getValue().intValue() * 100L) && getTargets().size() > 1) {
-                    resetKillAuraTimer(false, true);
-                    ++index;
-                }
-
-                if (getIndex() >= getTargets().size()) {
-                    setIndex(0);
-                }
-
-                if (!getTargets().isEmpty()) {
-                    setTarget(getTargets().get(getAttackMode().getValue().equalsIgnoreCase("Switch") ? getIndex() : 0));
-                }
 
                 if (getTarget() != null) {
                     setAttacking(!getTargets().isEmpty());
 
                     setEntityInBlockRange(getAutoBlock().getValue() && PlayerUtility.isHoldingSword() &&
                             getBlockingTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue());
+
 
 
                     event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
@@ -135,15 +163,10 @@ public class KillAura extends Module implements IMinecraft {
 
                 }
 
-                if (getBlockingTarget() != null) {
-                    if (isEntityInBlockRange()) {
-                        if (isAttacking()) doBlock();
-                    }
-                }
             }
             case POST -> {
                 if (getTarget() != null) {
-                    if (getAttackTimer().hasTimeElapsed(cpsMs) && Objects.equals(getAttackMode().getValue(), "Post") && !mc.gameSettings.keyBindUseItem.pressed) {
+                    if (getAttackTimer().hasTimeElapsed(cpsMs) && Objects.equals(getAttackMode().getValue(), "Post")) {
                         doAttack();
                         resetKillAuraTimer(true, false);
                     }
@@ -160,11 +183,17 @@ public class KillAura extends Module implements IMinecraft {
     private void doBlock(){
         setBlocking(true);
 
-        switch (getBlockModeValue() .getValue()) {
-            case "Watchdog": {
+        switch (getBlockModeValue().getValue()) {
+            case "Watchdog" -> {
+                mc.thePlayer.itemInUseCount = 114514;
+                if (mc.isSingleplayer()) return;
+                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
+                PacketWrapper useItemOff = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
+                useItemOff.write(Type.VAR_INT, 1);
+                com.viaversion.viarewind.utils.PacketUtil.sendToServer(useItemOff, Protocol1_8To1_9.class, true, true);
 
             }
-            case "Key": {
+            case "Key" -> {
                 mc.gameSettings.keyBindUseItem.pressed = true;
             }
 
@@ -174,13 +203,15 @@ public class KillAura extends Module implements IMinecraft {
     private void doUnblock(){
         setBlocking(false);
         switch (getBlockModeValue().getValue()) {
-            case "Watchdog": {
-
+            case "Watchdog" -> {
+                mc.thePlayer.itemInUseCount = 0;
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
             }
-            case "Key": {
+            case "Key" -> {
                 mc.gameSettings.keyBindUseItem.pressed = false;
             }
         }
+        mc.thePlayer.itemInUseCount = 0;
     }
 
     private void cleanTargets() {
@@ -194,21 +225,26 @@ public class KillAura extends Module implements IMinecraft {
         if (switchTi) getSwitchTimer().reset();
     }
 
-    private void getTargetsInWorld() {
+    public void getTargetsInWorld() {
+
         for (Entity entity : mc.theWorld.getLoadedEntityList()) {
             if (entity instanceof EntityLivingBase livingBase) {
-                if (!valid(livingBase)) continue;
+                if (!valid(livingBase, false)) continue;
                 getTargets().add(livingBase);
+                break;
             }
         }
+
+
+        if (!getTargets().isEmpty()) blockingTarget = getTargets().get(0);
     }
 
-    private boolean valid(EntityLivingBase entity) {
+    private boolean valid(EntityLivingBase entity, boolean block) {
         if (!mc.thePlayer.isEntityAlive()
                 || mc.thePlayer.isPlayerSleeping()
                 || mc.thePlayer.isDead
                 || mc.thePlayer.getHealth() <= 0
-                || mc.thePlayer.getDistanceToEntity(entity) > range.getValue().floatValue()
+                || mc.thePlayer.getDistanceToEntity(entity) > (block ? blockRange.getValue() : range.getValue().floatValue())
                 || !entity.isEntityAlive()
                 || entity.isDead
                 || entity.getHealth() <= 0

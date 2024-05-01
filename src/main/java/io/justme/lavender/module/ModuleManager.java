@@ -6,6 +6,7 @@ import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.movements.SafeWalk;
 import io.justme.lavender.module.impl.movements.Scaffold;
 import io.justme.lavender.module.impl.movements.Sprint;
+import io.justme.lavender.module.impl.movements.iII1IiiII1IIii1i;
 import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -30,6 +31,7 @@ public class ModuleManager extends Manager<Module> {
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
+    private final iII1IiiII1IIii1i noslow = new iII1IiiII1IIii1i();
     private final SafeWalk safeWalk = new SafeWalk();
 
     public void onInitialization(){
@@ -41,6 +43,7 @@ public class ModuleManager extends Manager<Module> {
                 getHud(),
                 getBlockStyle(),
                 //movements
+                getNoslow(),
                 getSprint(),
                 getScaffold(),
                 getSafeWalk()
