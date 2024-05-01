@@ -150,6 +150,41 @@
         </dependency>
         <!-- 本地 lwjgl natives end -->
 
+        <!-- ViaVersion -->
+        <dependency>
+            <groupId>com.viaversion</groupId>
+            <artifactId>Viaversion</artifactId>
+            <version>4.9.3-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/viaversion/viaversion-4.9.3-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.viaversion</groupId>
+            <artifactId>ViaBackWards</artifactId>
+            <version>common-4.9.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/viaversion/viabackwards-common-4.9.2-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.viaversion</groupId>
+            <artifactId>ViaRewind</artifactId>
+            <version>3.0.6-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/viaversion/viarewind-common-3.0.6-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.viaversion</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libraries/viaversion/snakeyaml-2.2.jar</systemPath>
+        </dependency>
+        <!-- end -->
+        <!-- ViaVersion end-->
+
         <!-- asm -->
         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
         <dependency>

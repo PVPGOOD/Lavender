@@ -1,5 +1,7 @@
 package io.justme.lavender;
 
+import de.florianmichael.viamcp.ViaMCP;
+import de.florianmichael.viamcp.gui.AsyncVersionSlider;
 import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.ModuleManager;
@@ -28,6 +30,10 @@ public class La {
     private ModuleManager moduleManager;
     private ElementsManager elementsManager;
 
+    //via
+    private ViaMCP viaMCP;
+    private AsyncVersionSlider asyncVersionSlider;
+
     private ConfigsManager configsManager;
 
     public void initialization() {
@@ -36,6 +42,9 @@ public class La {
         moduleManager = new ModuleManager();
         moduleManager.onInitialization();
         elementsManager = new ElementsManager();
+
+        viaMCP = new ViaMCP();
+        asyncVersionSlider = new AsyncVersionSlider(1337, 20, 5, 110,20);
 
         configsManager = new ConfigsManager();
         configsManager.load();
