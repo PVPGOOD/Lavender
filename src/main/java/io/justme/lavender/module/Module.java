@@ -1,6 +1,7 @@
 package io.justme.lavender.module;
 
 import io.justme.lavender.La;
+import io.justme.lavender.utility.interfaces.IMinecraft;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.*;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  **/
 @Getter
 @Setter
-public class Module  {
+public class Module implements IMinecraft {
 
     public String name;
     public String description;
