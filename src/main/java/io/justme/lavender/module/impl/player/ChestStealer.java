@@ -41,7 +41,7 @@ public class ChestStealer extends Module {
     }
 
     @EventTarget
-    void onUpdate(EventUpdate event) {
+    public void onUpdate(EventUpdate event) {
         if (Minecraft.getMinecraft().thePlayer.openContainer instanceof ContainerChest container) {
 
             val name = container.getLowerChestInventory().getDisplayName().getFormattedText();
