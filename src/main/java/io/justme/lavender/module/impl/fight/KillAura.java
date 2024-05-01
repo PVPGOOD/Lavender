@@ -109,13 +109,6 @@ public class KillAura extends Module implements IMinecraft {
 
         if (mc.theWorld == null || mc.thePlayer == null) return;
 
-        if (getBlockingTarget() != null) {
-            if (isEntityInBlockRange()) {
-                doBlock();
-            } else {
-                if (isBlocking()) doUnblock();
-            }
-        } else doUnblock();
     }
 
     @EventTarget
@@ -156,6 +149,14 @@ public class KillAura extends Module implements IMinecraft {
                     event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
                     event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
 
+                    if (getBlockingTarget() != null) {
+                        if (isEntityInBlockRange()) {
+                            doBlock();
+                        } else {
+                            if (isBlocking()) doUnblock();
+                        }
+                    } else doUnblock();
+
                     if (getAttackTimer().hasTimeElapsed(cpsMs) && Objects.equals(getAttackTimingModeValue().getValue(), "Pre")) {
                         doAttack();
                         resetKillAuraTimer(true, false);
@@ -176,8 +177,8 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void doAttack() {
-        Minecraft.getMinecraft().thePlayer.swingItem();
         getPacketUtility().sendPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
+        Minecraft.getMinecraft().thePlayer.swingItem();
     }
 
     private void doBlock(){
@@ -190,8 +191,6 @@ public class KillAura extends Module implements IMinecraft {
                 mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
                 PacketWrapper useItemOff = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
                 useItemOff.write(Type.VAR_INT, 1);
-                com.viaversion.viarewind.utils.PacketUtil.sendToServer(useItemOff, Protocol1_8To1_9.class, true, true);
-
             }
             case "Key" -> {
                 mc.gameSettings.keyBindUseItem.pressed = true;
