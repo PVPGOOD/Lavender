@@ -58,6 +58,7 @@ public class GuiChat extends GuiScreen
     {
         for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements()) {
             elements.reset();
+            elements.setDragging(false);
         }
 
         Keyboard.enableRepeatEvents(false);
