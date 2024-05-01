@@ -21,8 +21,8 @@ import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 
-@ModuleInfo(name = "NoSlow", description = "", category = Category.MOVEMENTS)
-public class iII1IiiII1IIii1i extends Module {
+@ModuleInfo(name = "NoSlowDown", description = "", category = Category.MOVEMENTS)
+public class NoSlowDown extends Module {
 
     private final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog", "Normal"}, "Normal");
 
