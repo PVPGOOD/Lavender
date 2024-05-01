@@ -3,6 +3,7 @@ package io.justme.lavender.module;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.module.impl.fight.KillAura;
+import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.SafeWalk;
 import io.justme.lavender.module.impl.movements.Scaffold;
 import io.justme.lavender.module.impl.movements.Sprint;
@@ -25,6 +26,7 @@ public class ModuleManager extends Manager<Module> {
 
     //fight
     private final KillAura killAura = new KillAura();
+    private final Velocity velocity = new Velocity();
     //visual
     private final HUD hud = new HUD();
     private BlockStyle blockStyle = new BlockStyle();
@@ -39,6 +41,7 @@ public class ModuleManager extends Manager<Module> {
         getElements().addAll(Arrays.asList(
                 //fight
                 getKillAura(),
+                getVelocity(),
                 //visual
                 getHud(),
                 getBlockStyle(),
