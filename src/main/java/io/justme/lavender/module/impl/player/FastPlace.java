@@ -43,7 +43,7 @@ public class FastPlace extends Module {
 
     private TimerUtility timerUtility = new TimerUtility();
     @EventTarget
-    private void onUpdate(EventUpdate eventUpdate) {
+    public void onUpdate(EventUpdate eventUpdate) {
 
         switch (getClickEnumModeValue().getValue()) {
             case "Normal" -> Minecraft.getMinecraft().setRightClickDelayTimer(0);
