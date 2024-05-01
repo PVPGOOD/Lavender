@@ -29,6 +29,16 @@ public class ChestStealer extends Module {
 
     private final TimerUtility timerUtility = new TimerUtility();
 
+    @Override
+    public void onEnable() {
+        super.onEnable();
+    }
+
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
 
     @EventTarget
     void onUpdate(EventUpdate event) {

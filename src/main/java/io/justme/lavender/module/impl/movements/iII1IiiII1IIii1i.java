@@ -12,6 +12,17 @@ public class iII1IiiII1IIii1i extends Module {
 
     private final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog", "Normal"}, "Normal");
 
+    @Override
+    public void onEnable() {
+        super.onEnable();
+    }
+
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
+
     @EventTarget
     public void onSlowDown(EventSlowDown event) {
         switch (mode.getValue()) {

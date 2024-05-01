@@ -27,4 +27,15 @@ public class BlockStyle extends Module {
             posZ = new NumberValue("Z", 0, -1, 1.0, 1),
             swingSpeed = new NumberValue("SwingSpeed", 1.0, 0.1, 1.0, 0.1),
             scale = new NumberValue("scale", 1, 0.1, 1.0, 1.0);
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+    }
+
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
 }

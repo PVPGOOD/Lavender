@@ -18,6 +18,11 @@ public class Sprint extends Module {
             all = new BoolValue("all",false);
 
     @Override
+    public void onEnable() {
+        super.onEnable();
+    }
+
+    @Override
     public void onDisable() {
         if (Minecraft.getMinecraft().thePlayer != null) Minecraft.getMinecraft().thePlayer.setSprinting(false);
         super.onDisable();

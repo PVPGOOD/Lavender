@@ -13,4 +13,15 @@ import io.justme.lavender.module.ModuleInfo;
 
 @ModuleInfo(name = "KeepSprint", description = " ", category = Category.MOVEMENTS)
 public class KeepSprint extends Module {
+
+    @Override
+    public void onEnable() {
+        super.onEnable();
+    }
+
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+    }
 }

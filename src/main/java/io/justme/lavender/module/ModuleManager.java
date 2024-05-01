@@ -28,7 +28,7 @@ public class ModuleManager extends Manager<Module> {
     private final Velocity velocity = new Velocity();
     //visual
     private final HUD hud = new HUD();
-    private BlockStyle blockStyle = new BlockStyle();
+    private final BlockStyle blockStyle = new BlockStyle();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
