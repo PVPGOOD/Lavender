@@ -16,6 +16,8 @@ import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -172,7 +174,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private final Proxy proxy;
     private ISaveFormat saveLoader;
     private static int debugFPS;
-    private int rightClickDelayTimer;
+    @Setter
+    @Getter
+    public int rightClickDelayTimer;
     private String serverName;
     private int serverPort;
     public boolean inGameHasFocus;

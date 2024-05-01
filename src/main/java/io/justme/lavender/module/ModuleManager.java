@@ -6,6 +6,7 @@ import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
 import io.justme.lavender.module.impl.player.ChestStealer;
+import io.justme.lavender.module.impl.player.FastPlace;
 import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -36,6 +37,7 @@ public class ModuleManager extends Manager<Module> {
     private final KeepSprint keepSprint = new KeepSprint();
     //player
     private final ChestStealer stealer = new ChestStealer();
+    private final FastPlace fastPlace = new FastPlace();
 
     public void onInitialization(){
 
@@ -53,7 +55,8 @@ public class ModuleManager extends Manager<Module> {
                 getSafeWalk(),
                 getKeepSprint(),
                 //player
-                getStealer()
+                getStealer(),
+                getFastPlace()
         ));
 
         getElements().forEach(Module::reflectValues);
