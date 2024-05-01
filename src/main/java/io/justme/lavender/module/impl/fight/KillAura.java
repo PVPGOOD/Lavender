@@ -1,6 +1,5 @@
 package io.justme.lavender.module.impl.fight;
 
-import com.viaversion.viarewind.protocol.protocol1_8to1_9.Protocol1_8To1_9;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Type;
@@ -177,8 +176,8 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void doAttack() {
-        getPacketUtility().sendPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
         Minecraft.getMinecraft().thePlayer.swingItem();
+        getPacketUtility().sendPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
     }
 
     private void doBlock(){
@@ -191,11 +190,11 @@ public class KillAura extends Module implements IMinecraft {
                 mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
                 PacketWrapper useItemOff = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
                 useItemOff.write(Type.VAR_INT, 1);
+
             }
             case "Key" -> {
                 mc.gameSettings.keyBindUseItem.pressed = true;
             }
-
         }
     }
 
