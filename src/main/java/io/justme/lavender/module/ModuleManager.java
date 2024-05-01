@@ -35,6 +35,7 @@ public class ModuleManager extends Manager<Module> {
     private final iII1IiiII1IIii1i noslow = new iII1IiiII1IIii1i();
     private final SafeWalk safeWalk = new SafeWalk();
     private final KeepSprint keepSprint = new KeepSprint();
+    private final Speed speed = new Speed();
     //player
     private final ChestStealer stealer = new ChestStealer();
     private final FastPlace fastPlace = new FastPlace();
@@ -54,6 +55,7 @@ public class ModuleManager extends Manager<Module> {
                 getScaffold(),
                 getSafeWalk(),
                 getKeepSprint(),
+                getSpeed(),
                 //player
                 getStealer(),
                 getFastPlace()
