@@ -2,6 +2,7 @@ package net.minecraft.client.entity;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
+import io.justme.lavender.events.player.EventMove;
 import io.justme.lavender.events.player.EventSlowDown;
 import io.justme.lavender.events.player.EventUpdate;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
@@ -185,6 +186,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
             La.getINSTANCE().getEventManager().call(post);
 
         }
+    }
+
+    @Override
+    public void moveEntity(double x, double y, double z) {
+        final EventMove event = new EventMove(x, y, z);
+        La.getINSTANCE().getEventManager().call(event);
+        super.moveEntity(x, y, z);
     }
 
     public EntityItem dropOneItem(boolean dropAll)
