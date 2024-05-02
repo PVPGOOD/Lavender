@@ -160,10 +160,6 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 
                 if (eventPacket.isCancelled()) return;
 
-                if (serverPacket instanceof S00PacketKeepAlive keepAlive) {
-                    System.out.println(keepAlive.func_149134_c());
-                }
-
                 serverPacket.processPacket(this.packetListener);
             }
             catch (ThreadQuickExitException var4)
