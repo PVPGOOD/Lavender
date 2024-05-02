@@ -180,6 +180,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
         final EventPacket eventPacket = new EventPacket(packetIn, EnumEventType.OUTGOING);
         La.getINSTANCE().getEventManager().call(eventPacket);
 
+        if (eventPacket.isCancelled()) {
+            return;
+        }
+
         if (this.isChannelOpen())
         {
             this.flushOutboundQueue();

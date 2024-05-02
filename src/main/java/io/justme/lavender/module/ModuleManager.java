@@ -2,6 +2,7 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
+import io.justme.lavender.module.impl.exploit.Disabler;
 import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
@@ -39,6 +40,8 @@ public class ModuleManager extends Manager<Module> {
     //player
     private final ChestStealer stealer = new ChestStealer();
     private final FastPlace fastPlace = new FastPlace();
+    //exploit
+    private final Disabler disabler = new Disabler();
 
     public void onInitialization(){
 
@@ -58,7 +61,9 @@ public class ModuleManager extends Manager<Module> {
                 getSpeed(),
                 //player
                 getStealer(),
-                getFastPlace()
+                getFastPlace(),
+                //exploit
+                getDisabler()
         ));
 
         getElements().forEach(Module::reflectValues);
