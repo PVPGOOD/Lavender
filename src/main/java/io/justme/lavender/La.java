@@ -63,6 +63,12 @@ public class La {
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(str));
     }
 
+    public void print(String message,String suffix) {
+
+        String str = String.format(EnumChatFormatting.DARK_RED + "[%s]" + EnumChatFormatting.GRAY+ ":" + EnumChatFormatting.WHITE +" %s", suffix,message);
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(str));
+    }
+
     public static io.justme.lavender.La getINSTANCE() {
         return INSTANCE;
     }
