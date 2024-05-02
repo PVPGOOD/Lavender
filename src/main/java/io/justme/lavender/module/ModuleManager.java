@@ -8,6 +8,7 @@ import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
 import io.justme.lavender.module.impl.player.ChestStealer;
 import io.justme.lavender.module.impl.player.FastPlace;
+import io.justme.lavender.module.impl.player.NoFall;
 import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -40,6 +41,7 @@ public class ModuleManager extends Manager<Module> {
     //player
     private final ChestStealer stealer = new ChestStealer();
     private final FastPlace fastPlace = new FastPlace();
+    private final NoFall noFall = new NoFall();
     //exploit
     private final Disabler disabler = new Disabler();
 
