@@ -42,6 +42,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.crypto.SecretKey;
 
 import net.lenni0451.asmevents.event.enums.EnumEventType;
+import net.minecraft.network.play.client.C00PacketKeepAlive;
+import net.minecraft.network.play.server.S00PacketKeepAlive;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.CryptManager;
@@ -145,20 +147,24 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
         this.closeChannel(chatcomponenttranslation);
     }
 
-    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception
+    protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet serverPacket) throws Exception
     {
         if (this.channel.isOpen())
         {
             try
             {
 
-                final EventPacket eventPacket = new EventPacket(p_channelRead0_2_, EnumEventType.INCOMING);
+                final EventPacket eventPacket = new EventPacket(serverPacket, EnumEventType.INCOMING);
 
                 La.getINSTANCE().getEventManager().call(eventPacket);
 
                 if (eventPacket.isCancelled()) return;
 
-                p_channelRead0_2_.processPacket(this.packetListener);
+                if (serverPacket instanceof S00PacketKeepAlive keepAlive) {
+                    System.out.println(keepAlive.func_149134_c());
+                }
+
+                serverPacket.processPacket(this.packetListener);
             }
             catch (ThreadQuickExitException var4)
             {

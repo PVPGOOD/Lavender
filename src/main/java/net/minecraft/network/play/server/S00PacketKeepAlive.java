@@ -20,7 +20,7 @@ public class S00PacketKeepAlive implements Packet<INetHandlerPlayClient>
 
     public void processPacket(INetHandlerPlayClient handler)
     {
-        handler.handleKeepAlive(this);
+         handler.handleKeepAlive(this);
     }
 
     public void readPacketData(PacketBuffer buf) throws IOException
