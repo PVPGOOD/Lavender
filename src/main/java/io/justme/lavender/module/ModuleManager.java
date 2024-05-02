@@ -2,7 +2,7 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
-import io.justme.lavender.module.impl.exploit.Disabler;
+import io.justme.lavender.module.impl.exploit.disabler.Disabler;
 import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
