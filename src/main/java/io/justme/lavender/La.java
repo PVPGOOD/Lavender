@@ -8,6 +8,7 @@ import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.ui.elements.ElementsManager;
+import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
@@ -41,6 +42,9 @@ public class La {
     private ViaMCP viaMCP;
     private AsyncVersionSlider asyncVersionSlider;
 
+    //screen
+    private ConfigScreen configScreen;
+
     private ConfigsManager configsManager;
 
     public void initialization() {
@@ -52,6 +56,8 @@ public class La {
 
         viaMCP = new ViaMCP();
         asyncVersionSlider = new AsyncVersionSlider(1337, 20, 5, 110,20);
+
+        configScreen = new ConfigScreen();
 
         configsManager = new ConfigsManager();
         configsManager.load();
@@ -81,6 +87,10 @@ public class La {
 
         if (event.getKeyCode() == Keyboard.KEY_L) {
             configsManager.load();
+        }
+
+        if (event.getKeyCode() == Keyboard.KEY_RSHIFT) {
+            Minecraft.getMinecraft().displayGuiScreen(configScreen);
         }
     }
 
