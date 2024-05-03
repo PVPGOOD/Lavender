@@ -62,7 +62,7 @@ public class ConfigScreen extends GuiScreen {
 
             switch (frame.getName()) {
                 case "ListFrame" -> {
-                    frame.setY(getY());
+                    frame.setY(getY() + 20);
                     frame.setHeight(100);
                 }
 

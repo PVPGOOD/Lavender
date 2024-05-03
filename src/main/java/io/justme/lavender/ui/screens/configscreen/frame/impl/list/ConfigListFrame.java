@@ -54,13 +54,13 @@ public class ConfigListFrame extends AbstractConfigFrame {
 
         //绘制组件
         OGLUtility.scissor(getX(),getY(),getWidth(),100, () -> {
-            float interval = 0;
+            float interval = 3;
             for (AbstractComponents components : getComponentsArrayList()) {
                 components.setX(getX());
                 components.setY(getY() + interval);
                 components.setWidth(getWidth());
                 components.setHeight(15);
-                interval += 25;
+                interval += 16;
 
                 setInterval(interval);
                 components.drawScreen(mouseX, mouseY, partialTicks);

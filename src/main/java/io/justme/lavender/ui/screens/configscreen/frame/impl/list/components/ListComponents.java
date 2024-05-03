@@ -1,5 +1,7 @@
 package io.justme.lavender.ui.screens.configscreen.frame.impl.list.components;
 
+import io.justme.lavender.La;
+import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.ComponentsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -31,13 +33,13 @@ public class ListComponents extends AbstractComponents {
 
     }
 
-    private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+    private final FontDrawer fontRenderer = La.getINSTANCE().getFontManager().getSFBold12();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         var hovering = MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY);
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,hovering ? 64 : 128));
 
-        getFontRenderer().drawString(getName(),((int) getX()),((int) getY()),-1);
+        getFontRenderer().drawString(getName(),((int) getX()) + 3,((int) getY()) + 2,-1);
     }
 
     @Override
