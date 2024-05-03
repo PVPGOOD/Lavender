@@ -57,6 +57,7 @@ public class Scaffold extends Module {
             sprintValue = new BoolValue("Sprint",false),
             swingValue = new BoolValue("Swing",false),
             eagleValue = new BoolValue("Eagle",false),
+            rayCast_Value = new BoolValue("ray cast",false),
             swing = new BoolValue("Swing",false);
 
     public ScaffoldUtility.BlockData blockData;
@@ -262,7 +263,7 @@ public class Scaffold extends Module {
     }
 
     private boolean canPlace() {
-        return raytrace();
+        return !getRayCast_Value().getValue() || raytrace();
     }
 
     private boolean raytrace() {
