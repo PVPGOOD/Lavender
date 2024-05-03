@@ -78,15 +78,4 @@ public class ModuleManager extends Manager<Module> {
     public Module getModuleByName(String name){
         return getElements().stream().filter(mod -> mod.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
-
-    @EventTarget
-    public void onKey(EventKey event) {
-        for (Module module : getElements()) {
-            if (module.key == event.getKeyCode()) module.setStatus(!module.isToggle());
-        }
-
-        if (event.getKeyCode() == Keyboard.KEY_L) {
-            La.getINSTANCE().getConfigsManager().load();
-        }
-    }
 }

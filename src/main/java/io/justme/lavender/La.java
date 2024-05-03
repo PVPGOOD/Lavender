@@ -3,15 +3,19 @@ package io.justme.lavender;
 import de.florianmichael.viamcp.ViaMCP;
 import de.florianmichael.viamcp.gui.AsyncVersionSlider;
 import io.justme.lavender.configs.ConfigsManager;
+import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.fonts.FontManager;
+import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.ui.elements.ElementsManager;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
+import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import org.lwjglx.input.Keyboard;
 
 /**
  * @author JustMe.
@@ -67,6 +71,17 @@ public class La {
 
         String str = String.format(EnumChatFormatting.DARK_RED + "[%s]" + EnumChatFormatting.GRAY+ ":" + EnumChatFormatting.WHITE +" %s", suffix,message);
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(str));
+    }
+
+    @EventTarget
+    public void onKey(EventKey event) {
+        for (Module module : moduleManager.getElements()) {
+            if (module.key == event.getKeyCode()) module.setStatus(!module.isToggle());
+        }
+
+        if (event.getKeyCode() == Keyboard.KEY_L) {
+            configsManager.load();
+        }
     }
 
     public static io.justme.lavender.La getINSTANCE() {
