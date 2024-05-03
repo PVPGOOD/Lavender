@@ -1,5 +1,6 @@
 package io.justme.lavender.ui.screens.configscreen;
 
+import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -35,8 +36,8 @@ public class ConfigScreen extends GuiScreen {
         setWidth(150);
         setHeight(250);
 
-        getAbstractConfigFrames().add(new ConfigListFrame());
-        getAbstractConfigFrames().add(new ConfigButtonFrame());
+        getAbstractConfigFrames().add(La.getINSTANCE().getConfigListFrame());
+        getAbstractConfigFrames().add(La.getINSTANCE().getConfigButtonFrame());
     }
 
     @Override

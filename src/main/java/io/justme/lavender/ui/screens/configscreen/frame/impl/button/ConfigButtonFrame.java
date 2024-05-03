@@ -27,10 +27,8 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
         super("ButtonFrame");
 
         //必须的组件
-        getComponentsArrayList().add(getLoadButton());
         getComponentsArrayList().add(getReloadButton());
         getComponentsArrayList().add(getRefreshButton());
-        getComponentsArrayList().add(getAddButton());
     }
 
     @Override
@@ -64,20 +62,20 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractComponents components : getComponentsArrayList()) {
             if (components.mouseClicked(mouseX, mouseY, mouseButton)) {
+
+                var configListFrame = La.getINSTANCE().getConfigListFrame();;
+
                 switch (components.getName()) {
-                    case "Load" -> {
-                        La.getINSTANCE().print("Load");
-                    }
 
                     case "Reload" -> {
+                        La.getINSTANCE().getConfigsManager().load();
                         La.getINSTANCE().print("Reload");
                     }
 
-                    case "Add" -> {
-                        La.getINSTANCE().print("Add");
-                    }
-
                     case "Refresh" -> {
+                        configListFrame.getComponentsArrayList().clear();
+                        configListFrame.FileReader();
+
                         La.getINSTANCE().print("Refresh");
                     }
                 }
@@ -100,16 +98,8 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
         }
     }
 
-    public CheckBoxComponents getLoadButton() {
-        return new CheckBoxComponents("Load");
-    }
-
     public CheckBoxComponents getReloadButton() {
         return new CheckBoxComponents("Reload");
-    }
-
-    public CheckBoxComponents getAddButton() {
-        return new CheckBoxComponents("Add");
     }
 
     public CheckBoxComponents getRefreshButton() {

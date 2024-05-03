@@ -19,15 +19,24 @@ import java.util.Arrays;
 @Setter
 public class ConfigsManager extends AbstractConfigs {
 
+    public String pageName;
+
     private final ArrayList<AbstractConfigs> configs = new ArrayList<>();
     private final SettingsConfigs settingsConfigs = new SettingsConfigs();
     private final ElementsConfigs elementsConfigs = new ElementsConfigs();
 
     public ConfigsManager(){
+        setPageName("def");
+
         getConfigs().addAll(Arrays.asList(
                 getSettingsConfigs(),
                 getElementsConfigs()
         ));
+    }
+
+    public void loadAnotherConfig(String pageName) {
+        setPageName(pageName);
+        load();
     }
 
     @Override
