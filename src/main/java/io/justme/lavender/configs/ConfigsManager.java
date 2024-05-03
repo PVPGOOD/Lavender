@@ -1,5 +1,6 @@
 package io.justme.lavender.configs;
 
+import io.justme.lavender.configs.impl.ElementsConfigs;
 import io.justme.lavender.configs.impl.SettingsConfigs;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,10 +21,12 @@ public class ConfigsManager extends AbstractConfigs {
 
     private final ArrayList<AbstractConfigs> configs = new ArrayList<>();
     private final SettingsConfigs settingsConfigs = new SettingsConfigs();
+    private final ElementsConfigs elementsConfigs = new ElementsConfigs();
 
     public ConfigsManager(){
         getConfigs().addAll(Arrays.asList(
-                settingsConfigs
+                getSettingsConfigs(),
+                getElementsConfigs()
         ));
     }
 
