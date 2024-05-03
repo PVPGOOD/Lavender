@@ -198,6 +198,8 @@ public class Scoreboard
 
     public void removeObjective(ScoreObjective p_96519_1_)
     {
+        if (p_96519_1_ == null) return;
+
         this.scoreObjectives.remove(p_96519_1_.getName());
 
         for (int i = 0; i < 19; ++i)
@@ -264,6 +266,8 @@ public class Scoreboard
 
     public void removeTeam(ScorePlayerTeam p_96511_1_)
     {
+        if (p_96511_1_ == null) return;
+
         this.teams.remove(p_96511_1_.getRegisteredName());
 
         for (String s : p_96511_1_.getMembershipCollection())
