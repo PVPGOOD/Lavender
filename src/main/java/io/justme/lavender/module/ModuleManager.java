@@ -1,12 +1,12 @@
 package io.justme.lavender.module;
 
 import io.justme.lavender.La;
-import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.module.impl.exploit.disabler.Disabler;
 import io.justme.lavender.module.impl.exploit.packetDebugger.PacketDebugger;
 import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
+import io.justme.lavender.module.impl.movements.speed.Speed;
 import io.justme.lavender.module.impl.player.ChestStealer;
 import io.justme.lavender.module.impl.player.FastPlace;
 import io.justme.lavender.module.impl.player.NoFall;
@@ -14,8 +14,6 @@ import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
-import net.lenni0451.asmevents.event.EventTarget;
-import org.lwjglx.input.Keyboard;
 
 import java.util.Arrays;
 
