@@ -19,10 +19,12 @@ import java.io.IOException;
 
 @Getter
 @Setter
-public class CheckBox extends AbstractComponents {
+public class CheckBoxComponents extends AbstractComponents {
 
-    public CheckBox(ComponentsEnum name) {
+    public CheckBoxComponents(String name) {
         super(name);
+
+        setType(ComponentsEnum.CHECKBOX);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class CheckBox extends AbstractComponents {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,64));
-        getFontRenderer().drawStringWithShadow(getComponentsEnum().getName(),((int) getX()) + 5, (int) (getY() + (getHeight() / 2) - 4),-1);
+        getFontRenderer().drawStringWithShadow(getName(),((int) getX()) + 5, (int) (getY() + (getHeight() / 2) - 4),-1);
 
         setWidth(55);
         setHeight(20);

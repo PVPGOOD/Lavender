@@ -16,10 +16,11 @@ import java.io.IOException;
 public abstract class AbstractComponents {
 
     private float x,y,width,height;
-    private ComponentsEnum componentsEnum;
+    private String name;
+    private ComponentsEnum type;
 
-    public AbstractComponents(ComponentsEnum name) {
-        this.componentsEnum = name;
+    public AbstractComponents(String name) {
+        this.name = name;
     }
 
     public abstract void initGui();

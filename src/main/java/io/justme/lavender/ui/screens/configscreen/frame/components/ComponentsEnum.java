@@ -8,10 +8,10 @@ import lombok.Getter;
  **/
 @Getter
 public enum ComponentsEnum {
-    LOAD("Load"),
-    RELOAD("Reload"),
-    ADD("Add"),
-    REFRESH("Refresh");
+
+    //类别
+    CHECKBOX("CheckBox"),
+    List("List");
 
     private final String name;
 
