@@ -10,7 +10,11 @@ import net.minecraft.network.Packet;
 public class PacketUtility {
 
     public void sendPacket(Packet<?> packet) {
-        Minecraft.getMinecraft().getNetHandler().getNetworkManager().sendPacket(packet);
+        try {
+            Minecraft.getMinecraft().getNetHandler().getNetworkManager().sendPacket(packet);
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
 }
