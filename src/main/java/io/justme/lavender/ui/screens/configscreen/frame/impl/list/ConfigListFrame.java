@@ -4,8 +4,10 @@ import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.components.ListComponents;
 import io.justme.lavender.ui.screens.configscreen.AbstractConfigFrame;
+import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.math.TimerUtility;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -67,14 +69,29 @@ public class ConfigListFrame extends AbstractConfigFrame {
                 setHeight(getInterval());
             }
         });
+
+        //简单的计时器 懒得去想新的方法 凑合着用
+        if (isConfirmAction()) {
+            if (getTimerUtility().hasTimeElapsed(3000,true)) {
+                setConfirmAction(false);
+            }
+        }
     }
 
+    private final TimerUtility timerUtility = new TimerUtility();
+    private boolean ConfirmAction = false;
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractComponents components : getComponentsArrayList()) {
             if (components.mouseClicked(mouseX, mouseY, mouseButton)) {
-
-                La.getINSTANCE().getConfigsManager().loadAnotherConfig(components.getName());
+                if (!isConfirmAction()) {
+                    La.getINSTANCE().getNotificationsManager().push(String.format("请注意 你正在加载 [%s] 配置文件" , components.getName()),"当前操作会加载一个新的配置 请确保你已保存配置 请再次点击以去加载新的配置", NotificationsEnum.WARNING,5000);
+                    setConfirmAction(true);
+                } else {
+                    La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已加载",components.getName()), NotificationsEnum.SUCCESS,5000);
+                    La.getINSTANCE().getConfigsManager().loadAnotherConfig(components.getName());
+                    setConfirmAction(false);
+                }
             }
         }
     }

@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.impl.CheckBoxComponents;
 import io.justme.lavender.ui.screens.configscreen.AbstractConfigFrame;
+import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,14 +70,13 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
 
                     case "Reload" -> {
                         La.getINSTANCE().getConfigsManager().load();
-                        La.getINSTANCE().print("Reload");
+                        La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已重新加载",components.getName()), NotificationsEnum.SUCCESS,5000);
                     }
 
                     case "Refresh" -> {
                         configListFrame.getComponentsArrayList().clear();
                         configListFrame.FileReader();
-
-                        La.getINSTANCE().print("Refresh");
+                        La.getINSTANCE().getNotificationsManager().push("成功","当前配置列表已刷新", NotificationsEnum.SUCCESS,5000);
                     }
                 }
 
