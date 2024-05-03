@@ -1,6 +1,8 @@
 package io.justme.lavender.utility.gl;
 
 import lombok.experimental.UtilityClass;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
@@ -17,6 +19,16 @@ public class OGLUtility {
         GL11.glScalef(scale, scale, 1);
         GL11.glTranslatef(-x, -y, 0);
         runnable.run();
+        GL11.glPopMatrix();
+    }
+
+    public void scissor(float x, float y, float width, float height,Runnable runnable) {
+        var scaleFactor = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor((int) (x * scaleFactor), (int) (Minecraft.getMinecraft().displayHeight - (y + height) * scaleFactor), (int) (width * scaleFactor), (int) ((height + 14) * scaleFactor));
+        runnable.run();
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
     }
 
