@@ -6,6 +6,8 @@ import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.awt.*;
@@ -47,19 +49,27 @@ public class ConfigScreen extends GuiScreen {
         super.initGui();
     }
 
+    //画板
+    private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,128));
 
+        getFontRenderer().drawString("ConfigScreen",((int) getX()),((int) getY()),-1);
+
+        for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
+            frame.setX(getX());
+            frame.setY(getY());
+            frame.setWidth(getWidth());
+            frame.setHeight(getHeight());
+            frame.drawScreen(mouseX, mouseY, partialTicks);
+        }
+
         if (isDragging()){
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
-        }
-
-        for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
-            frame.drawScreen(mouseX, mouseY, partialTicks);
         }
     }
 
@@ -104,6 +114,12 @@ public class ConfigScreen extends GuiScreen {
             frame.keyTyped(typedChar, keyCode);
         }
 
+    }
+
+    @Override
+    public void onGuiClosed()
+    {
+        setDragging(false);
     }
 
     @Override
