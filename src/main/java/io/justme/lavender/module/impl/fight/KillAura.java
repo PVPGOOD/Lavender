@@ -79,7 +79,7 @@ public class KillAura extends Module implements IMinecraft {
 
     private final ModeValue blockTimingModeValue = new ModeValue("Block Timing", new String[]{"Post", "Pre","BeforeAttack","AfterAttack"}, "Pre");
 
-    private final ModeValue blockModeValue = new ModeValue("Block Mode", new String[]{"Watchdog", "Key","Visual"}, "Key");
+    private final ModeValue blockModeValue = new ModeValue("Block Mode", new String[]{"Watchdog", "BlocksMC","Key","Visual"}, "Key");
 
     private boolean attacking,blocking;
 
