@@ -141,7 +141,7 @@ public class Scaffold extends Module {
                         if (PlayerUtility.isOnGround(1.15) &&
                                 !PlayerUtility.moving() &&
                                 !PlayerUtility.isOnGround(-2) &&
-                                mc.gameSettings.keyBindJump.isPressed() &&
+                                mc.gameSettings.keyBindJump.pressed &&
                                 getTowerMoveValue().getValue()) {
 
                             setPosY(mc.thePlayer.posY);
@@ -149,10 +149,10 @@ public class Scaffold extends Module {
                         break;
 
                     case "OnlySpeed":
-                        if (La.getINSTANCE().getModuleManager().getModuleByName("Speed").isToggle() && !mc.gameSettings.keyBindJump.isPressed()){
+                        if (La.getINSTANCE().getModuleManager().getModuleByName("Speed").isToggle() && !mc.gameSettings.keyBindJump.pressed){
                             if (getPosY() > mc.thePlayer.posY || mc.thePlayer.fallDistance > 1.5) posY = mc.thePlayer.posY;
 
-                            if (PlayerUtility.isOnGround(1.15) && !PlayerUtility.moving() && !PlayerUtility.isOnGround(-2) && mc.gameSettings.keyBindJump.isPressed() && towerValue.getValue()) {
+                            if (PlayerUtility.isOnGround(1.15) && !PlayerUtility.moving() && !PlayerUtility.isOnGround(-2) && mc.gameSettings.keyBindJump.pressed && towerValue.getValue()) {
                                 setPosY(mc.thePlayer.posY);
                             }
                         } else {
@@ -162,7 +162,7 @@ public class Scaffold extends Module {
                 }
 
 
-                if (PlayerUtility.isOnGround(1.15) && !PlayerUtility.isOnGround(-2) && mc.gameSettings.keyBindJump.isPressed() && towerValue.getValue()) {
+                if (PlayerUtility.isOnGround(1.15) && !PlayerUtility.isOnGround(-2) && mc.gameSettings.keyBindJump.pressed && towerValue.getValue()) {
                     if (PlayerUtility.moving()) {
                         if (getTowerMoveValue().getValue() && getKeepYModeValue().getValue().equals("OnlySpeed") || getKeepYModeValue().getValue().equals("None")) {
 
