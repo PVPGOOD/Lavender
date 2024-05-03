@@ -1,5 +1,7 @@
 package io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.impl;
 
+import io.justme.lavender.La;
+import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.ComponentsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -32,11 +34,11 @@ public class CheckBoxComponents extends AbstractComponents {
 
     }
 
-    private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+    private final FontDrawer fontRenderer = La.getINSTANCE().getFontManager().getSFBold18();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,64));
-        getFontRenderer().drawStringWithShadow(getName(),((int) getX()) + 5, (int) (getY() + (getHeight() / 2) - 4),-1);
+        getFontRenderer().drawStringWithShadow(getName(),getX() + 5, getY() + (getHeight() / 2 - 4),-1);
 
         setWidth(55);
         setHeight(20);
