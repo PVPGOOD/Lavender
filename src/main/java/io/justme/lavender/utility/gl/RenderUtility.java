@@ -1,12 +1,13 @@
 package io.justme.lavender.utility.gl;
 
 import lombok.experimental.UtilityClass;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 /**
  * @author JustMe.
@@ -20,7 +21,11 @@ public class RenderUtility {
         rectangle(x, y,x + width,y + height, color);
     }
 
-    public void rectangle(float left, float top, float right, float bottom, int color)
+    public void drawRect(float x, float y, float width, float height, Color color) {
+        rectangle(x, y,x + width,y + height, color.getRGB());
+    }
+
+    private void rectangle(float left, float top, float right, float bottom, int color)
     {
         GL11.glPushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
