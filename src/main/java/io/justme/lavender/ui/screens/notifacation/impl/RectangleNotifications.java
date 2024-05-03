@@ -3,6 +3,7 @@ package io.justme.lavender.ui.screens.notifacation.impl;
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.notifacation.AbstractNotifications;
 import io.justme.lavender.utility.gl.RenderUtility;
+import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
@@ -21,8 +22,8 @@ public class RectangleNotifications extends AbstractNotifications {
 
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0));
 
-        var titleFontRenderer = La.getINSTANCE().getFontManager().getSFBold18();
-        var subTitleFontRenderer = La.getINSTANCE().getFontManager().getSFBold12();
+        var titleFontRenderer = Minecraft.getMinecraft().fontRendererObj;
+        var subTitleFontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
         Color color;
 
@@ -35,8 +36,8 @@ public class RectangleNotifications extends AbstractNotifications {
             default -> color = new Color(255,255,255);
         }
 
-        titleFontRenderer.drawString(getTitle(),getX() + 5,getY() + 5,color.getRGB());
-        subTitleFontRenderer.drawString(getSubTitle(),getX() + 34,getY() + 15,new Color(255,255,255,64).getRGB());
+        titleFontRenderer.drawString(getTitle(), (int) (getX() + 5), (int) (getY() + 5),color.getRGB());
+        subTitleFontRenderer.drawString(getSubTitle(), (int) (getX() + 34), (int) (getY() + 15),new Color(255,255,255,64).getRGB());
 
         setWidth(titleFontRenderer.getStringWidth(getTitle()) + subTitleFontRenderer.getStringWidth(getSubTitle()) + 50);
         setHeight(30);
