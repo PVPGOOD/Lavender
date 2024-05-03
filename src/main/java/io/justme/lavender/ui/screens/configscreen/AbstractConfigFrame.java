@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.configscreen.frame;
+package io.justme.lavender.ui.screens.configscreen;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +12,15 @@ import java.io.IOException;
 
 @Getter
 @Setter
-//集合画板的容器 (未来可能不只是 只有一个画板)
+//集合画板的容器
 public abstract class AbstractConfigFrame {
 
     private String name;
     private float x,y,width,height;
+
+    public AbstractConfigFrame(String name) {
+        this.name = name;
+    }
 
     public abstract void initGui();
     public abstract void drawScreen(int mouseX, int mouseY, float partialTicks);

@@ -1,5 +1,6 @@
-package io.justme.lavender.ui.screens.configscreen.frame.components;
+package io.justme.lavender.ui.screens.configscreen.frame.impl;
 
+import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.ComponentsEnum;
 import lombok.Getter;
 import lombok.Setter;
 

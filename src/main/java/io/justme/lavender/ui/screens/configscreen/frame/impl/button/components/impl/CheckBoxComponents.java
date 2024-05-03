@@ -1,7 +1,7 @@
-package io.justme.lavender.ui.screens.configscreen.frame.components.impl;
+package io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.impl;
 
-import io.justme.lavender.ui.screens.configscreen.frame.components.AbstractComponents;
-import io.justme.lavender.ui.screens.configscreen.frame.components.ComponentsEnum;
+import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
+import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.ComponentsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;

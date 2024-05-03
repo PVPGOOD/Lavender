@@ -1,7 +1,7 @@
 package io.justme.lavender.ui.screens.configscreen;
 
-import io.justme.lavender.ui.screens.configscreen.frame.AbstractConfigFrame;
-import io.justme.lavender.ui.screens.configscreen.frame.ConfigFrame;
+import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
+import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
@@ -35,7 +35,8 @@ public class ConfigScreen extends GuiScreen {
         setWidth(150);
         setHeight(250);
 
-        getAbstractConfigFrames().add(new ConfigFrame());
+        getAbstractConfigFrames().add(new ConfigListFrame());
+        getAbstractConfigFrames().add(new ConfigButtonFrame());
     }
 
     @Override
@@ -58,10 +59,22 @@ public class ConfigScreen extends GuiScreen {
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,128));
         
         for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
+
+            switch (frame.getName()) {
+                case "ListFrame" -> {
+                    frame.setY(getY());
+                    frame.setHeight(100);
+                }
+
+                case "ButtonFrame" -> {
+                    frame.setY(getY() + getHeight() - 50);
+                    frame.setHeight(50);
+                }
+            }
+
             frame.setX(getX());
-            frame.setY(getY());
             frame.setWidth(getWidth());
-            frame.setHeight(getHeight());
+
             frame.drawScreen(mouseX, mouseY, partialTicks);
         }
 

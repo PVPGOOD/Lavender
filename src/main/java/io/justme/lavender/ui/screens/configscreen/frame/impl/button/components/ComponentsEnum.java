@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.configscreen.frame.components;
+package io.justme.lavender.ui.screens.configscreen.frame.impl.button.components;
 
 import lombok.Getter;
 
