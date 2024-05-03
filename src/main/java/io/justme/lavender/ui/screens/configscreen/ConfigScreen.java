@@ -56,9 +56,7 @@ public class ConfigScreen extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,128));
-
-        getFontRenderer().drawString("ConfigScreen",((int) getX()),((int) getY()),-1);
-
+        
         for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
             frame.setX(getX());
             frame.setY(getY());

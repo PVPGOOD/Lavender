@@ -15,6 +15,7 @@ import java.io.IOException;
 //集合画板的容器 (未来可能不只是 只有一个画板)
 public abstract class AbstractConfigFrame {
 
+    private String name;
     private float x,y,width,height;
 
     public abstract void initGui();

@@ -16,9 +16,15 @@ import java.io.IOException;
 public abstract class AbstractComponents {
 
     private float x,y,width,height;
+    private ComponentsEnum componentsEnum;
+
+    public AbstractComponents(ComponentsEnum name) {
+        this.componentsEnum = name;
+    }
+
     public abstract void initGui();
     public abstract void drawScreen(int mouseX, int mouseY, float partialTicks);
-    public abstract void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException;
+    public abstract boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException;
     public abstract void mouseReleased(int mouseX, int mouseY, int state);
     public abstract void keyTyped(char typedChar, int keyCode) throws IOException;
 }
