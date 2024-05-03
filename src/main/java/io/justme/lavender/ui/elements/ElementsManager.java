@@ -1,6 +1,7 @@
 package io.justme.lavender.ui.elements;
 
 import io.justme.lavender.ui.elements.impl.ArrayList;
+import io.justme.lavender.ui.elements.impl.Notifications;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +21,13 @@ import java.util.stream.Collectors;
 public class ElementsManager extends Manager<AbstractElements> {
 
     private final ArrayList arrayList = new ArrayList();
+    private final Notifications notifications = new Notifications();
 
     public ElementsManager() {
 
         getElements().addAll(Arrays.asList(
-                getArrayList()
+                getArrayList(),
+                getNotifications()
         ));
     }
 

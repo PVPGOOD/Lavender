@@ -11,6 +11,7 @@ import io.justme.lavender.ui.elements.ElementsManager;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
+import io.justme.lavender.ui.screens.notifacation.NotificationsManager;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
@@ -49,6 +50,8 @@ public class La {
     private ConfigButtonFrame configButtonFrame;
     private ConfigScreen configScreen;
 
+    private NotificationsManager notificationsManager;
+
     private ConfigsManager configsManager;
 
     public void initialization() {
@@ -64,6 +67,8 @@ public class La {
         configListFrame = new ConfigListFrame();
         configButtonFrame = new ConfigButtonFrame();
         configScreen = new ConfigScreen();
+
+        notificationsManager = new NotificationsManager();
 
         configsManager = new ConfigsManager();
         configsManager.load();
