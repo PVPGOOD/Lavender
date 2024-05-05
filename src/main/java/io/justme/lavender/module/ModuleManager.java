@@ -7,6 +7,7 @@ import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
 import io.justme.lavender.module.impl.movements.speed.Speed;
+import io.justme.lavender.module.impl.player.AutoPot;
 import io.justme.lavender.module.impl.player.ChestStealer;
 import io.justme.lavender.module.impl.player.FastPlace;
 import io.justme.lavender.module.impl.player.NoFall;
@@ -41,6 +42,7 @@ public class ModuleManager extends Manager<Module> {
     private final ChestStealer stealer = new ChestStealer();
     private final FastPlace fastPlace = new FastPlace();
     private final NoFall noFall = new NoFall();
+    private final AutoPot autoPot = new AutoPot();
     //exploit
     private final Disabler disabler = new Disabler();
     private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -64,6 +66,7 @@ public class ModuleManager extends Manager<Module> {
                 //player
                 getStealer(),
                 getFastPlace(),
+                getAutoPot(),
                 //exploit
                 getDisabler(),
                 getPacketDebugger()
