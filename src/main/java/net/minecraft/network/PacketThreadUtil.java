@@ -3,6 +3,7 @@ package net.minecraft.network;
 import net.minecraft.network.play.server.S01PacketJoinGame;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.network.play.server.S32PacketConfirmTransaction;
 import net.minecraft.src.Config;
 import net.minecraft.util.IThreadListener;
 
@@ -10,23 +11,19 @@ public class PacketThreadUtil
 {
     public static int lastDimensionId = Integer.MIN_VALUE;
 
-    public static <T extends INetHandler> void checkThreadAndEnqueue(final Packet<T> p_180031_0_, final T p_180031_1_, IThreadListener p_180031_2_) throws ThreadQuickExitException
+    public static <T extends INetHandler> void checkThreadAndEnqueue(final Packet<T> clientBouncePacket, final T netHandler, IThreadListener listener) throws ThreadQuickExitException
     {
-        if (!p_180031_2_.isCallingFromMinecraftThread())
+        if (!listener.isCallingFromMinecraftThread())
         {
-            p_180031_2_.addScheduledTask(new Runnable()
-            {
-                public void run()
-                {
-                    PacketThreadUtil.clientPreProcessPacket(p_180031_0_);
-                    p_180031_0_.processPacket(p_180031_1_);
-                }
+            listener.addScheduledTask(() -> {
+                PacketThreadUtil.clientPreProcessPacket(clientBouncePacket);
+                clientBouncePacket.processPacket(netHandler);
             });
             throw ThreadQuickExitException.INSTANCE;
         }
         else
         {
-            clientPreProcessPacket(p_180031_0_);
+            clientPreProcessPacket(clientBouncePacket);
         }
     }
 
