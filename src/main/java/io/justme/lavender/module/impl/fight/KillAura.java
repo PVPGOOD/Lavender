@@ -1,9 +1,6 @@
 package io.justme.lavender.module.impl.fight;
 
-import com.viaversion.viaversion.api.Via;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Type;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
@@ -18,6 +15,7 @@ import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.network.PacketUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.utility.player.RotationUtility;
+import io.justme.lavender.utility.world.WorldUtility;
 import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.ModeValue;
 import io.justme.lavender.value.impl.MultiBoolValue;
@@ -41,7 +39,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.WorldSettings;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * @author JustMe.
@@ -60,7 +57,10 @@ public class KillAura extends Module implements IMinecraft {
     private int index;
 
     private final BoolValue
-            autoBlock = new BoolValue("AutoBlock",false);
+            autoBlock = new BoolValue("AutoBlock",false),
+            syncCurrentPlayItem = new BoolValue("SyncItem",false),
+            attackTargetEntityWithCurrentItem = new BoolValue("AttackTargetEntityWithCurrentItem",false),
+            ray_cast = new BoolValue("Ray cast",false);
 
     private final ModeValue
             attackMode = new ModeValue("Mode", new String[]{"Single", "Switch"}, "Switch");
@@ -150,7 +150,7 @@ public class KillAura extends Module implements IMinecraft {
             switch (event.getType()) {
                 case PRE -> {
 
-                    if (getAttackTimer().hasTimeElapsed(cpsMs)) {
+                    if (shouldAttack(cpsMs)) {
                         final var preAttack = new EventAttack(EnumEventType.PRE);
                         La.getINSTANCE().getEventManager().call(preAttack);
                         doAttack();
@@ -217,6 +217,15 @@ public class KillAura extends Module implements IMinecraft {
         }
     }
 
+    private boolean shouldAttack(double cpsMs) {
+        return getAttackTimer().hasTimeElapsed(cpsMs) && (!getRay_cast().getValue() || WorldUtility.ray_castEntity(getTarget(),
+                RotationUtility.getRotationToEntity(getTarget())[0],
+                RotationUtility.getRotationToEntity(getTarget())[1],
+                RotationUtility.getRotationToEntity(getTarget())[0],
+                RotationUtility.getRotationToEntity(getTarget())[1],
+                getRange().getValue()));
+    }
+
     private void doAttack() {
         if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             mc.thePlayer.swingItem();
@@ -228,14 +237,16 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void attackPacket() {
-//        Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
+        if (getSyncCurrentPlayItem().getValue()) {
+            Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
+        }
 
         getPacketUtility().sendPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
 
-//        if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR)
-//        {
-//            Minecraft.getMinecraft().thePlayer.attackTargetEntityWithCurrentItem(getTarget());
-//        }
+        if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR && getAttackTargetEntityWithCurrentItem().getValue())
+        {
+            Minecraft.getMinecraft().thePlayer.attackTargetEntityWithCurrentItem(getTarget());
+        }
     }
 
     private void doBlock(){
