@@ -7,10 +7,7 @@ import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
 import io.justme.lavender.module.impl.movements.speed.Speed;
-import io.justme.lavender.module.impl.player.AutoPot;
-import io.justme.lavender.module.impl.player.ChestStealer;
-import io.justme.lavender.module.impl.player.FastPlace;
-import io.justme.lavender.module.impl.player.NoFall;
+import io.justme.lavender.module.impl.player.*;
 import io.justme.lavender.module.impl.visual.BlockStyle;
 import io.justme.lavender.module.impl.visual.HUD;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -43,6 +40,7 @@ public class ModuleManager extends Manager<Module> {
     private final FastPlace fastPlace = new FastPlace();
     private final NoFall noFall = new NoFall();
     private final AutoPot autoPot = new AutoPot();
+    private final InventoryCleaner inventoryCleaner = new InventoryCleaner();
     //exploit
     private final Disabler disabler = new Disabler();
     private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -67,6 +65,7 @@ public class ModuleManager extends Manager<Module> {
                 getStealer(),
                 getFastPlace(),
                 getAutoPot(),
+                getInventoryCleaner(),
                 //exploit
                 getDisabler(),
                 getPacketDebugger()
