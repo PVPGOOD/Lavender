@@ -1,4 +1,4 @@
-package io.justme.lavender.module.impl.movements.speed.impl;
+package io.justme.lavender.module.impl.movements.speed.impl.watchdog;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.network.EventPacket;

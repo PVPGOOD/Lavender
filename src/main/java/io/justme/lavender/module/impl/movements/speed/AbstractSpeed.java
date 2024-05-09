@@ -7,7 +7,7 @@ import io.justme.lavender.events.player.EventStrafe;
 import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.impl.exploit.disabler.process.PacketProcessor;
 import io.justme.lavender.module.impl.movements.speed.impl.NCPHopSpeed;
-import io.justme.lavender.module.impl.movements.speed.impl.WatchdogSpeed;
+import io.justme.lavender.module.impl.movements.speed.impl.watchdog.WatchdogSpeed;
 import io.justme.lavender.utility.interfaces.IMinecraft;
 import io.justme.lavender.utility.network.PacketUtility;
 import lombok.Getter;
