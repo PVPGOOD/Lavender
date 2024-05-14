@@ -16,7 +16,7 @@ import net.minecraft.potion.Potion;
 @ModuleInfo(name = "Speed", description = "speed.", category = Category.MOVEMENTS)
 public class Speed extends Module {
 
-    public final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog","NCPHop"}, "Watchdog");
+    public final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog","NCPHop","WatchdogLowHop"}, "Watchdog");
 
     public final BoolValue fastStop = new BoolValue("Fast Stop", true);
 

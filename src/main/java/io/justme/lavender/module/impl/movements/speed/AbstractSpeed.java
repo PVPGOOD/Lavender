@@ -7,6 +7,7 @@ import io.justme.lavender.events.player.EventStrafe;
 import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.impl.exploit.disabler.process.PacketProcessor;
 import io.justme.lavender.module.impl.movements.speed.impl.NCPHopSpeed;
+import io.justme.lavender.module.impl.movements.speed.impl.watchdog.WatchdogLowHopSpeed;
 import io.justme.lavender.module.impl.movements.speed.impl.watchdog.WatchdogSpeed;
 import io.justme.lavender.utility.interfaces.IMinecraft;
 import io.justme.lavender.utility.network.PacketUtility;
@@ -34,6 +35,7 @@ public abstract class AbstractSpeed implements IMinecraft {
     public static void onInitialization() {
         speeds.put(WatchdogSpeed.class, new WatchdogSpeed());
         speeds.put(NCPHopSpeed.class, new NCPHopSpeed());
+        speeds.put(WatchdogLowHopSpeed.class,new WatchdogLowHopSpeed());
     }
 
     public static AbstractSpeed find(String name) {

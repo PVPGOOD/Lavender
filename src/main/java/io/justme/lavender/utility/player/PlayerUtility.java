@@ -18,6 +18,10 @@ public class PlayerUtility  {
         return mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f;
     }
 
+    public void jump() {
+        Minecraft.getMinecraft().thePlayer.jump();
+    }
+
     public double baseSpeed() {
         var baseSpeed = 0.2873;
         if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
