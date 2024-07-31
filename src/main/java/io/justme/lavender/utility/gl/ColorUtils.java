@@ -1,6 +1,9 @@
 package io.justme.lavender.utility.gl;
 
+import io.justme.lavender.utility.math.MathUtility;
 import lombok.experimental.UtilityClass;
+
+import java.awt.*;
 
 @UtilityClass
 public final class ColorUtils {
@@ -54,5 +57,20 @@ public final class ColorUtils {
 
     public int getAlpha(int rgb) {
         return (rgb >> 24) & 0xff;
+    }
+
+    public static int interpolateColor(int color1, int color2, float amount) {
+        amount = Math.min(1, Math.max(0, amount));
+        Color cColor1 = new Color(color1);
+        Color cColor2 = new Color(color2);
+        return interpolateColorC(cColor1, cColor2, amount).getRGB();
+    }
+
+    public static Color interpolateColorC(Color color1, Color color2, float amount) {
+        amount = Math.min(1, Math.max(0, amount));
+        return new Color(MathUtility.interpolateInt(color1.getRed(), color2.getRed(), amount),
+                MathUtility.interpolateInt(color1.getGreen(), color2.getGreen(), amount),
+                MathUtility.interpolateInt(color1.getBlue(), color2.getBlue(), amount),
+                MathUtility.interpolateInt(color1.getAlpha(), color2.getAlpha(), amount));
     }
 }

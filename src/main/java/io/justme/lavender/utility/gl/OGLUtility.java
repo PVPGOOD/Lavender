@@ -6,6 +6,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+
 /**
  * @author JustMe.
  * @since 2024/4/28
@@ -46,5 +49,11 @@ public class OGLUtility {
                 g / 255f,
                 b / 255f,
                 a / 255f);
+    }
+
+    public void render(int mode, Runnable render){
+        glBegin(mode);
+        render.run();
+        glEnd();
     }
 }
