@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -40,6 +41,10 @@ public class RenderUtility {
 
     public void drawRoundRectWithOutline(float x, float y, float width, float height, float radius, float outlineThickness, Color color, Color outlineColor) {
         Shader.roundOutlineRect.drawRoundOutline(x, y, width, height, radius,outlineThickness, color,outlineColor);
+    }
+
+    public void drawRoundedTexture(ResourceLocation texId, float x, float y, float width, float height, float radius, float alpha) {
+        Shader.roundRectTextured.drawRoundTextured(texId,x, y, width, height, radius, alpha);
     }
 
 
