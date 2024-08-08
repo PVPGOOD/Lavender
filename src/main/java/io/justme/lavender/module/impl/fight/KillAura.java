@@ -54,7 +54,7 @@ public class KillAura extends Module implements IMinecraft {
     private final ArrayList<EntityLivingBase> targets = new ArrayList<>();
     private final PacketUtility packetUtility = new PacketUtility();
     private EntityLivingBase target;
-    private int index;
+    public int index;
 
     private final BoolValue
             autoBlock = new BoolValue("AutoBlock",false),
@@ -68,7 +68,7 @@ public class KillAura extends Module implements IMinecraft {
 
     private final NumberValue
             cps = new NumberValue("CPS", 15.0, 1, 20.0, 1),
-            switchDelay = new NumberValue("Switch Ms", 15.0, 0.1, 20.0, 0.1, () -> attackMode.getValue().equalsIgnoreCase("Switch")),
+            switchDelay = new NumberValue("Switch Ms", 100.0, 0.1, 10000, 5, () -> attackMode.getValue().equalsIgnoreCase("Switch")),
             lockedRange = new NumberValue("Locked Range", 3.8, 2.5, 6.0, 0.1),
             range = new NumberValue("Attack Range", 3.8, 2.5, 6.0, 0.1),
             blockRange = new NumberValue("Block Range", 2.5, 2.5, 6.0, 0.1);
@@ -123,26 +123,38 @@ public class KillAura extends Module implements IMinecraft {
                 1000 / getCps().getValue() + MathUtility.getRandomDouble(5,10),
                 1000 / getCps().getValue() - MathUtility.getRandomDouble(3,5));
 
-        cleanTargets();
-
         getTargetsInWorld();
 
-        if (getSwitchTimer().hasTimeElapsed(getSwitchDelay().getValue().intValue() * 100L) && getTargets().size() > 1) {
-            resetKillAuraTimer(false, true);
-            ++index;
+        if (!getTargets().isEmpty()) {
+            getTargets().removeIf(
+                    target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue().floatValue()));
         }
 
-        if (getIndex() >= getTargets().size()) {
-            setIndex(0);
-        }
 
         if (!getTargets().isEmpty()) {
-            setTarget(getTargets().get(getAttackMode().getValue().equalsIgnoreCase("Switch") ? getIndex() : 0));
+            switch (getAttackMode().getValue()) {
+                case "Switch" -> {
+                    if (getTargets().size() > 1) {
+                        if (getSwitchTimer().hasTimeElapsed(getSwitchDelay().getValue().longValue(),true)) {
+                            index++;
+                        }
+                    }
+
+                    //重置 列表中的对象
+                    if (getIndex() >= getTargets().size()) {
+                        setIndex(0);
+                    }
+
+                    setTarget(getTargets().get(getIndex()));
+                }
+                case "Single" -> {
+                    setIndex(0);
+                    setTarget(getTargets().get(0));
+                }
+            }
         }
 
-        System.out.println(getTarget());
         if (getTarget() != null) {
-
 
             event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
             event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
@@ -320,10 +332,10 @@ public class KillAura extends Module implements IMinecraft {
                 || mc.thePlayer.getHealth() <= 0
                 || mc.thePlayer.getDistanceToEntity(entity) > ((double) lockedRange.getValue().floatValue())
                 || !entity.isEntityAlive()
+                || targets.contains(entity)
                 || entity.isDead
                 || entity.getHealth() <= 0
-                || entity instanceof EntityArmorStand ||
-                entity == mc.thePlayer) {
+                || entity instanceof EntityArmorStand || entity == mc.thePlayer) {
             return false;
         }
         if (entity instanceof EntityPlayer player) {
