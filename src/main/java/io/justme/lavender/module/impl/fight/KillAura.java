@@ -60,7 +60,8 @@ public class KillAura extends Module implements IMinecraft {
             autoBlock = new BoolValue("AutoBlock",false),
             syncCurrentPlayItem = new BoolValue("SyncItem",false),
             attackTargetEntityWithCurrentItem = new BoolValue("AttackTargetEntityWithCurrentItem",false),
-            ray_cast = new BoolValue("Ray cast",false);
+            ray_cast = new BoolValue("Attack_RayCast",false),
+            ray_cast_block = new BoolValue("Block_RayCast",false);
 
     private final ModeValue
             attackMode = new ModeValue("Mode", new String[]{"Single", "Switch"}, "Switch");
@@ -68,6 +69,7 @@ public class KillAura extends Module implements IMinecraft {
     private final NumberValue
             cps = new NumberValue("CPS", 15.0, 1, 20.0, 1),
             switchDelay = new NumberValue("Switch Ms", 15.0, 0.1, 20.0, 0.1, () -> attackMode.getValue().equalsIgnoreCase("Switch")),
+            lockedRange = new NumberValue("Locked Range", 3.8, 2.5, 6.0, 0.1),
             range = new NumberValue("Attack Range", 3.8, 2.5, 6.0, 0.1),
             blockRange = new NumberValue("Block Range", 2.5, 2.5, 6.0, 0.1);
 
@@ -81,7 +83,7 @@ public class KillAura extends Module implements IMinecraft {
 
     private final ModeValue blockModeValue = new ModeValue("Block Mode", new String[]{"Watchdog", "BlocksMC","Key","Visual"}, "Key");
 
-    private boolean attacking,blocking;
+    private boolean blocking;
 
     @Override
     public void onDisable() {
@@ -138,29 +140,30 @@ public class KillAura extends Module implements IMinecraft {
             setTarget(getTargets().get(getAttackMode().getValue().equalsIgnoreCase("Switch") ? getIndex() : 0));
         }
 
+        System.out.println(getTarget());
         if (getTarget() != null) {
+
+
             event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
             event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
-
-            var shouldAttack = getAttackTimer().hasTimeElapsed(cpsMs);
-            setAttacking(shouldAttack);
-
-            var shouldBlock = getAutoBlock().getValue() && getTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue() && PlayerUtility.isHoldingSword();
 
             switch (event.getType()) {
                 case PRE -> {
 
                     if (shouldAttack(cpsMs)) {
+
                         final var preAttack = new EventAttack(EnumEventType.PRE);
                         La.getINSTANCE().getEventManager().call(preAttack);
+
                         doAttack();
+
                         resetKillAuraTimer(true, false);
                         final var postAttack = new EventAttack(EnumEventType.POST);
                         La.getINSTANCE().getEventManager().call(postAttack);
                     }
 
                     if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Pre")) {
-                        if (shouldBlock) {
+                        if (shouldBlock()) {
                             La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                             doBlock();
                         }
@@ -171,7 +174,7 @@ public class KillAura extends Module implements IMinecraft {
                 case POST -> {
 
                     if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Post")) {
-                        if (shouldBlock) {
+                        if (shouldBlock()) {
                             La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                             doBlock();
                         }
@@ -218,12 +221,25 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private boolean shouldAttack(double cpsMs) {
-        return getAttackTimer().hasTimeElapsed(cpsMs) && (!getRay_cast().getValue() || WorldUtility.ray_castEntity(getTarget(),
+        return getAttackTimer().hasTimeElapsed(cpsMs) &&
+                !(getRay_cast().getValue() && inRayCast()) &&
+                getAttackTimer().hasTimeElapsed(cpsMs) &&
+                mc.thePlayer.getDistanceToEntity(target) < ((double) range.getValue().floatValue());
+    }
+
+    private boolean shouldBlock() {
+        return getAutoBlock().getValue() &&
+                getTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue() &&
+                PlayerUtility.isHoldingSword() && !(getRay_cast().getValue() && inRayCast());
+    }
+
+    private boolean inRayCast() {
+        return WorldUtility.ray_castEntity(getTarget(),
                 RotationUtility.getRotationToEntity(getTarget())[0],
                 RotationUtility.getRotationToEntity(getTarget())[1],
                 RotationUtility.getRotationToEntity(getTarget())[0],
                 RotationUtility.getRotationToEntity(getTarget())[1],
-                getRange().getValue()));
+                getRange().getValue());
     }
 
     private void doAttack() {
@@ -288,7 +304,6 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     public void getTargetsInWorld() {
-
         for (Entity entity : mc.theWorld.getLoadedEntityList()) {
             if (entity instanceof EntityLivingBase livingBase) {
                 if (!valid(livingBase)) continue;
@@ -303,7 +318,7 @@ public class KillAura extends Module implements IMinecraft {
                 || mc.thePlayer.isPlayerSleeping()
                 || mc.thePlayer.isDead
                 || mc.thePlayer.getHealth() <= 0
-                || mc.thePlayer.getDistanceToEntity(entity) > ((double) range.getValue().floatValue())
+                || mc.thePlayer.getDistanceToEntity(entity) > ((double) lockedRange.getValue().floatValue())
                 || !entity.isEntityAlive()
                 || entity.isDead
                 || entity.getHealth() <= 0
