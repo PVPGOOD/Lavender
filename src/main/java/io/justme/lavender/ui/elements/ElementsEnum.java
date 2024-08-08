@@ -6,5 +6,6 @@ package io.justme.lavender.ui.elements;
  **/
 public enum ElementsEnum {
     ArrayList,
-    Notification
+    Notification,
+    TargetList
 }
