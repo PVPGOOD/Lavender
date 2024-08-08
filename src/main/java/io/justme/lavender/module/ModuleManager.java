@@ -9,7 +9,9 @@ import io.justme.lavender.module.impl.movements.*;
 import io.justme.lavender.module.impl.movements.speed.Speed;
 import io.justme.lavender.module.impl.player.*;
 import io.justme.lavender.module.impl.visual.BlockStyle;
+import io.justme.lavender.module.impl.visual.NoCamClip;
 import io.justme.lavender.module.impl.visual.HUD;
+import io.justme.lavender.module.impl.visual.NoHurtCam;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
@@ -28,6 +30,8 @@ public class ModuleManager extends Manager<Module> {
     //visual
     private final HUD hud = new HUD();
     private final BlockStyle blockStyle = new BlockStyle();
+    private final NoCamClip noCamClip = new NoCamClip();
+    private final NoHurtCam noHurtCam = new NoHurtCam();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -41,6 +45,7 @@ public class ModuleManager extends Manager<Module> {
     private final NoFall noFall = new NoFall();
     private final AutoPot autoPot = new AutoPot();
     private final InventoryCleaner inventoryCleaner = new InventoryCleaner();
+    private final NoJumpDelay noJumpDelay = new NoJumpDelay();
     //exploit
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -54,6 +59,8 @@ public class ModuleManager extends Manager<Module> {
                 //visual
                 getHud(),
                 getBlockStyle(),
+                getNoHurtCam(),
+                getNoCamClip(),
                 //movements
                 getNoslow(),
                 getSprint(),
@@ -66,6 +73,7 @@ public class ModuleManager extends Manager<Module> {
                 getFastPlace(),
                 getAutoPot(),
                 getInventoryCleaner(),
+                getNoJumpDelay(),
                 //exploit
                 getDisabler()
 //                getPacketDebugger()

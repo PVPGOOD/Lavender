@@ -2012,7 +2012,10 @@ public abstract class EntityLivingBase extends Entity
             else if (this.onGround && this.jumpTicks == 0)
             {
                 this.jump();
-                this.jumpTicks = 10;
+
+                if (!La.getINSTANCE().getModuleManager().getNoJumpDelay().isToggle()) {
+                    this.jumpTicks = 10;
+                }
             }
         }
         else

@@ -3,6 +3,7 @@ package net.minecraft.client.renderer;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
+import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -590,6 +591,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     private void hurtCameraEffect(float partialTicks)
     {
+
+        if (!La.getINSTANCE().getModuleManager().getNoCamClip().isToggle()) {
+            return;
+        }
+
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
         {
             EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
@@ -700,7 +706,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                     {
                         double d7 = movingobjectposition.hitVec.distanceTo(new Vec3(d0, d1, d2));
 
-                        if (d7 < d3)
+                        if (d7 < d3 && !La.getINSTANCE().getModuleManager().getNoCamClip().isToggle())
                         {
                             d3 = d7;
                         }
