@@ -102,7 +102,6 @@ public class KillAura extends Module implements IMinecraft {
 
         //正常重置状态
         if (isBlocking()) {
-            La.getINSTANCE().print(String.format("unBlock (%s)" , "resetStatus"));
             doUnblock();
         }
 
@@ -175,7 +174,6 @@ public class KillAura extends Module implements IMinecraft {
 
                     if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Pre")) {
                         if (shouldBlock()) {
-                            La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                             doBlock();
                         }
                     }
@@ -185,7 +183,6 @@ public class KillAura extends Module implements IMinecraft {
                 case POST -> {
                     if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Post")) {
                         if (shouldBlock()) {
-                            La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                             doBlock();
                         }
                     }
@@ -196,7 +193,6 @@ public class KillAura extends Module implements IMinecraft {
 
         //结尾工作
         if (shouldUnBlock()) {
-            La.getINSTANCE().print(String.format("unBlock (%s)" , "UnBlock"));
             doUnblock();
         }
     }
@@ -206,22 +202,16 @@ public class KillAura extends Module implements IMinecraft {
 
         switch (eventAttack.getTypes()) {
             case PRE -> {
-                La.getINSTANCE().print(String.format("Attack (%s)" ,eventAttack.getTypes()));
-
                 if (getBlockTimingModeValue().getValue().equalsIgnoreCase("BeforeAttack")) {
                     if (shouldBlock()) {
-                        La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                         doBlock();
                     }
                 }
             }
 
             case POST -> {
-                La.getINSTANCE().print(String.format("Attack (%s)" ,eventAttack.getTypes()));
-
                 if (getBlockTimingModeValue().getValue().equalsIgnoreCase("AfterAttack")) {
                     if (shouldBlock()) {
-                        La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                         doBlock();
                     }
                 }
