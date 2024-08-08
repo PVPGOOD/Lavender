@@ -2,7 +2,7 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.impl.exploit.disabler.Disabler;
-import io.justme.lavender.module.impl.exploit.packetDebugger.PacketDebugger;
+//import io.justme.lavender.module.impl.exploit.packetDebugger.PacketDebugger;
 import io.justme.lavender.module.impl.fight.KillAura;
 import io.justme.lavender.module.impl.fight.Velocity;
 import io.justme.lavender.module.impl.movements.*;
@@ -43,7 +43,7 @@ public class ModuleManager extends Manager<Module> {
     private final InventoryCleaner inventoryCleaner = new InventoryCleaner();
     //exploit
     private final Disabler disabler = new Disabler();
-    private final PacketDebugger packetDebugger = new PacketDebugger();
+//    private final PacketDebugger packetDebugger = new PacketDebugger();
 
     public void onInitialization(){
 
@@ -67,8 +67,8 @@ public class ModuleManager extends Manager<Module> {
                 getAutoPot(),
                 getInventoryCleaner(),
                 //exploit
-                getDisabler(),
-                getPacketDebugger()
+                getDisabler()
+//                getPacketDebugger()
         ));
 
         getElements().forEach(Module::reflectValues);

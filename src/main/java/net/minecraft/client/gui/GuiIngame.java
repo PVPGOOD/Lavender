@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import io.justme.lavender.La;
 import io.justme.lavender.events.render.Event2DRender;
+import io.justme.lavender.ui.screens.clickgui.ClickScreen;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -137,6 +138,11 @@ public class GuiIngame extends Gui
         }
         else
         {
+
+            if (Minecraft.getMinecraft().currentScreen instanceof ClickScreen) {
+                return;
+            }
+
             this.renderTooltip(scaledresolution, partialTicks);
         }
 
@@ -146,6 +152,11 @@ public class GuiIngame extends Gui
 
         if (this.showCrosshair())
         {
+
+            if (Minecraft.getMinecraft().currentScreen instanceof ClickScreen) {
+                return;
+            }
+
             GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
             GlStateManager.enableAlpha();
             this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
@@ -193,6 +204,11 @@ public class GuiIngame extends Gui
         }
         else if (this.mc.playerController.gameIsSurvivalOrAdventure())
         {
+
+            if (Minecraft.getMinecraft().currentScreen instanceof ClickScreen) {
+                return;
+            }
+
             this.renderExpBar(scaledresolution, k1);
         }
 

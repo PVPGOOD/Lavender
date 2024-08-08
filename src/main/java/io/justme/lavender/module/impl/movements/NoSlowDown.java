@@ -24,7 +24,7 @@ import net.minecraft.util.EnumFacing;
 @ModuleInfo(name = "NoSlowDown", description = "", category = Category.MOVEMENTS)
 public class NoSlowDown extends Module {
 
-    private final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog", "BlocksMC", "Normal"}, "Normal");
+    private final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog", "BlocksMC", "Normal","Raven"}, "Normal");
 
     @Override
     public void onEnable() {

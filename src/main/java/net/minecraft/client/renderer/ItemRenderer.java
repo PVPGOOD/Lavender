@@ -2,6 +2,7 @@ package net.minecraft.client.renderer;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.impl.visual.BlockStyle;
+import io.justme.lavender.ui.screens.clickgui.ClickScreen;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -315,6 +316,11 @@ public class ItemRenderer
 
     public void renderItemInFirstPerson(float partialTicks)
     {
+
+        if (Minecraft.getMinecraft().currentScreen instanceof ClickScreen) {
+            return;
+        }
+
         if (!Config.isShaders() || !Shaders.isSkipRenderHand())
         {
             float f = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);

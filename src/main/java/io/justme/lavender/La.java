@@ -8,6 +8,7 @@ import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.ui.elements.ElementsManager;
+import io.justme.lavender.ui.screens.clickgui.ClickScreen;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
@@ -46,6 +47,8 @@ public class La {
     private AsyncVersionSlider asyncVersionSlider;
 
     //screen
+    private ClickScreen clickScreen;
+
     private ConfigListFrame configListFrame;
     private ConfigButtonFrame configButtonFrame;
     private ConfigScreen configScreen;
@@ -63,6 +66,8 @@ public class La {
 
         viaMCP = new ViaMCP();
         asyncVersionSlider = new AsyncVersionSlider(1337, 20, 5, 110,20);
+
+        clickScreen = new ClickScreen();
 
         configListFrame = new ConfigListFrame();
         configButtonFrame = new ConfigButtonFrame();
@@ -100,7 +105,11 @@ public class La {
             configsManager.load();
         }
 
-        if (event.getKeyCode() == Keyboard.KEY_RSHIFT) {
+        if (event.getKeyCode() == Keyboard.KEY_RSHIFT){
+            Minecraft.getMinecraft().displayGuiScreen(clickScreen);
+        }
+
+        if (event.getKeyCode() == Keyboard.KEY_P) {
             Minecraft.getMinecraft().displayGuiScreen(configScreen);
         }
     }

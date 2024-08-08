@@ -256,9 +256,8 @@ public class KillAura extends Module implements IMinecraft {
             case "Watchdog" -> {
                 mc.thePlayer.itemInUseCount = 1;
                 if (mc.isSingleplayer()) return;
+
                 mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
-//                PacketWrapper useItemOff = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
-//                useItemOff.write(Type.VAR_INT, 1);
             }
             case "Key" -> mc.gameSettings.keyBindUseItem.pressed = true;
             case "Visual" ->  mc.thePlayer.itemInUseCount = 1;

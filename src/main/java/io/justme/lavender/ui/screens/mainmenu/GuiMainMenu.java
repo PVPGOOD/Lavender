@@ -2,8 +2,11 @@ package io.justme.lavender.ui.screens.mainmenu;
 
 import io.justme.lavender.ui.screens.microsoft.GuiMicrosoftLogin;
 import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
+import io.justme.lavender.utility.gl.RenderUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.util.ResourceLocation;
+
 import java.io.IOException;
 
 /**
@@ -32,6 +35,8 @@ public class GuiMainMenu extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+
+
         drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

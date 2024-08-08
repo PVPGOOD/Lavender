@@ -6,9 +6,12 @@ import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.ui.elements.AbstractElements;
+import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
 import org.lwjglx.input.Keyboard;
+
+import java.awt.*;
 
 /**
  * @author JustMe.
@@ -32,6 +35,8 @@ public class HUD extends Module {
     @EventTarget
     public void on2D(Event2DRender event2DRender) {
         La.getINSTANCE().getFontManager().getSFBold18().drawString(La.getINSTANCE().getLa(), 0,0,-1);
+
+        RenderUtility.drawRoundRect(0,0,100,100,1,new Color(0));
 
         for (AbstractElements abstractElements : La.getINSTANCE().getElementsManager().getElements()) {
             abstractElements.draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
