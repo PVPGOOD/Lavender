@@ -100,6 +100,7 @@ public class KillAura extends Module implements IMinecraft {
     private void resetStatus() {
         if (Minecraft.getMinecraft().thePlayer == null) return;
 
+        //正常重置状态
         if (isBlocking()) {
             La.getINSTANCE().print(String.format("unBlock (%s)" , "resetStatus"));
             doUnblock();
@@ -112,8 +113,6 @@ public class KillAura extends Module implements IMinecraft {
 
     @EventTarget
     public void onTick(EventTick eventTick) {
-
-        if (mc.theWorld == null || mc.thePlayer == null) return;
 
     }
 
@@ -129,7 +128,6 @@ public class KillAura extends Module implements IMinecraft {
             getTargets().removeIf(
                     target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue().floatValue()));
         }
-
 
         if (!getTargets().isEmpty()) {
             switch (getAttackMode().getValue()) {
@@ -152,10 +150,11 @@ public class KillAura extends Module implements IMinecraft {
                     setTarget(getTargets().get(0));
                 }
             }
+        } else {
+            setTarget(null);
         }
 
         if (getTarget() != null) {
-
             event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
             event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
 
@@ -184,7 +183,6 @@ public class KillAura extends Module implements IMinecraft {
                 }
 
                 case POST -> {
-
                     if (getBlockTimingModeValue().getValue().equalsIgnoreCase("Post")) {
                         if (shouldBlock()) {
                             La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
@@ -194,25 +192,24 @@ public class KillAura extends Module implements IMinecraft {
 
                 }
             }
-        } else {
-            if (isBlocking()) {
-                La.getINSTANCE().print(String.format("unBlock (%s)" , "on the end"));
-                doUnblock();
-            }
+        }
+
+        //结尾工作
+        if (shouldUnBlock()) {
+            La.getINSTANCE().print(String.format("unBlock (%s)" , "UnBlock"));
+            doUnblock();
         }
     }
 
     @EventTarget
     public void onAttack(EventAttack eventAttack) {
 
-        var shouldBlock = getAutoBlock().getValue() && getTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue() && PlayerUtility.isHoldingSword();
-
         switch (eventAttack.getTypes()) {
             case PRE -> {
                 La.getINSTANCE().print(String.format("Attack (%s)" ,eventAttack.getTypes()));
 
                 if (getBlockTimingModeValue().getValue().equalsIgnoreCase("BeforeAttack")) {
-                    if (shouldBlock) {
+                    if (shouldBlock()) {
                         La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                         doBlock();
                     }
@@ -223,7 +220,7 @@ public class KillAura extends Module implements IMinecraft {
                 La.getINSTANCE().print(String.format("Attack (%s)" ,eventAttack.getTypes()));
 
                 if (getBlockTimingModeValue().getValue().equalsIgnoreCase("AfterAttack")) {
-                    if (shouldBlock) {
+                    if (shouldBlock()) {
                         La.getINSTANCE().print(String.format("Block (%s)" , getBlockTimingModeValue().getValue()));
                         doBlock();
                     }
@@ -243,6 +240,12 @@ public class KillAura extends Module implements IMinecraft {
         return getAutoBlock().getValue() &&
                 getTarget().getDistanceToEntity(Minecraft.getMinecraft().thePlayer) <= getBlockRange().getValue() &&
                 PlayerUtility.isHoldingSword() && !(getRay_cast().getValue() && inRayCast());
+    }
+
+    private boolean shouldUnBlock() {
+        return getTarget() == null ?
+                isBlocking() : (isBlocking() &&
+                mc.thePlayer.getDistanceToEntity(getTarget()) > ((double) getBlockRange().getValue().floatValue()));
     }
 
     private boolean inRayCast() {
@@ -285,7 +288,12 @@ public class KillAura extends Module implements IMinecraft {
                 mc.thePlayer.itemInUseCount = 1;
                 if (mc.isSingleplayer()) return;
 
-                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
+                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
+                        new BlockPos(-1, -1, -1),
+                        255,
+                        mc.thePlayer.getHeldItem(),
+                        0, 0, 0
+                ));
             }
             case "Key" -> mc.gameSettings.keyBindUseItem.pressed = true;
             case "Visual" ->  mc.thePlayer.itemInUseCount = 1;
@@ -293,8 +301,8 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void doUnblock(){
-
         setBlocking(false);
+
         switch (getBlockModeValue().getValue()) {
             case "Watchdog" -> {
                 mc.thePlayer.itemInUseCount = 0;
