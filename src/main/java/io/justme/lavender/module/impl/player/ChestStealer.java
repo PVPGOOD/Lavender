@@ -5,6 +5,7 @@ import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.TimerUtility;
+import io.justme.lavender.utility.player.InventoryUtility;
 import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
@@ -56,7 +57,8 @@ public class ChestStealer extends Module {
                     if (container.getLowerChestInventory().getStackInSlot(i) == null) continue;
 
                     if (timerUtility.hasTimeElapsed(delay.getValue().longValue())) {
-                        Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
+
+                        InventoryUtility.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
                         timerUtility.reset();
                     }
                 }

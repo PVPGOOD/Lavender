@@ -77,7 +77,7 @@ public class Scaffold extends Module {
 
             switch (getPicks().getValue()) {
                 case "Silent": {
-                    getPacketUtility().sendPacket(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                     break;
                 }
                 case "SwitchTo": {
@@ -113,7 +113,7 @@ public class Scaffold extends Module {
 
                 switch (getPicks().getValue()) {
                     case "Silent" : {
-                        getPacketUtility().sendPacket(new C09PacketHeldItemChange(getSlot()));
+                        getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(getSlot()));
                     }
                     case "SwitchTo" : {
                         mc.thePlayer.inventory.currentItem = getSlot();
@@ -257,7 +257,7 @@ public class Scaffold extends Module {
             if (getSwing().getValue()) {
                 mc.thePlayer.swingItem();
             } else {
-                getPacketUtility().sendPacket(new C0APacketAnimation());
+                getPacketUtility().sendPacketFromLa(new C0APacketAnimation());
             }
         }
     }

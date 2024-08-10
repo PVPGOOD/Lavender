@@ -13,14 +13,11 @@ import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.value.impl.ModeValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
-import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
-
-import java.util.ArrayList;
 
 @Getter
 @ModuleInfo(name = "NoSlowDown", description = "", category = Category.MOVEMENTS)
@@ -88,7 +85,7 @@ public class NoSlowDown extends Module {
                                 if (offGroundTicks == 2 && send) {
                                     La.getINSTANCE().print("fake eat");
 
-                                    getPacketUtility().sendPacket(
+                                    getPacketUtility().sendPacketFromLa(
                                             new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1),
                                                     255, mc.thePlayer.getHeldItem(),
                                                     0, 0, 0));
@@ -151,8 +148,8 @@ public class NoSlowDown extends Module {
                             if (packet.getStatus() == C07PacketPlayerDigging.Action.RELEASE_USE_ITEM) {
                                 eventPacket.setCancelled(true);
                                 int slot = mc.thePlayer.inventory.currentItem;
-                                getPacketUtility().sendPacket(new C09PacketHeldItemChange(slot < 8 ? slot + 1 : 0));
-                                getPacketUtility().sendPacket(new C09PacketHeldItemChange(slot));
+                                getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(slot < 8 ? slot + 1 : 0));
+                                getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(slot));
                             }
                         }
                     }
