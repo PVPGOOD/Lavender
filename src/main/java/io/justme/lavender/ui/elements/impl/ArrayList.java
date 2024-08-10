@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.elements.AbstractElements;
 import io.justme.lavender.ui.elements.ElementsEnum;
+import io.justme.lavender.utility.gl.ColorUtility;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.Comparator;
@@ -38,7 +40,7 @@ public class ArrayList extends AbstractElements {
     @Override
     public void draw(float partialTicks, int mouseX, int mouseY) {
 
-        var fontRenderer = La.getINSTANCE().getFontManager().getSFBold18();
+        var fontRenderer = La.getINSTANCE().getFontManager().getPingFang_Heavy14();
         var width = getScaledResolution().getScaledWidth();
         var height = getScaledResolution().getScaledHeight();
 
@@ -55,6 +57,7 @@ public class ArrayList extends AbstractElements {
 
 
         var interval = 0.0f;
+        int index = 0;
         for (Module module : modules){
 
             if (module.getAnimation().isDone() && !module.isToggle()) continue;
@@ -66,12 +69,15 @@ public class ArrayList extends AbstractElements {
             module.getAnimation().update();
             module.getAnimation().animate(module.isToggle() ? 1: 0F, 0.5F, Easings.EXPO_OUT);
 
+            int finalIndex = index;
             OGLUtility.scale(x + fontRenderer.getStringWidth(str) /2f ,(getY() + interval + fontRenderer.getHeight() /2f),module.getAnimation().getValue(),() -> {
 
-                fontRenderer.drawString(module.getName(), x ,getY() + finalInterval,-1);
+                fontRenderer.drawString(module.getName(), x ,getY() + finalInterval, ColorUtility.fadeBetween(finalIndex, 10, new Color(255,255,255).getRGB(), new Color(155,155,155).getRGB()));
             });
 
             interval += 11.5f;
+
+            index++;
         }
 
 
