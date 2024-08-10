@@ -1,23 +1,26 @@
 package io.justme.lavender.module.impl.player;
 
+import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventWorldReload;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.TimerUtility;
+import io.justme.lavender.utility.network.PacketUtility;
+import io.justme.lavender.utility.player.InventoryUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.ModeValue;
 import io.justme.lavender.value.impl.NumberValue;
+import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.ContainerChest;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -31,6 +34,7 @@ import java.util.List;
  * @since 2024/5/6
  **/
 
+@Getter
 @ModuleInfo(name = "InventoryCleaner", description = " ", category = Category.PLAYER)
 public class InventoryCleaner extends Module {
 
@@ -48,7 +52,7 @@ public class InventoryCleaner extends Module {
             sort = new BoolValue("sort", true, () -> true),
             bow = new BoolValue("Bow",true, () -> true),
             sword = new BoolValue("Sword",true, () -> true),
-            onlyMoving = new BoolValue("Check Moving",false, () -> true),
+            checkMoving = new BoolValue("Check Moving",false, () -> true),
             autoArmor = new BoolValue("AutoArmor",true, () -> true),
             checkItems = new BoolValue("check Items",true, () -> true),
             checkLobby = new BoolValue("Check Lobby",true, () -> true);
@@ -77,87 +81,78 @@ public class InventoryCleaner extends Module {
 
 
     @EventTarget
-    public void onPre(EventMotionUpdate event) {
+    public void onMotionEvent(EventMotionUpdate event) {
 
-//        if (checkLobby.getValue() && (Ro.getInstance().getServerUtils().isOnLobby())) return;
-        if (mc.thePlayer.openContainer instanceof ContainerChest && mc.currentScreen instanceof GuiContainer) return;
-        if (ModeValue.getValue() == "InvOpen" && !(mc.currentScreen instanceof GuiContainer)) return;
-        if (PlayerUtility.moving() && onlyMoving.getValue()) return;
-
-        long delay = this.delay.getValue().longValue() * 50;
-        long aDelay = autoArmorDelay.getValue().intValue() * 50L;
-
-        if (timer.hasTimeElapsed(aDelay) && autoArmor.getValue()) {
-            if (!(ModeValue.getValue() == "InvOpen") || mc.currentScreen instanceof GuiContainer) {
-                if (mc.currentScreen == null || mc.currentScreen instanceof GuiContainer || mc.currentScreen instanceof GuiChat) {
-                    getBestArmor();
-                }
-            }
-        }
-
-
-        if (mc.currentScreen == null || mc.currentScreen instanceof GuiContainer || mc.currentScreen instanceof GuiChat) {
-            if (timer.hasTimeElapsed(delay) && weaponSlot >= 36) {
-                if (!mc.thePlayer.inventoryContainer.getSlot(weaponSlot).getHasStack()) {
-                    getBestWeapon(weaponSlot);
-                } else {
-                    if (!isBestWeapon(mc.thePlayer.inventoryContainer.getSlot(weaponSlot).getStack())) {
-                        getBestWeapon(weaponSlot);
-                    }
-                }
-            }
-
-            if (sort.getValue()) {
-                if (timer.hasTimeElapsed(delay) && pickaxeSlot >= 36) {
-                    getBestPickaxe(pickaxeSlot);
-                }
-                if (timer.hasTimeElapsed(delay) && shovelSlot >= 36) {
-                    getBestShovel(shovelSlot);
-                }
-                if (timer.hasTimeElapsed(delay) && axeSlot >= 36) {
-                    getBestAxe(axeSlot);
-                }
-            }
-
-            if (timer.hasTimeElapsed(delay)) {
-                for (int i = 9; i < 45; i++) {
-                    if (mc.thePlayer.inventoryContainer.getSlot(i).getHasStack()) {
-                        ItemStack is = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
-                        if (shouldDrop(is, i)) {
-                            drop(i);
-                            timer.reset();
-                            if (delay > 0) {
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        for (int type = 1; type < 5; type++) {
-            if (mc.thePlayer.inventoryContainer.getSlot(4 + type).getHasStack()) {
-                ItemStack is = mc.thePlayer.inventoryContainer.getSlot(4 + type).getStack();
-                if (!isBestArmor(is, type)) {
-                    return;
-                }
-            } else if (invContainsType(type - 1)) {
+        if (mc.thePlayer == null) return;
+        //只有打开背包
+        if (getModeValue().getValue().equalsIgnoreCase("OpenInv")) {
+            if (!(mc.currentScreen instanceof GuiContainer)) {
                 return;
             }
         }
+        //移动
+        if (getCheckMoving().getValue() && PlayerUtility.moving()) return;
+
+
+        var itemsDelay = getDelay().getValue() * 50;
+
+        //装备
+        if (getTimer().hasTimeElapsed(getAutoArmorDelay().getValue() * 50) && getAutoArmor().getValue()) {
+            onArmor();
+        }
+
+        //整理 工具
+        if (getSort().getValue()) {
+            if (getTimer().hasTimeElapsed(itemsDelay) && pickaxeSlot >= 36) {
+                getBestPickaxe(pickaxeSlot);
+            }
+            if (getTimer().hasTimeElapsed(itemsDelay) && shovelSlot >= 36) {
+                getBestShovel(shovelSlot);
+            }
+            if (getTimer().hasTimeElapsed(itemsDelay) && axeSlot >= 36) {
+                getBestAxe(axeSlot);
+            }
+        }
+
+
+        //整理 武器
+        if (timer.hasTimeElapsed(itemsDelay) && weaponSlot >= 36) {
+            if (!mc.thePlayer.inventoryContainer.getSlot(weaponSlot).getHasStack()) {
+                getBestWeapon(weaponSlot);
+            } else {
+                if (!isBestWeapon(mc.thePlayer.inventoryContainer.getSlot(weaponSlot).getStack())) {
+                    getBestWeapon(weaponSlot);
+                }
+            }
+        }
+
+        //丢弃杂物
+        if (timer.hasTimeElapsed((long) itemsDelay,true)) {
+            mc.thePlayer.inventoryContainer.inventorySlots.stream()
+                    .skip(9)
+                    .limit(36)
+                    .filter(slot -> slot.getHasStack() && shouldDrop(slot.getStack(), slot.slotNumber))
+                    .findFirst()
+                    .ifPresent(slot -> {
+                        drop(slot.slotNumber);
+                    });
+        }
+
     }
 
+    private final PacketUtility packetUtility = new PacketUtility();
     public void shiftClick(int slot) {
-        mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, 0, 1, mc.thePlayer);
+        InventoryUtility.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, 0, 1, mc.thePlayer);
     }
 
     public void swap(int slot1, int hotbarSlot) {
-        mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot1, hotbarSlot, 2, mc.thePlayer);
+        InventoryUtility.windowClick(mc.thePlayer.inventoryContainer.windowId, slot1, hotbarSlot, 2, mc.thePlayer);
     }
 
     public void drop(int slot) {
-        mc.playerController.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, 1, 4, mc.thePlayer);
+        InventoryUtility.windowClick(mc.thePlayer.inventoryContainer.windowId, slot, 1, 4, mc.thePlayer);
     }
+
     public boolean isBestWeapon(ItemStack stack) {
         float damage = getDamage(stack);
         for (int i = 9; i < 45; i++) {
@@ -168,7 +163,6 @@ public class InventoryCleaner extends Module {
             }
         }
         return stack.getItem() instanceof ItemSword || !sword.getValue();
-
     }
 
     public void getBestWeapon(int slot) {
@@ -201,8 +195,6 @@ public class InventoryCleaner extends Module {
 
         return damage;
     }
-
-
 
     public boolean shouldDrop(ItemStack stack, int slot) {
 
@@ -292,10 +284,6 @@ public class InventoryCleaner extends Module {
                 (stack.getItem().getUnlocalizedName().contains("snowball")) ||
                 (stack.getItem() instanceof ItemGlassBottle) ||
                 (stack.getItem().getUnlocalizedName().contains("piston"));
-    }
-
-    public ArrayList<Integer> getWhitelistedItem() {
-        return whitelistedItems;
     }
 
     private int getBlockCount() {
@@ -496,7 +484,7 @@ public class InventoryCleaner extends Module {
         return false;
     }
 
-    public void getBestArmor() {
+    public void onArmor() {
         for (int type = 1; type < 5; type++) {
             if (mc.thePlayer.inventoryContainer.getSlot(4 + type).getHasStack()) {
                 ItemStack is = mc.thePlayer.inventoryContainer.getSlot(4 + type).getStack();
@@ -556,8 +544,4 @@ public class InventoryCleaner extends Module {
         }
         return prot;
     }
-
-
-
-
 }
