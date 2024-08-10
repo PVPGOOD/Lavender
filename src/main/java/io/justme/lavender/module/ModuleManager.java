@@ -45,6 +45,7 @@ public class ModuleManager extends Manager<Module> {
     private final NoFall noFall = new NoFall();
     private final AutoPot autoPot = new AutoPot();
     private final InventoryCleaner inventoryCleaner = new InventoryCleaner();
+    private final InventoryMove inventoryMove = new InventoryMove();
     private final NoJumpDelay noJumpDelay = new NoJumpDelay();
     //exploit
     private final Disabler disabler = new Disabler();
@@ -68,12 +69,14 @@ public class ModuleManager extends Manager<Module> {
                 getSafeWalk(),
                 getKeepSprint(),
                 getSpeed(),
+                getInventoryMove(),
                 //player
                 getStealer(),
                 getFastPlace(),
                 getAutoPot(),
                 getInventoryCleaner(),
                 getNoJumpDelay(),
+                getNoFall(),
                 //exploit
                 getDisabler()
 //                getPacketDebugger()
