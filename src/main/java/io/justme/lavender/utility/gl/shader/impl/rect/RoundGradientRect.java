@@ -1,6 +1,6 @@
 package io.justme.lavender.utility.gl.shader.impl.rect;
 
-import io.justme.lavender.utility.gl.ColorUtils;
+import io.justme.lavender.utility.gl.ColorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.gl.shader.Shader;
 import net.minecraft.client.Minecraft;
@@ -49,12 +49,12 @@ public class RoundGradientRect extends Shader {
     }
 
     public void drawGradientCornerLR(float x, float y, float width, float height, float radius, Color topLeft, Color bottomRight) {
-        Color mixedColor = ColorUtils.interpolateColorC(topLeft, bottomRight, .5f);
+        Color mixedColor = ColorUtility.interpolateColorC(topLeft, bottomRight, .5f);
         drawGradientRound(x, y, width, height, radius, mixedColor, topLeft, bottomRight, mixedColor);
     }
 
     public void drawGradientCornerRL(float x, float y, float width, float height, float radius, Color bottomLeft, Color topRight) {
-        Color mixedColor = ColorUtils.interpolateColorC(topRight, bottomLeft, .5f);
+        Color mixedColor = ColorUtility.interpolateColorC(topRight, bottomLeft, .5f);
         drawGradientRound(x, y, width, height, radius, bottomLeft, mixedColor, mixedColor, topRight);
     }
 
