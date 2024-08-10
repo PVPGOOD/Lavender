@@ -1,5 +1,6 @@
 package io.justme.lavender.module.impl.fight;
 
+import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
@@ -25,6 +26,7 @@ import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -39,6 +41,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.WorldSettings;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author JustMe.
@@ -122,10 +126,10 @@ public class KillAura extends Module implements IMinecraft {
                 1000 / getCps().getValue() - MathUtility.getRandomDouble(3,5));
 
         getTargetsInWorld();
-
         if (!getTargets().isEmpty()) {
             getTargets().removeIf(
-                    target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue().floatValue()));
+                    target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue().floatValue()) ||
+                            !getTablist().contains(target.getName()));
         }
 
         if (!getTargets().isEmpty()) {
@@ -262,7 +266,7 @@ public class KillAura extends Module implements IMinecraft {
             Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
         }
 
-        getPacketUtility().sendPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
+        getPacketUtility().sendPacketFromLa(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
 
         if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR && getAttackTargetEntityWithCurrentItem().getValue())
         {
@@ -349,5 +353,13 @@ public class KillAura extends Module implements IMinecraft {
             return getTargetSelections().find("monster").getValue();
         }
         return true;
+    }
+
+    private List<String> getTablist() {
+        return mc.getNetHandler().getPlayerInfoMap().stream()
+                .map(NetworkPlayerInfo::getGameProfile)
+                .filter(profile -> profile.getId() != mc.thePlayer.getUniqueID())
+                .map(GameProfile::getName)
+                .collect(Collectors.toList());
     }
 }
