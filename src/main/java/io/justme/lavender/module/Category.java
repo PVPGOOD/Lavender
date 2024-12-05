@@ -10,11 +10,11 @@ import lombok.Getter;
 public enum Category {
     FIGHT("Fight"),
     VISUAL("Visual"),
-    MOVEMENTS("Movement"),
+    MOVEMENTS("Movements"),
     PLAYER("Player"),
-    OTHER("Visuals"),
-    ITEM("World"),
-    WORLD("Exploit");
+    MISC("Misc"),
+    World("World"),
+    Exploit("Exploit");
 
     private final String name;
 

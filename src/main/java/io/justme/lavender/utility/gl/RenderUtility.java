@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -111,4 +112,37 @@ public class RenderUtility {
             GL11.glVertex2d(0, 0);
         });
     }
+
+    public void drawImage(ResourceLocation image, float x, float y, float width, float height, Color color) {
+        new ScaledResolution(Minecraft.getMinecraft());
+        GL11.glDisable((int) 2929);
+        GL11.glEnable((int) 3042);
+        GL11.glDepthMask(false);
+        OpenGlHelper.glBlendFunc(770,  771,  1,  0);
+        GL11.glColor4f((float) color.getRed() / 255,  (float) color.getGreen() /255,  (float) color.getBlue() /255,  (float) color.getAlpha() / 255);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(image);
+        drawModalRectWithCustomSizedTexture( x,  y,0.0f, 0.0f, width,
+                height, width, height);
+        GL11.glDepthMask(true);
+        GL11.glDisable((int) 3042);
+        GL11.glEnable((int) 2929);
+    }
+
+    public void drawModalRectWithCustomSizedTexture(float x, float y, float u, float v, float width,
+                                                           float height, float textureWidth, float textureHeight) {
+        float f = 1.0F / textureWidth;
+        float f1 = 1.0F / textureHeight;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos((double) x, (double) (y + height), 0.0D)
+                .tex((double) (u * f), (double) ((v + (float) height) * f1)).endVertex();
+        worldrenderer.pos((double) (x + width), (double) (y + height), 0.0D)
+                .tex((double) ((u + (float) width) * f), (double) ((v + (float) height) * f1)).endVertex();
+        worldrenderer.pos((double) (x + width), (double) y, 0.0D)
+                .tex((double) ((u + (float) width) * f), (double) (v * f1)).endVertex();
+        worldrenderer.pos((double) x, (double) y, 0.0D).tex((double) (u * f), (double) (v * f1)).endVertex();
+        tessellator.draw();
+    }
+
 }
