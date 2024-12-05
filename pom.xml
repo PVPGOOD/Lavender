@@ -81,6 +81,14 @@
             <version>1.5.2</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-actor -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_3</artifactId>
+            <version>2.8.1-M1</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -156,7 +164,7 @@
             <artifactId>Viaversion</artifactId>
             <version>4.9.3-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/viaversion-4.9.3-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/libraries/viaversion/ViaVersion-5.0.5-downgraded.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -164,7 +172,7 @@
             <artifactId>ViaBackWards</artifactId>
             <version>common-4.9.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/viabackwards-common-4.9.2-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/libraries/viaversion/ViaBackwards-5.0.4-downgraded.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -172,7 +180,7 @@
             <artifactId>ViaRewind</artifactId>
             <version>3.0.6-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/viarewind-common-3.0.6-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/libraries/viaversion/ViaRewind-4.0.3-downgraded.jar</systemPath>
         </dependency>
 
         <dependency>

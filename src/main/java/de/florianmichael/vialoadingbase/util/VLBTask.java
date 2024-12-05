@@ -31,7 +31,7 @@ public class VLBTask implements PlatformTask<Task> {
         this.object = object;
     }
 
-    @Override
+    @Deprecated
     public Task getObject() {
         return object;
     }
@@ -41,6 +41,7 @@ public class VLBTask implements PlatformTask<Task> {
         object.cancel();
     }
 
+    @Deprecated
     public TaskStatus getStatus() {
         return this.getObject().status();
     }

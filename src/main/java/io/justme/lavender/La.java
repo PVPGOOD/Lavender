@@ -1,5 +1,6 @@
 package io.justme.lavender;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianmichael.viamcp.ViaMCP;
 import de.florianmichael.viamcp.gui.AsyncVersionSlider;
 import io.justme.lavender.configs.ConfigsManager;
@@ -18,6 +19,7 @@ import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjglx.input.Keyboard;
@@ -45,7 +47,8 @@ public class La {
     //via
     private ViaMCP viaMCP;
     private AsyncVersionSlider asyncVersionSlider;
-
+    @Setter
+    private UserConnection userConnection;
     //screen
     private ClickScreen clickScreen;
 
@@ -65,6 +68,7 @@ public class La {
         elementsManager = new ElementsManager();
 
         viaMCP = new ViaMCP();
+
         asyncVersionSlider = new AsyncVersionSlider(1337, 20, 5, 110,20);
 
         clickScreen = new ClickScreen();

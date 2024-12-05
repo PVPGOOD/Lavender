@@ -18,7 +18,9 @@
 
 package de.florianmichael.viamcp.fixes;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viamcp.ViaMCP;
 import io.justme.lavender.La;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
