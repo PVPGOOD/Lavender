@@ -22,6 +22,8 @@ import java.io.IOException;
 @Getter
 @Setter
 public class CheckBoxComponents extends AbstractComponents {
+    private FontDrawer fontRenderer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
+
 
     public CheckBoxComponents(String name) {
         super(name);
@@ -33,12 +35,13 @@ public class CheckBoxComponents extends AbstractComponents {
     public void initGui() {
 
     }
-
-    private final FontDrawer fontRenderer = La.getINSTANCE().getFontManager().getSFBold18();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,64));
-        getFontRenderer().drawStringWithShadow(getName(),getX() + 5, getY() + (getHeight() / 2 - 4),-1);
+
+        var hovering = MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY);
+
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),6,new Color(253, 147, 189, hovering ? 255 : 200));
+        getFontRenderer().drawString(getName(),getX() + (getWidth() /2f) - (getFontRenderer().getStringWidth(getName()) /2f), getY() + (getFontRenderer().getHeight() / 2f - 4),new Color(255,255,255).getRGB());
 
         setWidth(55);
         setHeight(20);

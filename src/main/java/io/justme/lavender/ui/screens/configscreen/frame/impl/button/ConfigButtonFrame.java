@@ -41,18 +41,17 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,128));
 
         float leftY = getHeight(), rightY = getHeight(), index = 0;
         for (AbstractComponents components : getComponentsArrayList()) {
 
             if (index % 2 == 0) {
-                leftY -= 25;
+                leftY -= 27;
             } else {
-                rightY -= 25;
+                rightY -= 27;
             }
 
-            components.setX(getX() + (index % 2 == 0 ? 5 : 90));
+            components.setX(getX() + (index % 2 == 0 ? 13 : 83));
             components.setY(getY() + (index % 2 == 0 ? leftY : rightY));
             components.drawScreen(mouseX, mouseY, partialTicks);
             index++;
@@ -68,12 +67,12 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
 
                 switch (components.getName()) {
 
-                    case "Reload" -> {
+                    case "重载" -> {
                         La.getINSTANCE().getConfigsManager().load();
-                        La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已重新加载",components.getName()), NotificationsEnum.SUCCESS,5000);
+                        La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已重新加载",La.getINSTANCE().getConfigsManager().getPageName()), NotificationsEnum.SUCCESS,5000);
                     }
 
-                    case "Refresh" -> {
+                    case "刷新" -> {
                         configListFrame.getComponentsArrayList().clear();
                         configListFrame.FileReader();
                         La.getINSTANCE().getNotificationsManager().push("成功","当前配置列表已刷新", NotificationsEnum.SUCCESS,5000);
@@ -99,10 +98,10 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
     }
 
     public CheckBoxComponents getReloadButton() {
-        return new CheckBoxComponents("Reload");
+        return new CheckBoxComponents("重载");
     }
 
     public CheckBoxComponents getRefreshButton() {
-        return new CheckBoxComponents("Refresh");
+        return new CheckBoxComponents("刷新");
     }
 }

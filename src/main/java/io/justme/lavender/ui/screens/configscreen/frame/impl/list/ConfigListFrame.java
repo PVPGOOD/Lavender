@@ -52,30 +52,29 @@ public class ConfigListFrame extends AbstractConfigFrame {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         //配置列表
-        RenderUtility.drawRect(getX(),getY(),getWidth(),100,new Color(0,0,0,128));
+//        RenderUtility.drawRect(getX(),getY(),getWidth(),100,new Color(0,0,0,128));
+
 
         //绘制组件
-        OGLUtility.scissor(getX(),getY(),getWidth(),100, () -> {
-            float interval = 3;
+        OGLUtility.scissor(getX(),getY(),getWidth(),La.getINSTANCE().getConfigScreen().getFinalHeight() + getHeight(),getHeight() + 10 , () -> {
+
+            float interval = 10;
             for (AbstractComponents components : getComponentsArrayList()) {
-                components.setX(getX());
+                components.setX(getX() + 5);
                 components.setY(getY() + interval);
-                components.setWidth(getWidth());
-                components.setHeight(15);
-                interval += 16;
+                components.setWidth(getWidth() - 10);
+                components.setHeight(30);
+                interval += 40;
 
                 setInterval(interval);
                 components.drawScreen(mouseX, mouseY, partialTicks);
-                setHeight(getInterval());
+                setHeight(getInterval() + 60);
             }
-        });
 
-        //简单的计时器 懒得去想新的方法 凑合着用
-        if (isConfirmAction()) {
-            if (getTimerUtility().hasTimeElapsed(3000,true)) {
-                setConfirmAction(false);
-            }
-        }
+            La.getINSTANCE().getConfigScreen().setFinalHeight((int) getHeight());
+
+
+        });
     }
 
     private final TimerUtility timerUtility = new TimerUtility();
@@ -84,14 +83,10 @@ public class ConfigListFrame extends AbstractConfigFrame {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractComponents components : getComponentsArrayList()) {
             if (components.mouseClicked(mouseX, mouseY, mouseButton)) {
-                if (!isConfirmAction()) {
-                    La.getINSTANCE().getNotificationsManager().push(String.format("请注意 你正在加载 [%s] 配置文件" , components.getName()),"当前操作会加载一个新的配置 请确保你已保存配置 请再次点击以去加载新的配置", NotificationsEnum.WARNING,5000);
-                    setConfirmAction(true);
-                } else {
-                    La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已加载",components.getName()), NotificationsEnum.SUCCESS,5000);
-                    La.getINSTANCE().getConfigsManager().loadAnotherConfig(components.getName());
-                    setConfirmAction(false);
-                }
+                La.getINSTANCE().getConfigScreen().setSelectConfig(components.getName());
+                La.getINSTANCE().getConfigsManager().save();
+                La.getINSTANCE().getConfigsManager().loadAnotherConfig(components.getName());
+                La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已加载 你的上一个配置已保存",components.getName()), NotificationsEnum.SUCCESS,5000);
             }
         }
     }

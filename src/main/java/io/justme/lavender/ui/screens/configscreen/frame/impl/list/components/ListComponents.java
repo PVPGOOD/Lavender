@@ -19,6 +19,8 @@ import java.io.IOException;
 @Setter
 public class ListComponents extends AbstractComponents {
 
+    private FontDrawer fontRenderer = La.getINSTANCE().getFontManager().getPingFang_Bold22();
+
     public ListComponents(String name) {
         super(name);
         setType(ComponentsEnum.List);
@@ -28,14 +30,24 @@ public class ListComponents extends AbstractComponents {
     public void initGui() {
 
     }
-
-    private final FontDrawer fontRenderer = La.getINSTANCE().getFontManager().getSFBold12();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         var hovering = MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY);
-        RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,hovering ? 64 : 128));
 
-        getFontRenderer().drawString(getName(),((int) getX()) + 3,((int) getY()) + 2,-1);
+
+        Color select = new Color(253, 147, 189);
+        Color unselect = new Color(255, 187, 213,hovering ? 235 : 200);
+        Color finalColor = getName().equalsIgnoreCase(La.getINSTANCE().getConfigScreen().getSelectConfig()) ? select : unselect;
+
+        RenderUtility.drawRoundRect(
+                getX(),
+                getY(),
+                getWidth(),
+                getHeight(),
+                16,finalColor);
+
+        getFontRenderer().drawString(getName(),getX() + (getWidth() /2f) - (getFontRenderer().getStringWidth(getName()) /2f), getY() + (getFontRenderer().getHeight() / 2f - 4),new Color(255,255,255).getRGB());
+
     }
 
     @Override

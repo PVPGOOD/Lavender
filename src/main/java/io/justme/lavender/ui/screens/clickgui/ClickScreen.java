@@ -3,6 +3,7 @@ package io.justme.lavender.ui.screens.clickgui;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.fonts.FontManager;
+import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -28,6 +29,9 @@ public class ClickScreen extends GuiScreen  {
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling;
     private ArrayList<AbstractComponent> component = new ArrayList<>();
+    private Category currentCategory = Category.FIGHT;
+
+    private Color clickGuiColor = new Color(255, 240, 245);
 
     public ClickScreen() {
         setX(10);
@@ -46,11 +50,12 @@ public class ClickScreen extends GuiScreen  {
         }
 
         super.initGui();
+
+        La.getINSTANCE().getConfigScreen().initGui();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-
         if (isDragging()){
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
@@ -75,6 +80,10 @@ public class ClickScreen extends GuiScreen  {
         RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 149, 191));
         FontDrawer fontManager = La.getINSTANCE().getFontManager().getSFBold18();
         fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        La.getINSTANCE().getConfigScreen().drawScreen(mouseX, mouseY, partialTicks);
+
     }
 
     @Override
@@ -105,6 +114,8 @@ public class ClickScreen extends GuiScreen  {
         for (AbstractComponent abstractComponent : getComponent()) {
             abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
         }
+
+        La.getINSTANCE().getConfigScreen().mouseClicked(mouseX, mouseY,mouseButton);
     }
 
     @Override
@@ -123,6 +134,7 @@ public class ClickScreen extends GuiScreen  {
             }
         }
 
+        La.getINSTANCE().getConfigScreen().mouseReleased(mouseX, mouseY,state);
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
+import org.lwjglx.input.Mouse;
 
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
@@ -30,6 +31,22 @@ public class OGLUtility {
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glScissor((int) (x * scaleFactor), (int) (Minecraft.getMinecraft().displayHeight - (y + height) * scaleFactor), (int) (width * scaleFactor), (int) ((height + 14) * scaleFactor));
+        runnable.run();
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glPopMatrix();
+    }
+
+    public void scissor(float x, float y, float width, float height, float intervalY, Runnable runnable) {
+        int scaleFactor = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
+        int scissorX = (int) (x * scaleFactor);
+        int scissorY = (int) (Minecraft.getMinecraft().displayHeight - (y + intervalY - 14) * scaleFactor);
+        int scissorWidth = (int) (width * scaleFactor);
+        //gl默认的button似乎是带有Y的
+        int scissorHeight = (int) (((int) (height * scaleFactor)));
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(scissorX, scissorY, scissorWidth, scissorHeight);
         runnable.run();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();

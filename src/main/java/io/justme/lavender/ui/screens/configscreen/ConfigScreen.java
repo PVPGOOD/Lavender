@@ -5,11 +5,13 @@ import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButton
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
+import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.*;
 import java.io.IOException;
@@ -24,17 +26,17 @@ import java.util.ArrayList;
 @Setter
 public class ConfigScreen extends GuiScreen {
 
+    private ScaledResolution scaledResolution;
     private float x,y,width,height;
     private float draggingX,draggingY;
     private boolean dragging;
-
     private final ArrayList<AbstractConfigFrame> abstractConfigFrames = new ArrayList<>();
+    private boolean expanded;
+    private String selectConfig;
 
     public ConfigScreen() {
-        setX(0);
-        setY(0);
-        setWidth(150);
-        setHeight(250);
+
+        setExpanded(false);
 
         getAbstractConfigFrames().add(La.getINSTANCE().getConfigListFrame());
         getAbstractConfigFrames().add(La.getINSTANCE().getConfigButtonFrame());
@@ -43,28 +45,47 @@ public class ConfigScreen extends GuiScreen {
     @Override
     public void initGui()
     {
+        super.initGui();
+
+        setSelectConfig(La.getINSTANCE().getConfigsManager().getPageName());
+
+        if (getScaledResolution() == null) {
+            setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
+        } else {
+            setScaledResolution(null);
+            setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
+        }
+
+        setWidth(150);
+        setHeight(250);
+        setX(getScaledResolution().getScaledWidth() - getWidth() - 5);
+        setY(getScaledResolution().getScaledHeight() - getHeight() - 5);
 
         for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
             frame.initGui();
         }
 
-        super.initGui();
     }
 
     //画板
+
+    //实际为ListFrame Y
+    private int finalHeight = 200;
     private final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+    private Animation openingAnimationY = new Animation(15);
+    private Animation openingAnimationHeight = new Animation(50);
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        RenderUtility.drawRect(getX(),getY(),getWidth(),getHeight(),new Color(0,0,0,128));
-        
-        for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),16,La.getINSTANCE().getClickScreen().getClickGuiColor());
 
-            switch (frame.getName()) {
+        for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
+//
+           switch (frame.getName()) {
                 case "ListFrame" -> {
-                    frame.setY(getY() + 20);
-                    frame.setHeight(100);
+                    frame.setY(getY());
+                    frame.setHeight(getHeight() - 50);
                 }
 
                 case "ButtonFrame" -> {
@@ -73,20 +94,30 @@ public class ConfigScreen extends GuiScreen {
                 }
             }
 
+
             frame.setX(getX());
             frame.setWidth(getWidth());
-
             frame.drawScreen(mouseX, mouseY, partialTicks);
         }
 
-        if (isDragging()){
-            setX(mouseX - getDraggingX());
-            setY(mouseY - getDraggingY());
-        }
+//        if (isDragging()){
+//            setX(mouseX - getDraggingX());
+//            setY(mouseY - getDraggingY());
+//        }
+
+
+        setY(getOpeningAnimationY().getValue());
+        setHeight(getOpeningAnimationHeight().getValue());
+
+        getOpeningAnimationHeight().animate(isExpanded() ? 35 : getFinalHeight() - 5,0.1f);
+        getOpeningAnimationHeight().update();
+
+        getOpeningAnimationY().animate(isExpanded() ? getScaledResolution().getScaledHeight() - 45 : getScaledResolution().getScaledHeight() - finalHeight - 5,0.1f);
+        getOpeningAnimationY().update();
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
@@ -105,9 +136,15 @@ public class ConfigScreen extends GuiScreen {
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state)
+    public void mouseReleased(int mouseX, int mouseY, int state)
     {
         super.mouseReleased(mouseX, mouseY, state);
+
+        if (MouseUtility.isHovering(getX(), getY(), getWidth(), 20, mouseX, mouseY)) {
+            if (state == 1) {
+                setExpanded(!isExpanded());
+            }
+        }
 
         setDragging(state == 1 && isDragging());
 

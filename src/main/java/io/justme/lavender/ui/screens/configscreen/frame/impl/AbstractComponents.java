@@ -20,7 +20,6 @@ public abstract class AbstractComponents {
     private float x,y,width,height;
     private String name;
     private ComponentsEnum type;
-
     public AbstractComponents(String name) {
         this.name = name;
     }

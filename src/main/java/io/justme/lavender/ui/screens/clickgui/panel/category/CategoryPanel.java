@@ -1,5 +1,6 @@
 package io.justme.lavender.ui.screens.clickgui.panel.category;
 
+import io.justme.lavender.La;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
@@ -70,7 +71,7 @@ public class CategoryPanel extends AbstractComponent {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractControlsComponents abstractControlsComponents : getComponent()) {
             if (abstractControlsComponents.isHover(mouseX,mouseY)) {
-                System.out.println(abstractControlsComponents.getAbstractCategory());
+                La.getINSTANCE().getClickScreen().setCurrentCategory(abstractControlsComponents.getAbstractCategory());
             }
         }
     }

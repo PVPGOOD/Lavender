@@ -317,10 +317,6 @@ public class ItemRenderer
     public void renderItemInFirstPerson(float partialTicks)
     {
 
-        if (Minecraft.getMinecraft().currentScreen instanceof ClickScreen) {
-            return;
-        }
-
         if (!Config.isShaders() || !Shaders.isSkipRenderHand())
         {
             float f = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
