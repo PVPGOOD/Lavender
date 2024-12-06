@@ -1,6 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.components.chill;
 
 import io.justme.lavender.module.Category;
+import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
@@ -19,9 +20,18 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractControlsComponents extends AbstractComponent {
 
-    //不仅限category
+    //category
     public Category abstractCategory;
     private final Animation categoryTypeBackgroundAlpha = new Animation(155);
+
+    //module
+    private Module module;
+    private final Animation moduleButtonPosXAnimation = new Animation();
+    private final Animation moduleButtonPosYAnimation = new Animation();
+
+    public boolean isHover(int mouseX, int mouseY) {
+        return super.isHover(mouseX, mouseY);
+    }
 
     @Override
     public abstract void initGui();

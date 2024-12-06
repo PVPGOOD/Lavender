@@ -15,6 +15,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractComponent {
 
+    private String name;
     private float x,y,width,height;
 
     public boolean isHover(int mouseX, int mouseY) {

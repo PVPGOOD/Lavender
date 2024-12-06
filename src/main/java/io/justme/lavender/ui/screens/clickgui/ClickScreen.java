@@ -6,6 +6,7 @@ import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
+import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
@@ -40,6 +41,7 @@ public class ClickScreen extends GuiScreen  {
         setHeight(100);
 
         getComponent().add(new CategoryPanel());
+        getComponent().add(new ModulePanel());
     }
 
     @Override
@@ -66,18 +68,30 @@ public class ClickScreen extends GuiScreen  {
 
         RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
 
-        int abstractComponentInitY = 50;
+        int abstractComponentInitY = 30;
+        int categoryWidth = 120;
         for (AbstractComponent abstractComponent : getComponent()) {
-            abstractComponent.setX(getX());
-            abstractComponent.setY(getY() + abstractComponentInitY);
-            abstractComponent.setWidth(40);
-            abstractComponent.setHeight(getHeight() - abstractComponentInitY);
+            switch (abstractComponent.getName()) {
+                case "CategoryPanel" -> {
+                    abstractComponent.setX(getX());
+                    abstractComponent.setY(getY() + abstractComponentInitY);
+                    abstractComponent.setWidth(categoryWidth);
+                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
+                }
+
+                case "ModulePanel" -> {
+                    abstractComponent.setX(getX() + categoryWidth);
+                    abstractComponent.setY(getY() + abstractComponentInitY);
+                    abstractComponent.setWidth(getWidth() - categoryWidth);
+                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
+                }
+            }
 
             abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
         }
 
         //横线
-        RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 149, 191));
+        RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
         FontDrawer fontManager = La.getINSTANCE().getFontManager().getSFBold18();
         fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
 

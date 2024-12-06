@@ -1,6 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.panel.category.chill;
 
 import io.justme.lavender.La;
+import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -17,6 +18,7 @@ import java.io.IOException;
  **/
 @Getter
 public class CategoryIcon extends AbstractControlsComponents {
+
 
     public Category category;
 
@@ -36,15 +38,21 @@ public class CategoryIcon extends AbstractControlsComponents {
 
         int color = ((int)(getCategory() == La.getINSTANCE().getClickScreen().getCurrentCategory() ? 255 : getCategoryTypeBackgroundAlpha().getValue()));
 
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),6,new Color(250, 250, 250,color));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),14,new Color(243, 218, 224,color));
+
+        FontDrawer fontManager = La.getINSTANCE().getFontManager().getPingFang_Medium22();
+        fontManager.drawString(getCategory().getName(),
+                getX() + (getWidth() /2f) - (fontManager.getStringWidth(getCategory().getName()) /2f),
+                getY() + (getHeight() / 4),
+                new Color(129, 57, 80,255).getRGB());
 
         RenderUtility.drawImage(
                 new ResourceLocation("la/clickgui/category/" + getCategory().getName() + ".png"),
-                getX() + (getWidth() / 5),
-                getY() + (getHeight() / 5),
-                16,
-                16,
-                new Color(255, 177, 210,255));
+                getX() + 8,
+                getY() + (getHeight() / 4),
+                12,
+                12,
+                new Color(129, 57, 80,255));
 
     }
 

@@ -24,6 +24,8 @@ public class CategoryPanel extends AbstractComponent {
     private final ArrayList<AbstractControlsComponents> component = new ArrayList<>();
 
     public CategoryPanel() {
+        this.setName("CategoryPanel");
+
         getComponent().add(new CategoryIcon(Category.FIGHT));
         getComponent().add(new CategoryIcon(Category.VISUAL));
         getComponent().add(new CategoryIcon(Category.MOVEMENTS));
@@ -47,22 +49,22 @@ public class CategoryPanel extends AbstractComponent {
                 getY(),
                 getWidth(),
                 getHeight(),
-                new Color(253, 220, 235,155),28,0,0,0);
+                new Color(253, 235, 241),28,0,0,0);
 
         //分类图标
         int intervalY = 0;
-        int abstractComponentInitY = 50;
+        int abstractComponentInitY = 10;
         for (AbstractControlsComponents abstractControlsComponents : getComponent()) {
             abstractControlsComponents.setX(getX() + 4);
             abstractControlsComponents.setY(getY() + intervalY + abstractComponentInitY);
-            abstractControlsComponents.setWidth(30);
-            abstractControlsComponents.setHeight(30);
+            abstractControlsComponents.setWidth(110);
+            abstractControlsComponents.setHeight(26);
 
-            abstractControlsComponents.getCategoryTypeBackgroundAlpha().animate(!abstractControlsComponents.isHover(mouseX,mouseY) ? 155 : 255,0.1f, Easings.LINEAR);
+            abstractControlsComponents.getCategoryTypeBackgroundAlpha().animate(!abstractControlsComponents.isHover(mouseX,mouseY) ? 0 : 255,0.1f, Easings.LINEAR);
             abstractControlsComponents.getCategoryTypeBackgroundAlpha().update();
 
             abstractControlsComponents.drawScreen(mouseX, mouseY, partialTicks);
-            intervalY += 40;
+            intervalY += 26;
         }
 
     }
