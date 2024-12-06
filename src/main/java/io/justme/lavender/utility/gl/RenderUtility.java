@@ -115,17 +115,18 @@ public class RenderUtility {
 
     public void drawImage(ResourceLocation image, float x, float y, float width, float height, Color color) {
         new ScaledResolution(Minecraft.getMinecraft());
-        GL11.glDisable((int) 2929);
-        GL11.glEnable((int) 3042);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glDepthMask(false);
-        OpenGlHelper.glBlendFunc(770,  771,  1,  0);
-        GL11.glColor4f((float) color.getRed() / 255,  (float) color.getGreen() /255,  (float) color.getBlue() /255,  (float) color.getAlpha() / 255);
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+        GL11.glColor4f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) color.getAlpha() / 255);
         Minecraft.getMinecraft().getTextureManager().bindTexture(image);
-        drawModalRectWithCustomSizedTexture( x,  y,0.0f, 0.0f, width,
-                height, width, height);
+        drawModalRectWithCustomSizedTexture(x, y, 0.0f, 0.0f, width, height, width, height);
         GL11.glDepthMask(true);
-        GL11.glDisable((int) 3042);
-        GL11.glEnable((int) 2929);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     public void drawModalRectWithCustomSizedTexture(float x, float y, float u, float v, float width,
