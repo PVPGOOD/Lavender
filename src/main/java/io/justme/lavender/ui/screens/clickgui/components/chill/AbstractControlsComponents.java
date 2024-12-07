@@ -3,6 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.components.chill;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
+import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,10 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractControlsComponents extends AbstractComponent {
 
+    private final TimerUtility clickedTimerUtility = new TimerUtility();
+    private float draggingX,draggingY;
+    private boolean dragging,shouldPop,PoppingUp;
+
     //category
     public Category abstractCategory;
     private final Animation categoryTypeBackgroundAlpha = new Animation(155);
@@ -28,6 +33,8 @@ public abstract class AbstractControlsComponents extends AbstractComponent {
     private Module module;
     private final Animation moduleButtonPosXAnimation = new Animation();
     private final Animation moduleButtonPosYAnimation = new Animation();
+    private final Animation draggingAnimation = new Animation();
+    private final Animation popUpAnimation = new Animation(1);
 
     public boolean isHover(int mouseX, int mouseY) {
         return super.isHover(mouseX, mouseY);

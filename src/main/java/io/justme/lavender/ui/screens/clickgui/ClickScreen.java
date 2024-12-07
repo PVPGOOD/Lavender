@@ -2,9 +2,9 @@ package io.justme.lavender.ui.screens.clickgui;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
 import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -15,7 +15,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -29,7 +29,9 @@ public class ClickScreen extends GuiScreen  {
     private float x,y,width,height;
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling;
-    private ArrayList<AbstractComponent> component = new ArrayList<>();
+    private final CopyOnWriteArrayList<AbstractComponent> components = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AbstractControlsComponents> modulePanelComponent = new CopyOnWriteArrayList<>();
+
     private Category currentCategory = Category.FIGHT;
 
     private Color clickGuiColor = new Color(255, 240, 245);
@@ -39,15 +41,18 @@ public class ClickScreen extends GuiScreen  {
         setY(10);
         setWidth(100);
         setHeight(100);
-
-        getComponent().add(new CategoryPanel());
-        getComponent().add(new ModulePanel());
     }
 
     @Override
     public void initGui() {
 
-        for (AbstractComponent abstractComponent : getComponent()) {
+        //这两是固定的 后续应该还有 sidebar和searchbar
+        if (getComponents().isEmpty()) {
+            getComponents().add(new CategoryPanel());
+            getComponents().add(new ModulePanel());
+        }
+
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             abstractComponent.initGui();
         }
 
@@ -70,7 +75,7 @@ public class ClickScreen extends GuiScreen  {
 
         int abstractComponentInitY = 30;
         int categoryWidth = 120;
-        for (AbstractComponent abstractComponent : getComponent()) {
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             switch (abstractComponent.getName()) {
                 case "CategoryPanel" -> {
                     abstractComponent.setX(getX());
@@ -103,7 +108,7 @@ public class ClickScreen extends GuiScreen  {
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
 
-        for (AbstractComponent abstractComponent : getComponent()) {
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             abstractComponent.keyTyped(typedChar, keyCode);
         }
 
@@ -125,7 +130,7 @@ public class ClickScreen extends GuiScreen  {
         }
 
 
-        for (AbstractComponent abstractComponent : getComponent()) {
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
@@ -134,7 +139,7 @@ public class ClickScreen extends GuiScreen  {
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
-        for (AbstractComponent abstractComponent : getComponent()) {
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             abstractComponent.mouseReleased(mouseX, mouseY, state);
         }
 
@@ -166,4 +171,6 @@ public class ClickScreen extends GuiScreen  {
     public boolean doesGuiPauseGame() {
         return false;
     }
+
+
 }

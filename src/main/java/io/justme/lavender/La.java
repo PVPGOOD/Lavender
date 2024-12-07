@@ -9,6 +9,7 @@ import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.ui.elements.ElementsManager;
+import io.justme.lavender.ui.screens.ScreenTest;
 import io.justme.lavender.ui.screens.clickgui.ClickScreen;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
@@ -115,6 +116,10 @@ public class La {
 
         if (event.getKeyCode() == Keyboard.KEY_P) {
             Minecraft.getMinecraft().displayGuiScreen(configScreen);
+        }
+
+        if (event.getKeyCode() == Keyboard.KEY_G) {
+            Minecraft.getMinecraft().displayGuiScreen(new ScreenTest());
         }
     }
 

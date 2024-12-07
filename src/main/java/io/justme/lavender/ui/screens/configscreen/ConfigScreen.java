@@ -16,6 +16,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -30,7 +31,7 @@ public class ConfigScreen extends GuiScreen {
     private float x,y,width,height;
     private float draggingX,draggingY;
     private boolean dragging;
-    private final ArrayList<AbstractConfigFrame> abstractConfigFrames = new ArrayList<>();
+    private final CopyOnWriteArrayList<AbstractConfigFrame> abstractConfigFrames = new CopyOnWriteArrayList<>();
     private boolean expanded;
     private String selectConfig;
 
