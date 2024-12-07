@@ -1,5 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.components;
 
+import io.justme.lavender.value.impl.BoolValue;
+import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +17,22 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractComponent {
 
-    private String name;
-    private float x,y,width,height;
+    public String name;
+    public float x,y,width,height;
+
+    //临时的 问题丢给我以后吧...
+    public final MultiBoolValue comBoxOption = new MultiBoolValue("comBox",
+            new BoolValue("test", true),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false),
+            new BoolValue("test", false)
+    );
 
     public boolean isHover(int mouseX, int mouseY) {
         return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();

@@ -2,9 +2,9 @@ package io.justme.lavender.ui.screens.clickgui.panel.popupscreen;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.controls.*;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -15,6 +15,7 @@ import io.justme.lavender.module.Module;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -22,28 +23,40 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class PopUpScreen extends AbstractComponent {
+public class PopupScreen extends AbstractComponent {
 
     private float x,y,width,height;
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling,expanded;
     private Module module;
 
+    private CopyOnWriteArrayList<AbstractControlsComponents> controlsComponents = new CopyOnWriteArrayList<>();
     private Animation animationHeight = new Animation(20);
     private Animation animationWidth = new Animation(100);
 
 
-    public PopUpScreen(Module module) {
-        this.setName("SubScreenPanel");
+    public PopupScreen(Module module) {
+        this.setName("PopupScreen");
         this.module = module;
 
+        getControlsComponents().add(new SliderControls());
+        getControlsComponents().add(new SwitchControls());
+        getControlsComponents().add(new CheckboxControls());
+        getControlsComponents().add(new ModeControls());
+        getControlsComponents().add(new ComBoxControls());
 
         setWidth(150);
         setHeight(200);
+
+
     }
 
     @Override
     public void initGui() {
+
+        for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
+            controlsComponent.initGui();
+        }
 
     }
 
@@ -62,6 +75,16 @@ public class PopUpScreen extends AbstractComponent {
                 getX() + animationWidth/2f - (fontDrawer.getStringWidth(getModule().getName()) /2f),
                 getY() + 3,
                 new Color(129, 57, 80,255).getRGB());
+
+        //值
+        int intervalY = 0;
+        for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
+            controlsComponent.setX(getX() + 4);
+            controlsComponent.setY(getY() + intervalY +  25);
+            controlsComponent.drawScreen(mouseX,mouseY,partialTicks);
+
+            intervalY += 30;
+        }
 
         if (isDragging()){
             setX(mouseX - getDraggingX());
@@ -106,6 +129,12 @@ public class PopUpScreen extends AbstractComponent {
                     setScaling(true);
                 }
 
+                if (isHover(mouseX,mouseY)) {
+                    for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
+                        controlsComponent.mouseClicked(mouseX,mouseY,mouseButton);
+                    }
+                }
+
                 if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20,mouseX,mouseY)){
                     La.getINSTANCE().getClickScreen().getComponents().remove(this);
                     La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(getModule()));
@@ -132,6 +161,10 @@ public class PopUpScreen extends AbstractComponent {
             if (isScaling()){
                 setScaling(false);
             }
+        }
+
+        for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
+            controlsComponent.mouseReleased(mouseX,mouseY,state);
         }
     }
 

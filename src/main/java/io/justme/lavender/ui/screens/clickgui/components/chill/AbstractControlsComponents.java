@@ -5,6 +5,9 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.math.animation.Animation;
+import io.justme.lavender.value.impl.BoolValue;
+import io.justme.lavender.value.impl.ModeValue;
+import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,6 +38,13 @@ public abstract class AbstractControlsComponents extends AbstractComponent {
     private final Animation moduleButtonPosYAnimation = new Animation();
     private final Animation draggingAnimation = new Animation();
     private final Animation popUpAnimation = new Animation(1);
+
+    //value
+    //有点特殊..
+    public String comBoxChillName;
+    @Getter
+    @Setter
+    public static String comBoxSelectingName;
 
     public boolean isHover(int mouseX, int mouseY) {
         return super.isHover(mouseX, mouseY);

@@ -1,18 +1,19 @@
 package io.justme.lavender.ui.screens.clickgui.panel.category;
 
 import io.justme.lavender.La;
+import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
-import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryIcon;
+import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryModuleButton;
+import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryOtherButton;
 import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -21,17 +22,21 @@ import java.util.ArrayList;
 @Getter
 public class CategoryPanel extends AbstractComponent {
 
-    private final ArrayList<AbstractControlsComponents> component = new ArrayList<>();
+    private final CopyOnWriteArrayList<AbstractControlsComponents> categoryComponents = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AbstractControlsComponents> otherComponents = new CopyOnWriteArrayList<>();
 
     public CategoryPanel() {
         this.setName("CategoryPanel");
 
-        getComponent().add(new CategoryIcon(Category.FIGHT));
-        getComponent().add(new CategoryIcon(Category.VISUAL));
-        getComponent().add(new CategoryIcon(Category.MOVEMENTS));
-        getComponent().add(new CategoryIcon(Category.PLAYER));
-        getComponent().add(new CategoryIcon(Category.World));
-        getComponent().add(new CategoryIcon(Category.Exploit));
+        getCategoryComponents().add(new CategoryModuleButton(Category.FIGHT));
+        getCategoryComponents().add(new CategoryModuleButton(Category.VISUAL));
+        getCategoryComponents().add(new CategoryModuleButton(Category.MOVEMENTS));
+        getCategoryComponents().add(new CategoryModuleButton(Category.PLAYER));
+        getCategoryComponents().add(new CategoryModuleButton(Category.World));
+        getCategoryComponents().add(new CategoryModuleButton(Category.Exploit));
+
+        getOtherComponents().add(new CategoryOtherButton(CategoryTypes.CLIENT_SETTINGS));
+        getOtherComponents().add(new CategoryOtherButton(CategoryTypes.MANAGER_POPPING));
     }
 
     @Override
@@ -41,6 +46,7 @@ public class CategoryPanel extends AbstractComponent {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
 
         //背景
         RenderUtility.drawRoundRectWithCustomRounded(
@@ -52,28 +58,48 @@ public class CategoryPanel extends AbstractComponent {
                 new Color(253, 235, 241),28,0,0,0);
 
         //分类图标
-        int intervalY = 0;
-        int abstractComponentInitY = 10;
-        for (AbstractControlsComponents abstractControlsComponents : getComponent()) {
-            abstractControlsComponents.setX(getX() + 4);
-            abstractControlsComponents.setY(getY() + intervalY + abstractComponentInitY);
-            abstractControlsComponents.setWidth(110);
-            abstractControlsComponents.setHeight(26);
+        //模块分类
+        int categoryComponentsIntervalY = 0;
+        int categoryComponentsInitY = 25;
+        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY - 15,new Color(129, 57, 80,128).getRGB());
+        for (AbstractControlsComponents categoryComponents : getCategoryComponents()) {
+            categoryComponents.setX(getX() + 4);
+            categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY);
+            categoryComponents.setWidth(110);
+            categoryComponents.setHeight(26);
 
-            abstractControlsComponents.getCategoryTypeBackgroundAlpha().animate(!abstractControlsComponents.isHover(mouseX,mouseY) ? 0 : 255,0.1f, Easings.LINEAR);
-            abstractControlsComponents.getCategoryTypeBackgroundAlpha().update();
+            categoryComponents.getCategoryTypeBackgroundAlpha().animate(!categoryComponents.isHover(mouseX,mouseY) ? 0 : 255,0.1f, Easings.LINEAR);
+            categoryComponents.getCategoryTypeBackgroundAlpha().update();
 
-            abstractControlsComponents.drawScreen(mouseX, mouseY, partialTicks);
-            intervalY += 26;
+            categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
+            categoryComponentsIntervalY += 26;
         }
+
+        int categoryOtherComponentsIntervalY = 0;
+        int categoryOtherComponentsInitY = categoryComponentsInitY + categoryComponentsIntervalY + 50;
+        fontDrawer.drawString("Other",getX() + 4,getY() + categoryOtherComponentsInitY - 15,new Color(129, 57, 80,128).getRGB());
+        for (AbstractControlsComponents otherComponents : getOtherComponents()) {
+            otherComponents.setX(getX() + 4);
+            otherComponents.setY(getY() + categoryOtherComponentsIntervalY + categoryOtherComponentsInitY);
+            otherComponents.setWidth(110);
+            otherComponents.setHeight(26);
+
+            otherComponents.getCategoryTypeBackgroundAlpha().animate(!otherComponents.isHover(mouseX,mouseY) ? 0 : 255,0.1f, Easings.LINEAR);
+            otherComponents.getCategoryTypeBackgroundAlpha().update();
+
+            otherComponents.drawScreen(mouseX, mouseY, partialTicks);
+            categoryOtherComponentsIntervalY += 26;
+        }
+
+
 
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (AbstractControlsComponents abstractControlsComponents : getComponent()) {
-            if (abstractControlsComponents.isHover(mouseX,mouseY)) {
-                La.getINSTANCE().getClickScreen().setCurrentCategory(abstractControlsComponents.getAbstractCategory());
+        for (AbstractControlsComponents categoryComponents : getCategoryComponents()) {
+            if (categoryComponents.isHover(mouseX,mouseY)) {
+                La.getINSTANCE().getClickScreen().setCurrentCategory(categoryComponents.getAbstractCategory());
             }
         }
     }

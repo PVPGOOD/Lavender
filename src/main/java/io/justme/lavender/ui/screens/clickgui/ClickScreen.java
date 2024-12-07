@@ -29,12 +29,11 @@ public class ClickScreen extends GuiScreen  {
     private float x,y,width,height;
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling;
+    private Category currentCategory = Category.FIGHT;
+    private Color clickGuiColor = new Color(255, 240, 245);
+
     private final CopyOnWriteArrayList<AbstractComponent> components = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<AbstractControlsComponents> modulePanelComponent = new CopyOnWriteArrayList<>();
-
-    private Category currentCategory = Category.FIGHT;
-
-    private Color clickGuiColor = new Color(255, 240, 245);
 
     public ClickScreen() {
         setX(10);
@@ -63,6 +62,7 @@ public class ClickScreen extends GuiScreen  {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
         if (isDragging()){
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
@@ -75,25 +75,6 @@ public class ClickScreen extends GuiScreen  {
 
         int abstractComponentInitY = 30;
         int categoryWidth = 120;
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            switch (abstractComponent.getName()) {
-                case "CategoryPanel" -> {
-                    abstractComponent.setX(getX());
-                    abstractComponent.setY(getY() + abstractComponentInitY);
-                    abstractComponent.setWidth(categoryWidth);
-                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
-                }
-
-                case "ModulePanel" -> {
-                    abstractComponent.setX(getX() + categoryWidth);
-                    abstractComponent.setY(getY() + abstractComponentInitY);
-                    abstractComponent.setWidth(getWidth() - categoryWidth);
-                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
-                }
-            }
-
-            abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
-        }
 
         //横线
         RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
@@ -103,6 +84,28 @@ public class ClickScreen extends GuiScreen  {
         super.drawScreen(mouseX, mouseY, partialTicks);
         La.getINSTANCE().getConfigScreen().drawScreen(mouseX, mouseY, partialTicks);
 
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
+            switch (abstractComponent.getName()) {
+                case "CategoryPanel" -> {
+                    abstractComponent.setX(getX());
+                    abstractComponent.setY(getY() + abstractComponentInitY);
+                    abstractComponent.setWidth(categoryWidth);
+                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
+                    abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+                }
+
+                case "ModulePanel" -> {
+                    abstractComponent.setX(getX() + categoryWidth);
+                    abstractComponent.setY(getY() + abstractComponentInitY);
+                    abstractComponent.setWidth(getWidth() - categoryWidth);
+                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
+                    abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+                }
+
+                case "PopupScreen", "PopupComBox" -> abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+
+            }
+        }
     }
 
     @Override
@@ -110,6 +113,10 @@ public class ClickScreen extends GuiScreen  {
 
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             abstractComponent.keyTyped(typedChar, keyCode);
+
+            if (abstractComponent.getName().equalsIgnoreCase("PopupComBox")) {
+                return;
+            }
         }
 
         super.keyTyped(typedChar, keyCode);
@@ -129,9 +136,14 @@ public class ClickScreen extends GuiScreen  {
             }
         }
 
-
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
+            switch (abstractComponent.getName()) {
+                case "PopupComBox" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
+
+                case "CategoryPanel", "PopupScreen", "ModulePanel" -> {
+                    abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
+                }
+            }
         }
 
         La.getINSTANCE().getConfigScreen().mouseClicked(mouseX, mouseY,mouseButton);
@@ -139,10 +151,17 @@ public class ClickScreen extends GuiScreen  {
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            abstractComponent.mouseReleased(mouseX, mouseY, state);
-        }
 
+
+        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
+            switch (abstractComponent.getName()) {
+                case "PopupComBox" -> abstractComponent.mouseReleased(mouseX, mouseY, state);
+
+                case "CategoryPanel", "PopupScreen", "ModulePanel" -> {
+                    abstractComponent.mouseReleased(mouseX, mouseY, state);
+                }
+            }
+        }
 
         if (state == 0){
             if (isDragging()) {

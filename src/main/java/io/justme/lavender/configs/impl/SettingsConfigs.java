@@ -57,7 +57,7 @@ public class SettingsConfigs extends AbstractConfigs {
                                     val boolValue = (BoolValue) value;
                                     boolValue.setValue(valueObject.get(value.getName()).getAsBoolean());
                                 } else if (value instanceof NumberValue numberValue) {
-                                    numberValue.setValue(valueObject.get(value.getName()).getAsDouble());
+                                    numberValue.setValue((float) valueObject.get(value.getName()).getAsDouble());
                                 } else if (value instanceof ColorValue) {
                                     val colorValueObject = valueObject.get(value.getName()).getAsJsonObject();
                                     ((ColorValue) value)

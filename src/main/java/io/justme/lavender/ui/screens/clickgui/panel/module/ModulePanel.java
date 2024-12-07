@@ -5,7 +5,7 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
-import io.justme.lavender.ui.screens.clickgui.panel.popupscreen.PopUpScreen;
+import io.justme.lavender.ui.screens.clickgui.panel.popupscreen.PopupScreen;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,6 @@ import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -96,7 +95,7 @@ public class ModulePanel extends AbstractComponent {
         if (shouldCheckAnimation && componentToRemove != null) {
             if (componentToRemove.getPopUpAnimation().isDone()) {
                 La.getINSTANCE().getClickScreen().getModulePanelComponent().remove(componentToRemove);
-                PopUpScreen popUpScreen = new PopUpScreen(componentToRemove.getModule());
+                PopupScreen popUpScreen = new PopupScreen(componentToRemove.getModule());
                 popUpScreen.setX(componentToRemove.getX());
                 popUpScreen.setY(componentToRemove.getY());
                 La.getINSTANCE().getClickScreen().getComponents().add(popUpScreen);

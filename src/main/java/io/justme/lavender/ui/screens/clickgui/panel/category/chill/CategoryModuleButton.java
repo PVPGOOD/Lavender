@@ -5,7 +5,6 @@ import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
 import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 
@@ -17,12 +16,12 @@ import java.io.IOException;
  * @since 2024/12/5
  **/
 @Getter
-public class CategoryIcon extends AbstractControlsComponents {
+public class CategoryModuleButton extends AbstractControlsComponents {
 
 
     public Category category;
 
-    public CategoryIcon(Category category) {
+    public CategoryModuleButton(Category category) {
         abstractCategory = category;
 
         this.category = category;
@@ -36,9 +35,9 @@ public class CategoryIcon extends AbstractControlsComponents {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        int color = ((int)(getCategory() == La.getINSTANCE().getClickScreen().getCurrentCategory() ? 255 : getCategoryTypeBackgroundAlpha().getValue()));
+        int alpha = ((int)(getCategory() == La.getINSTANCE().getClickScreen().getCurrentCategory() ? 255 : getCategoryTypeBackgroundAlpha().getValue()));
 
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),14,new Color(243, 218, 224,color));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),14,new Color(243, 218, 224,alpha));
 
         FontDrawer fontManager = La.getINSTANCE().getFontManager().getPingFang_Medium22();
         fontManager.drawString(getCategory().getName(),

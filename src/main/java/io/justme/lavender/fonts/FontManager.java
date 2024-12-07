@@ -45,6 +45,15 @@ public final class FontManager {
     private final FontDrawer PingFang_Heavy18;
     private final FontDrawer PingFang_Heavy22;
 
+    private final FontDrawer CheckMark4;
+    private final FontDrawer CheckMark5;
+    private final FontDrawer CheckMark6;
+    private final FontDrawer CheckMark7;
+    private final FontDrawer CheckMark8;
+    private final FontDrawer CheckMark10;
+    private final FontDrawer CheckMark12;
+    private final FontDrawer CheckMark14;
+
 
 
     public FontManager() {
@@ -83,6 +92,16 @@ public final class FontManager {
             PingFang_Heavy14 = createByResource("PingFang-Heavy.ttf",14f,true);
             PingFang_Heavy18 = createByResource("PingFang-Heavy.ttf",18f,true);
             PingFang_Heavy22 = createByResource("PingFang-Heavy.ttf",22f,true);
+
+            CheckMark4 = createByResource("CheckMark.ttf",4f,true);
+            CheckMark5 = createByResource("CheckMark.ttf",5f,true);
+            CheckMark6 = createByResource("CheckMark.ttf",6f,true);
+            CheckMark7 = createByResource("CheckMark.ttf",7f,true);
+            CheckMark8 = createByResource("CheckMark.ttf",8f,true);
+            CheckMark10 = createByResource("CheckMark.ttf",10f,true);
+            CheckMark12 = createByResource("CheckMark.ttf",12f,true);
+            CheckMark14 = createByResource("CheckMark.ttf",14f,true);
+
 
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
