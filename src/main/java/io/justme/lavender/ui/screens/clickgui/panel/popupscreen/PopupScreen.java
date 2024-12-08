@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Setter
 public class PopupScreen extends AbstractComponent {
 
+    private int mouseX,mouseY;
     private float ScrollOffset = 0;
     private float maxScroll = 0;
     private float x,y,width,height,draggingX,draggingY,scalingWidth, scalingHeight,lastMouseX,lastMouseY;
@@ -190,6 +191,9 @@ public class PopupScreen extends AbstractComponent {
 
         getScrollAnimation().update();
 
+        setMouseX(mouseX);
+        setMouseY(mouseY);
+
         setMaxScroll(Math.max(0, intervalY.get() + initY - animationHeight));
     }
 
@@ -197,12 +201,11 @@ public class PopupScreen extends AbstractComponent {
     @Override
     public void handleMouseInput() throws IOException {
 
-        if (isHover(La.getINSTANCE().getMouseX(),La.getINSTANCE().getMouseY())) {
+        if (isHover(getMouseX(),getMouseY())) {
             int scroll = MouseUtility.getScroll();
             if (scroll != 0) {
                 float targetOffset = ScrollOffset + scroll * 100;
                 targetOffset = Math.max(-maxScroll, Math.min(0, targetOffset));
-
                 scrollAnimation.animate(targetOffset, 0.3f, Easings.QUAD_OUT);
             }
         }
