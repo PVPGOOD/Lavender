@@ -155,6 +155,8 @@ public class PopupScreen extends AbstractComponent {
                 }
 
             }
+            getScrollbarControls().drawScreen(mouseX, mouseY, partialTicks);
+
         });
 
         if (isDragging()){
@@ -178,8 +180,6 @@ public class PopupScreen extends AbstractComponent {
         getScrollbarControls().setMaxScrollOffset(getMaxScroll());
         getScrollbarControls().setContentHeight(intervalY.get());
         getScrollbarControls().setViewHeight(animationHeight - initY);
-
-        getScrollbarControls().drawScreen(mouseX, mouseY, partialTicks);
 
         getAnimationWidth().animate(isExpanded() ? getWidth() : 100, 0.1f);
         getAnimationHeight().animate(isExpanded() ? getHeight() : 20, 0.1f);
