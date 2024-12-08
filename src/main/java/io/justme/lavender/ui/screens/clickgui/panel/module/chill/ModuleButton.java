@@ -57,7 +57,7 @@ public class ModuleButton extends AbstractControlsComponent {
         //这边得延迟12毫秒才能与 ModulePanel::drawScreen() 同步 因为判断在那边 这边立刻执行会导致不同步
         if (mouseButton == 0) {
             if (isHover(mouseX, mouseY)) {
-                Timer timer = new Timer(130, e -> {
+                Timer timer = new Timer(110, e -> {
                     if (isDragging()) {
                         getPopUpAnimation().animate(0.8f, 0.1f);
                     }
@@ -73,6 +73,8 @@ public class ModuleButton extends AbstractControlsComponent {
         if (state == 0) {
             if (isHover(mouseX, mouseY) && isPoppingUp()) {
                 getPopUpAnimation().animate(0.0f, 0.1f);
+            } else {
+                getPopUpAnimation().animate(1f, 0.1f);
             }
         }
     }

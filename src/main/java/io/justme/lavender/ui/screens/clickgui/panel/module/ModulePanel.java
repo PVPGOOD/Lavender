@@ -22,6 +22,7 @@ import java.io.IOException;
 @Setter
 public class ModulePanel extends AbstractComponent {
 
+    private float lastMouseX,lastMouseY;
     private boolean shouldCheckAnimation = false;
     private AbstractControlsComponent componentToRemove;
 
@@ -78,7 +79,7 @@ public class ModulePanel extends AbstractComponent {
 
             if (Mouse.isButtonDown(0)) {
                 if (abstractControlsComponent.isHover(mouseX, mouseY) && getLastModule() == abstractControlsComponent.getModule()) {
-                    if (abstractControlsComponent.getClickedTimerUtility().hasTimeElapsed(120)) {
+                    if (abstractControlsComponent.getClickedTimerUtility().hasTimeElapsed(100)) {
                         abstractControlsComponent.setDraggingX(mouseX - abstractControlsComponent.getX());
                         abstractControlsComponent.setDraggingY(mouseY - abstractControlsComponent.getY());
                         abstractControlsComponent.setDragging(true);
@@ -134,6 +135,9 @@ public class ModulePanel extends AbstractComponent {
 //                        La.getINSTANCE().getClickScreen().getComponents().add(new SubScreenPanel(module));
 //                    });
         }
+
+        setLastMouseX(mouseX);
+        setLastMouseY(mouseY);
     }
 
     @Override
@@ -141,7 +145,7 @@ public class ModulePanel extends AbstractComponent {
         switch (state) {
             case 0 -> {
                 for (AbstractControlsComponent abstractControlsComponent : La.getINSTANCE().getClickScreen().getModulePanelComponent()) {
-                    if (abstractControlsComponent.isHover(mouseX, mouseY) && !abstractControlsComponent.isDragging()) {
+                    if (abstractControlsComponent.isHover(mouseX, mouseY) && getLastMouseX() == mouseX && getLastMouseY() == mouseY) {
                         Module module = abstractControlsComponent.getModule();
                         La.getINSTANCE().getModuleManager().getModuleByName(module.getName()).setToggle(!module.isToggle());
                     }
