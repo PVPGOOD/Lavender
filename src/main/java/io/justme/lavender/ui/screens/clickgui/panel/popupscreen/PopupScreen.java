@@ -5,6 +5,7 @@ import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.*;
+import io.justme.lavender.ui.screens.clickgui.controls.scrollbar.ScrollbarControls;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -33,16 +34,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Setter
 public class PopupScreen extends AbstractComponent {
 
-    private float scrollOffset = 0;
+    private float ScrollOffset = 0;
     private float maxScroll = 0;
     private float x,y,width,height;
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling,expanded;
     private Module module;
-
     private CopyOnWriteArrayList<AbstractOptionComponent> valueComponents = new CopyOnWriteArrayList<>();
     private Animation animationHeight = new Animation(20);
     private Animation animationWidth = new Animation(100);
+    private ScrollbarControls scrollbarControls = new ScrollbarControls();
 
 
     public PopupScreen(Module module) {
@@ -87,7 +88,7 @@ public class PopupScreen extends AbstractComponent {
 
         //值
         AtomicInteger intervalY = new AtomicInteger();
-        scrollOffset = scrollAnimation.getValue();
+        setScrollOffset(getScrollAnimation().getValue());
         int rightSide = 10;
         int leftSide = 10;
         int initY = 30;
@@ -97,10 +98,10 @@ public class PopupScreen extends AbstractComponent {
                 switch (abstractOptionComponent.getControlsType()) {
                     case MODE -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
                         intervalY.addAndGet((int) (35 + abstractOptionComponent.getModeExpandingHeight()));
@@ -108,10 +109,10 @@ public class PopupScreen extends AbstractComponent {
 
                     case COMBOX -> {
                         abstractOptionComponent.setX(getX() + getWidth() /2f - abstractOptionComponent.getWidth() /2f);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
@@ -120,10 +121,10 @@ public class PopupScreen extends AbstractComponent {
 
                     case SLIDER -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + scrollOffset - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + ScrollOffset - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
@@ -132,10 +133,10 @@ public class PopupScreen extends AbstractComponent {
 
                     case SWITCH -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + scrollOffset);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + ScrollOffset);
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
                         intervalY.addAndGet(25);
@@ -143,10 +144,10 @@ public class PopupScreen extends AbstractComponent {
 
                     case CHECKBOX -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() +initY + scrollOffset);
+                        abstractOptionComponent.setY(getY() + intervalY.get() +initY + ScrollOffset);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + scrollOffset);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
                         intervalY.addAndGet(30);
@@ -156,26 +157,58 @@ public class PopupScreen extends AbstractComponent {
             }
         });
 
-        setMaxScroll(Math.max(0, intervalY.get() + initY - animationHeight));
-
         if (isDragging()){
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
         } else if (isScaling()) {
 
             setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 200), 500));
-            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 100), 650));
+            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 100), intervalY.get() + initY));
 
             getAnimationWidth().setFromValue(getWidth());
             getAnimationHeight().setFromValue(getHeight());
         }
+
+        getScrollbarControls().setWidth(3);
+        getScrollbarControls().setHeight(250);
+        getScrollbarControls().setX(getX() + getWidth() - getScrollbarControls().getWidth());
+        getScrollbarControls().setY(getY() + initY);
+
+        getScrollbarControls().setScrollOffset(getScrollOffset());
+        getScrollbarControls().setMaxScrollOffset(getMaxScroll());
+        getScrollbarControls().setContentHeight(intervalY.get());
+        getScrollbarControls().setViewHeight(animationHeight - initY);
+
+        getScrollbarControls().drawScreen(mouseX, mouseY, partialTicks);
 
         getAnimationWidth().animate(isExpanded() ? getWidth() : 100, 0.1f);
         getAnimationHeight().animate(isExpanded() ? getHeight() : 20, 0.1f);
 
         getAnimationHeight().update();
         getAnimationWidth().update();
+
         getScrollAnimation().update();
+
+        setMaxScroll(Math.max(0, intervalY.get() + initY - animationHeight));
+    }
+
+    private final Animation scrollAnimation = new Animation();
+    @Override
+    public void handleMouseInput() throws IOException {
+
+        if (isHover(La.getINSTANCE().getMouseX(),La.getINSTANCE().getMouseY())) {
+            int scroll = MouseUtility.getScroll();
+            if (scroll != 0) {
+                float targetOffset = ScrollOffset + scroll * 100;
+                targetOffset = Math.max(-maxScroll, Math.min(0, targetOffset));
+
+                scrollAnimation.animate(targetOffset, 0.3f, Easings.QUAD_OUT);
+            }
+        }
+
+        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+            abstractOptionComponent.handleMouseInput();
+        }
     }
 
     @Override
@@ -201,6 +234,9 @@ public class PopupScreen extends AbstractComponent {
                     setScalingHeight(mouseY - getHeight());
                     setScaling(true);
                 }
+
+
+                getScrollbarControls().mouseClicked(mouseX, mouseY, mouseButton);
 
 //                if (isHover(mouseX,mouseY)) {
                     for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
@@ -246,24 +282,6 @@ public class PopupScreen extends AbstractComponent {
 
     }
 
-    private final Animation scrollAnimation = new Animation();
-    @Override
-    public void handleMouseInput() throws IOException {
-
-        if (isHover(La.getINSTANCE().getMouseX(),La.getINSTANCE().getMouseY())) {
-            int scroll = MouseUtility.getScroll();
-            if (scroll != 0) {
-                float targetOffset = scrollOffset + scroll * 100;
-                targetOffset = Math.max(-maxScroll, Math.min(0, targetOffset));
-
-                scrollAnimation.animate(targetOffset, 0.3f, Easings.QUAD_OUT);
-            }
-        }
-
-        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
-            abstractOptionComponent.handleMouseInput();
-        }
-    }
 
     private AbstractOptionComponent getComponent(DefaultValue<?> setting) {
         AbstractOptionComponent component = null;

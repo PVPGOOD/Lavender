@@ -14,11 +14,9 @@ public class MouseUtility {
         return mouseX >= vertices[0] && mouseX <= vertices[0] + vertices[2] && mouseY >= vertices[1] && mouseY <= vertices[1] + vertices[3];
     }
 
-    public int getScroll() {
+    public static int getScroll() {
         int scroll = Mouse.getDWheel();
-        if (scroll > 0) return 1;   // 向上滚动
-        if (scroll < 0) return -1;  // 向下滚动
-        return 0;                  // 无滚动
+        return Integer.compare(scroll, 0);
     }
 
 }
