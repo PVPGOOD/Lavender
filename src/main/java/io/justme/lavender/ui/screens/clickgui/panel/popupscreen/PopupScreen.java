@@ -284,7 +284,7 @@ public class PopupScreen extends AbstractComponent {
                 if (getLastMouseX() == mouseX && getLastMouseY() == mouseY) {
 
                     if (!this.getModule().getName().equalsIgnoreCase("clickgui")) {
-                        getModule().setToggle(!getModule().isToggle());
+                        getModule().setStatus(!getModule().isToggle());
                     } else {
                         var clickScreen = La.getINSTANCE().getClickScreen();
 

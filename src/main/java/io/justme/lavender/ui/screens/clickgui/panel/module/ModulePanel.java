@@ -147,7 +147,7 @@ public class ModulePanel extends AbstractComponent {
                 for (AbstractControlsComponent abstractControlsComponent : La.getINSTANCE().getClickScreen().getModulePanelComponent()) {
                     if (abstractControlsComponent.isHover(mouseX, mouseY) && getLastMouseX() == mouseX && getLastMouseY() == mouseY) {
                         Module module = abstractControlsComponent.getModule();
-                        La.getINSTANCE().getModuleManager().getModuleByName(module.getName()).setToggle(!module.isToggle());
+                        La.getINSTANCE().getModuleManager().getModuleByName(module.getName()).setStatus(!module.isToggle());
                     }
 
                     if (abstractControlsComponent.isDragging()) {
