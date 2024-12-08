@@ -4,7 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryModuleButton;
 import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryOtherButton;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -22,8 +22,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Getter
 public class CategoryPanel extends AbstractComponent {
 
-    private final CopyOnWriteArrayList<AbstractControlsComponents> categoryComponents = new CopyOnWriteArrayList<>();
-    private final CopyOnWriteArrayList<AbstractControlsComponents> otherComponents = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AbstractControlsComponent> categoryComponents = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AbstractControlsComponent> otherComponents = new CopyOnWriteArrayList<>();
 
     public CategoryPanel() {
         this.setName("CategoryPanel");
@@ -62,7 +62,7 @@ public class CategoryPanel extends AbstractComponent {
         int categoryComponentsIntervalY = 0;
         int categoryComponentsInitY = 25;
         fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY - 15,new Color(129, 57, 80,128).getRGB());
-        for (AbstractControlsComponents categoryComponents : getCategoryComponents()) {
+        for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
             categoryComponents.setX(getX() + 4);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY);
             categoryComponents.setWidth(110);
@@ -78,7 +78,7 @@ public class CategoryPanel extends AbstractComponent {
         int categoryOtherComponentsIntervalY = 0;
         int categoryOtherComponentsInitY = categoryComponentsInitY + categoryComponentsIntervalY + 50;
         fontDrawer.drawString("Other",getX() + 4,getY() + categoryOtherComponentsInitY - 15,new Color(129, 57, 80,128).getRGB());
-        for (AbstractControlsComponents otherComponents : getOtherComponents()) {
+        for (AbstractControlsComponent otherComponents : getOtherComponents()) {
             otherComponents.setX(getX() + 4);
             otherComponents.setY(getY() + categoryOtherComponentsIntervalY + categoryOtherComponentsInitY);
             otherComponents.setWidth(110);
@@ -97,7 +97,7 @@ public class CategoryPanel extends AbstractComponent {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (AbstractControlsComponents categoryComponents : getCategoryComponents()) {
+        for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
             if (categoryComponents.isHover(mouseX,mouseY)) {
                 La.getINSTANCE().getClickScreen().setCurrentCategory(categoryComponents.getAbstractCategory());
             }

@@ -2,7 +2,8 @@ package io.justme.lavender.ui.screens.clickgui.controls;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -19,14 +20,15 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class CheckboxControls extends AbstractControlsComponents {
+public class CheckboxControls extends AbstractOptionComponent {
 
-    private BoolValue boolValue = new BoolValue("test",true);
+    private BoolValue option;
 
     private Animation animation = new Animation(100);
     private Animation scaleAnimation = new Animation(0);
 
     public CheckboxControls() {
+        this.controlsType = ControlsType.CHECKBOX;
         setWidth(10);
         setHeight(10);
     }
@@ -46,9 +48,9 @@ public class CheckboxControls extends AbstractControlsComponents {
                 getHeight(),
                 2,
                 0.6f,
-                getBoolValue().getValue() ? new Color(103, 84, 150, 255) : new Color(255, 187, 213, 0) ,new Color(0, 0,0,150));
+                getOption().getValue() ? new Color(103, 84, 150, 255) : new Color(255, 187, 213, 0) ,new Color(0, 0,0,150));
 
-        if (getBoolValue().getValue()) {
+        if (getOption().getValue()) {
             getFontDrawer().drawString("a", getX() + 1.8f, getY() + getHeight() /2f - 3.8f, new Color(255, 255, 255).getRGB());
         }
 
@@ -58,7 +60,9 @@ public class CheckboxControls extends AbstractControlsComponents {
             RenderUtility.drawRoundRect(getX() - size,getY() - size,getWidth() + size * 2 ,getHeight() + size * 2,9,new Color(0,0,0,28));
         }
 
-        OGLUtility.scale(getX() + getWidth()/2f,getY() + getHeight()/2f,getScaleAnimation().getValue(),() -> RenderUtility.drawRoundRect(getX() - size,getY() - size,getWidth() + size * 2 ,getHeight() + size * 2,9,new Color(0,0,0,alpha)));
+        //点
+        OGLUtility.scale(getX() + getWidth()/2f,getY() + getHeight()/2f,getScaleAnimation().getValue(),
+                    () -> RenderUtility.drawRoundRect(getX() - size,getY() - size,getWidth() + size * 2 ,getHeight() + size * 2,9,new Color(0,0,0,alpha)));
 
 
         getAnimation().update();
@@ -77,7 +81,7 @@ public class CheckboxControls extends AbstractControlsComponents {
     public void mouseReleased(int mouseX, int mouseY, int state) {
         if (isHover(mouseX,mouseY)) {
             getScaleAnimation().animate(0,0.1f);
-            getBoolValue().setValue(!getBoolValue().getValue());
+            getOption().setValue(!getOption().getValue());
         }
     }
 

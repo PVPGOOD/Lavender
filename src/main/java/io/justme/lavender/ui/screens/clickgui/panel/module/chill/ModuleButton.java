@@ -2,13 +2,12 @@ package io.justme.lavender.ui.screens.clickgui.panel.module.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import javax.swing.Timer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +20,7 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class ModuleButton extends AbstractControlsComponents {
+public class ModuleButton extends AbstractControlsComponent {
 
     private Module module;
 

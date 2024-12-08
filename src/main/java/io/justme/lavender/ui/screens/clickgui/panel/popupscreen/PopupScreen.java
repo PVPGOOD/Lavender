@@ -3,12 +3,17 @@ package io.justme.lavender.ui.screens.clickgui.panel.popupscreen;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.*;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
+import io.justme.lavender.value.DefaultValue;
+import io.justme.lavender.value.impl.BoolValue;
+import io.justme.lavender.value.impl.ModeValue;
+import io.justme.lavender.value.impl.MultiBoolValue;
+import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
 import io.justme.lavender.module.Module;
@@ -30,7 +35,7 @@ public class PopupScreen extends AbstractComponent {
     private boolean dragging,scaling,expanded;
     private Module module;
 
-    private CopyOnWriteArrayList<AbstractControlsComponents> controlsComponents = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<AbstractOptionComponent> valueComponents = new CopyOnWriteArrayList<>();
     private Animation animationHeight = new Animation(20);
     private Animation animationWidth = new Animation(100);
 
@@ -39,11 +44,12 @@ public class PopupScreen extends AbstractComponent {
         this.setName("PopupScreen");
         this.module = module;
 
-        getControlsComponents().add(new SliderControls());
-        getControlsComponents().add(new SwitchControls());
-        getControlsComponents().add(new CheckboxControls());
-        getControlsComponents().add(new ModeControls());
-        getControlsComponents().add(new ComBoxControls());
+        getValueComponents().clear();
+
+        for (DefaultValue<?> setting : getModule().getOptions()) {
+            var component = getComponent(setting);
+            getValueComponents().add(component);
+        }
 
         setWidth(150);
         setHeight(200);
@@ -54,8 +60,8 @@ public class PopupScreen extends AbstractComponent {
     @Override
     public void initGui() {
 
-        for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
-            controlsComponent.initGui();
+        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+            abstractOptionComponent.initGui();
         }
 
     }
@@ -78,10 +84,38 @@ public class PopupScreen extends AbstractComponent {
 
         //值
         int intervalY = 0;
-        for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
-            controlsComponent.setX(getX() + 4);
-            controlsComponent.setY(getY() + intervalY +  25);
-            controlsComponent.drawScreen(mouseX,mouseY,partialTicks);
+        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+            switch (abstractOptionComponent.getControlsType()) {
+                case MODE -> {
+                    abstractOptionComponent.setX(getX() + 4);
+                    abstractOptionComponent.setY(getY() + intervalY +  25);
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                }
+
+                case COMBOX -> {
+                    abstractOptionComponent.setX(getX() + getWidth() /2f - abstractOptionComponent.getWidth() /2f);
+                    abstractOptionComponent.setY(getY() + intervalY +  25);
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                }
+
+                case SLIDER -> {
+                    abstractOptionComponent.setX(getX() + 4);
+                    abstractOptionComponent.setY(getY() + intervalY +  25);
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                }
+
+                case SWITCH -> {
+                    abstractOptionComponent.setX(getX() + 4);
+                    abstractOptionComponent.setY(getY() + intervalY +  25);
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                }
+
+                case CHECKBOX -> {
+                    abstractOptionComponent.setX(getX() + 4);
+                    abstractOptionComponent.setY(getY() + intervalY +  25);
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                }
+            }
 
             intervalY += 30;
         }
@@ -130,8 +164,8 @@ public class PopupScreen extends AbstractComponent {
                 }
 
                 if (isHover(mouseX,mouseY)) {
-                    for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
-                        controlsComponent.mouseClicked(mouseX,mouseY,mouseButton);
+                    for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+                        abstractOptionComponent.mouseClicked(mouseX,mouseY,mouseButton);
                     }
                 }
 
@@ -163,13 +197,40 @@ public class PopupScreen extends AbstractComponent {
             }
         }
 
-        for (AbstractControlsComponents controlsComponent : getControlsComponents()) {
-            controlsComponent.mouseReleased(mouseX,mouseY,state);
+        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+            abstractOptionComponent.mouseReleased(mouseX,mouseY,state);
         }
     }
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
 
+    }
+
+    private AbstractOptionComponent getComponent(DefaultValue<?> setting) {
+        AbstractOptionComponent component = null;
+
+        if (setting instanceof BoolValue)  {
+            SwitchControls switchControls = new SwitchControls();
+            switchControls.setOption((BoolValue) setting);
+            switchControls.afterAddOption();
+            component = switchControls;
+        } else if (setting instanceof ModeValue) {
+            ModeControls modeControls = new ModeControls();
+            modeControls.setOption((ModeValue) setting);
+            modeControls.afterAddOption();
+            component = modeControls;
+        } else if (setting instanceof MultiBoolValue) {
+            ComBoxControls comBoxControls = new ComBoxControls();
+            comBoxControls.setOption((MultiBoolValue) setting);
+            component = comBoxControls;
+        } else if (setting instanceof NumberValue) {
+            SliderControls sliderControls = new SliderControls();
+            sliderControls.setOption((NumberValue) setting);
+            component = sliderControls;
+        }
+
+
+        return component;
     }
 }

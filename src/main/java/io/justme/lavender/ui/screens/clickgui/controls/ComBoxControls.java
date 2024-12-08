@@ -3,9 +3,11 @@ package io.justme.lavender.ui.screens.clickgui.controls;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import io.justme.lavender.ui.screens.clickgui.panel.popupscreen.PopupComBox;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +21,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  **/
 @Getter
 @Setter
-public class ComBoxControls extends AbstractControlsComponents {
+public class ComBoxControls extends AbstractOptionComponent {
+
+    public MultiBoolValue option;
+
+    public ComBoxControls() {
+        this.controlsType = ControlsType.COMBOX;
+    }
 
     @Override
     public void initGui() {
@@ -28,10 +36,10 @@ public class ComBoxControls extends AbstractControlsComponents {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),8,1,new Color(255, 224, 235, 255),new Color(164, 158, 255, 255));
+        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 224, 235, 255),new Color(164, 158, 255, 255));
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
-        fontDrawer.drawString(getComBoxOption().getName() ,
-                getX() + getWidth() /2f - fontDrawer.getStringWidth(getComBoxOption().getName()) /2f,
+        fontDrawer.drawString(getOption().getName() ,
+                getX() + getWidth() /2f - fontDrawer.getStringWidth(getOption().getName()) /2f,
                 getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,
                 new Color(129, 57, 80).getRGB());
 
@@ -50,7 +58,7 @@ public class ComBoxControls extends AbstractControlsComponents {
                     return;
                 }
             }
-            component.add(new PopupComBox());
+            component.add(new PopupComBox(getOption()));
         }
     }
 

@@ -2,11 +2,9 @@ package io.justme.lavender.ui.screens.clickgui.controls.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.CheckboxControls;
-import io.justme.lavender.ui.screens.clickgui.controls.ComBoxControls;
 import io.justme.lavender.value.impl.BoolValue;
-import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +19,7 @@ import java.io.IOException;
 //checkbox组件组合? XDD
 @Getter
 @Setter
-public class ComBoxChill extends AbstractControlsComponents {
+public class ComBoxChill extends AbstractControlsComponent {
 
     private BoolValue boolOption;
     private CheckboxControls checkboxControls;
@@ -29,7 +27,9 @@ public class ComBoxChill extends AbstractControlsComponents {
     public ComBoxChill(BoolValue boolOption) {
         this.boolOption = boolOption;
 
-        setCheckboxControls(new CheckboxControls());
+        CheckboxControls controls = new CheckboxControls();
+        controls.setOption(boolOption);
+        setCheckboxControls(controls);
     }
 
     @Override

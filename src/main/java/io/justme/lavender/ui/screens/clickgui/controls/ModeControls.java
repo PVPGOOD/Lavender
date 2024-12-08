@@ -2,8 +2,9 @@ package io.justme.lavender.ui.screens.clickgui.controls;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.chill.ModeChill;
+import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.value.impl.ModeValue;
@@ -21,15 +22,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 @Setter
-public class ModeControls extends AbstractControlsComponents {
+public class ModeControls extends AbstractOptionComponent {
 
-    private final ModeValue
-            option = new ModeValue("Test", new String[]{
-                    "Test0", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", "Test8", "Test9", "Test10", "Test11", "Test12"}, "Test12");
+    private ModeValue option;
     private boolean expanded;
-    private CopyOnWriteArrayList<AbstractControlsComponents> modeChill = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<AbstractOptionComponent> modeChill = new CopyOnWriteArrayList<>();
 
     public ModeControls() {
+        this.controlsType = ControlsType.MODE;
+    }
+
+    public void afterAddOption() {
         for (String modeOption : getOption().getModes()) {
             getModeChill().add(new ModeChill(modeOption));
         }
@@ -60,7 +63,7 @@ public class ModeControls extends AbstractControlsComponents {
                     8,1,new Color(255, 224, 235, 255),
                     new Color(164, 158, 255, 255));
 
-            for (AbstractControlsComponents chill : getModeChill()) {
+            for (AbstractOptionComponent chill : getModeChill()) {
                 chill.setX(getX() + 4);
                 chill.setY(getY() + getHeight() + optionInterval + 1);
                 chill.setWidth(getWidth() - 8);
@@ -84,7 +87,7 @@ public class ModeControls extends AbstractControlsComponents {
         }
 
         if (isExpanded()) {
-            for (AbstractControlsComponents chill : getModeChill()) {
+            for (AbstractOptionComponent chill : getModeChill()) {
 
                 if (chill.isHover(mouseX,mouseY)) {
                     getOption().setValue(chill.getComBoxChillName());

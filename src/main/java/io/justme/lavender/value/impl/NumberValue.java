@@ -7,18 +7,16 @@ import lombok.Getter;
 import java.util.function.Supplier;
 
 @Getter
-public class NumberValue extends DefaultValue<Double> {
+public class NumberValue extends DefaultValue<Float> {
 
-    private final double min;
 
-    private final double max;
-    private final double increment;
+    private final float min,max,increment;
 
     public NumberValue(String name, double value, double min, double max, double increment, Supplier<Boolean> dependency) {
-        super(name, value, dependency);
-        this.min = min;
-        this.max = max;
-        this.increment = increment;
+        super(name, (float) value, dependency);
+        this.min = (float) min;
+        this.max = (float) max;
+        this.increment = (float) increment;
     }
 
     public NumberValue(String name, double value, double min, double max, double increment) {
@@ -28,7 +26,7 @@ public class NumberValue extends DefaultValue<Double> {
 
 
     @Override
-    public void setValue(Double value) {
+    public void setValue(Float value) {
         if (this.value != null && this.value.doubleValue() != value.doubleValue()) {
             if (value < min)
                 value = min;

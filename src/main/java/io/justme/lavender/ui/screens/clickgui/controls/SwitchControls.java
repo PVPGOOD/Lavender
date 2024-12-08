@@ -1,6 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.controls;
 
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -17,11 +18,20 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class SwitchControls extends AbstractControlsComponents {
+public class SwitchControls extends AbstractOptionComponent {
 
-    private BoolValue boolValue = new BoolValue(getName(),true);
-    private Animation animation = new Animation(6);
+    private BoolValue option;
+    private Animation animation;
     private Animation scaleAnimation = new Animation();
+
+    public SwitchControls() {
+        this.controlsType = ControlsType.SWITCH;
+    }
+
+    public void afterAddOption() {
+        setScaleAnimation(new Animation(getOption().getValue() ? 1.2f : 0.8f));
+        setAnimation(new Animation(getOption().getValue() ? 16 : 2));
+    }
 
     @Override
     public void initGui() {
@@ -42,7 +52,7 @@ public class SwitchControls extends AbstractControlsComponents {
                 getHeight(),
                 8,
                 0.6f,
-                getBoolValue().getValue() ? enabledColor : new Color(0xE6E0E9),getBoolValue().getValue() ? enabledColor : new Color(0, 0,0,128));
+                getOption().getValue() ? enabledColor : new Color(0xE6E0E9), getOption().getValue() ? enabledColor : new Color(0, 0,0,128));
 
         OGLUtility.scale(getX() + getAnimation().getValue() + getWidth() /2f,getY() + getHeight() /2f,getScaleAnimation().getValue(), () -> {
             RenderUtility.drawRoundRect(
@@ -51,7 +61,7 @@ public class SwitchControls extends AbstractControlsComponents {
                     10,
                     10,
                     5,
-                    getBoolValue().getValue() ? new Color(255,255,255) : disabledColor);
+                    getOption().getValue() ? new Color(255,255,255) : disabledColor);
         });
 
         getScaleAnimation().update();
@@ -64,7 +74,7 @@ public class SwitchControls extends AbstractControlsComponents {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (isHover(mouseX,mouseY)) {
-            getScaleAnimation().animate(getBoolValue().getValue() ? 0.8f : 1.2f,0.1f);
+            getScaleAnimation().animate(getOption().getValue() ? 0.8f : 1.2f,0.1f);
         }
     }
 
@@ -72,9 +82,9 @@ public class SwitchControls extends AbstractControlsComponents {
     public void mouseReleased(int mouseX, int mouseY, int state) {
         if (state == 0) {
             if (isHover(mouseX,mouseY)) {
-                getBoolValue().setValue(!getBoolValue().getValue());
-                getAnimation().animate(getBoolValue().getValue() ? 16 : 2,0.1f);
-                getScaleAnimation().animate(getBoolValue().getValue() ? 1.2f : 0.8f,0.1f);
+                getOption().setValue(!getOption().getValue());
+                getAnimation().animate(getOption().getValue() ? 16 : 2,0.1f);
+                getScaleAnimation().animate(getOption().getValue() ? 1.2f : 0.8f,0.1f);
             }
         }
     }

@@ -2,11 +2,12 @@ package io.justme.lavender.ui.screens.clickgui.panel.popupscreen;
 
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.chill.ComBoxChill;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.value.impl.BoolValue;
+import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -26,14 +27,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Setter
 public class PopupComBox extends AbstractComponent {
 
-    private BoolValue boolValue;
-    private CopyOnWriteArrayList<AbstractControlsComponents> checkBoxChill = new CopyOnWriteArrayList<>();
+    private MultiBoolValue comBoxOption;
+    private CopyOnWriteArrayList<AbstractControlsComponent> checkBoxChill = new CopyOnWriteArrayList<>();
     private ScaledResolution scaledResolution;
 
-    public PopupComBox() {
-
+    public PopupComBox(MultiBoolValue comBoxOption) {
         setName("PopupComBox");
         setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
+        setComBoxOption(comBoxOption);
 
         for (BoolValue value : getComBoxOption().getValue()) {
             getCheckBoxChill().add(new ComBoxChill(value));
@@ -64,7 +65,7 @@ public class PopupComBox extends AbstractComponent {
         RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),10, La.getINSTANCE().getClickScreen().getClickGuiColor());
 
         int intervalY = 0;
-        for (AbstractControlsComponents components : getCheckBoxChill()) {
+        for (AbstractControlsComponent components : getCheckBoxChill()) {
             components.setX(getX());
             components.setY(getY() + intervalY);
 
@@ -78,7 +79,7 @@ public class PopupComBox extends AbstractComponent {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY)) {
-            for (AbstractControlsComponents checkBoxChill : getCheckBoxChill()) {
+            for (AbstractControlsComponent checkBoxChill : getCheckBoxChill()) {
                 checkBoxChill.mouseClicked(mouseX,mouseY,mouseButton);
             }
         }
@@ -91,7 +92,7 @@ public class PopupComBox extends AbstractComponent {
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
         if (MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY)) {
-            for (AbstractControlsComponents checkBoxChill : getCheckBoxChill()) {
+            for (AbstractControlsComponent checkBoxChill : getCheckBoxChill()) {
                 checkBoxChill.mouseReleased(mouseX,mouseY,state);
             }
         }

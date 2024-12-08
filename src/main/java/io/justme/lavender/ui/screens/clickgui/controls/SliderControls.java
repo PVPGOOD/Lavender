@@ -1,8 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.controls;
 
-import io.justme.lavender.La;
-import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -21,10 +20,15 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class SliderControls extends AbstractControlsComponents {
+public class SliderControls extends AbstractOptionComponent {
 
     private NumberValue option = new NumberValue("slider",2,2,10f,1);
     private boolean dragging;
+
+    public SliderControls() {
+        this.controlsType = ControlsType.SLIDER;
+    }
+
     @Override
     public void initGui() {
 

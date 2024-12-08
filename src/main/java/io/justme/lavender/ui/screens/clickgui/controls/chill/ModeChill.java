@@ -2,7 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.controls.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Getter
 @Setter
-public class ModeChill extends AbstractControlsComponents {
+public class ModeChill extends AbstractOptionComponent {
 
 
     public ModeChill(String chillName) {

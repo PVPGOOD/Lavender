@@ -2,12 +2,11 @@ package io.justme.lavender.ui.screens.clickgui.panel.category.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryTypes;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class CategoryOtherButton extends AbstractControlsComponents {
+public class CategoryOtherButton extends AbstractControlsComponent {
 
     private CategoryTypes categoryTypes;
 

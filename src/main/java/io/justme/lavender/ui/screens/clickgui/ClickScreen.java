@@ -4,7 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponents;
+import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
 import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -33,7 +33,7 @@ public class ClickScreen extends GuiScreen  {
     private Color clickGuiColor = new Color(255, 240, 245);
 
     private final CopyOnWriteArrayList<AbstractComponent> components = new CopyOnWriteArrayList<>();
-    private final CopyOnWriteArrayList<AbstractControlsComponents> modulePanelComponent = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AbstractControlsComponent> modulePanelComponent = new CopyOnWriteArrayList<>();
 
     public ClickScreen() {
         setX(10);
