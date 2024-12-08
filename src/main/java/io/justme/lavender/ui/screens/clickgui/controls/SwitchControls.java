@@ -1,5 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.controls;
 
+import io.justme.lavender.La;
+import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import io.justme.lavender.utility.gl.OGLUtility;
@@ -40,10 +42,11 @@ public class SwitchControls extends AbstractOptionComponent {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        //背景
+        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        fontDrawer.drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0).getRGB());
 
-        //点
-        Color enabledColor = new Color(0x675496);
+        //背景
+        Color enabledColor = new Color(255, 198, 215, 255);
         Color disabledColor = new Color(0x79747E);
         RenderUtility.drawRoundRectWithOutline(
                 getX(),
@@ -53,7 +56,7 @@ public class SwitchControls extends AbstractOptionComponent {
                 8,
                 0.6f,
                 getOption().getValue() ? enabledColor : new Color(0xE6E0E9), getOption().getValue() ? enabledColor : new Color(0, 0,0,128));
-
+        //点
         OGLUtility.scale(getX() + getAnimation().getValue() + getWidth() /2f,getY() + getHeight() /2f,getScaleAnimation().getValue(), () -> {
             RenderUtility.drawRoundRect(
                     getX() + getAnimation().getValue(),

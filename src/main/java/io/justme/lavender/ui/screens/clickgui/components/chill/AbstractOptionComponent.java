@@ -1,5 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.components.chill;
 
+import io.justme.lavender.La;
+import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
 import lombok.Getter;
@@ -15,11 +17,14 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractOptionComponent extends AbstractComponent {
 
-    //value
-    //有点特殊..
+    private float descriptionX,descriptionY, descriptionWidth, descriptionHeight;
+    private FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
     public String comBoxChillName;
+
     @Getter
     @Setter
+    //value
+    //有点特殊..
     public static String comBoxSelectingName;
     public ControlsType controlsType;
 

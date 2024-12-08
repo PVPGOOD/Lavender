@@ -84,40 +84,64 @@ public class PopupScreen extends AbstractComponent {
 
         //值
         int intervalY = 0;
+        int rightSide = 10;
+        int leftSide = 10;
+        int initY = 30;
         for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
             switch (abstractOptionComponent.getControlsType()) {
                 case MODE -> {
-                    abstractOptionComponent.setX(getX() + 4);
-                    abstractOptionComponent.setY(getY() + intervalY +  25);
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                    abstractOptionComponent.setY(getY() + intervalY +  initY);
+
+                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                    abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
+
+                    intervalY += 35;
                 }
 
                 case COMBOX -> {
                     abstractOptionComponent.setX(getX() + getWidth() /2f - abstractOptionComponent.getWidth() /2f);
-                    abstractOptionComponent.setY(getY() + intervalY +  25);
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                    abstractOptionComponent.setY(getY() + intervalY +  initY);
+
+                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                    abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
+
+                    intervalY += 30;
                 }
 
                 case SLIDER -> {
-                    abstractOptionComponent.setX(getX() + 4);
-                    abstractOptionComponent.setY(getY() + intervalY +  25);
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                    abstractOptionComponent.setY(getY() + intervalY +  initY);
+
+                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                    abstractOptionComponent.setDescriptionY(getY() + intervalY + initY - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
+
+
+                    intervalY += 25;
                 }
 
                 case SWITCH -> {
-                    abstractOptionComponent.setX(getX() + 4);
-                    abstractOptionComponent.setY(getY() + intervalY +  25);
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                    abstractOptionComponent.setY(getY() + intervalY +  initY);
+
+                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                    abstractOptionComponent.setDescriptionY(getY() + intervalY + initY);
+
+                    intervalY += 25;
                 }
 
                 case CHECKBOX -> {
-                    abstractOptionComponent.setX(getX() + 4);
-                    abstractOptionComponent.setY(getY() + intervalY +  25);
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                    abstractOptionComponent.setY(getY() + intervalY + initY);
+
+                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                    abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
+
+                    intervalY += 30;
                 }
             }
 
-            intervalY += 30;
+            abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
         }
 
         if (isDragging()){

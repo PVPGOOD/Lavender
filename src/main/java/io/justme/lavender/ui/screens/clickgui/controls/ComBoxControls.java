@@ -36,7 +36,7 @@ public class ComBoxControls extends AbstractOptionComponent {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 224, 235, 255),new Color(164, 158, 255, 255));
+        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(215, 198, 215, 255));
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
         fontDrawer.drawString(getOption().getName() ,
                 getX() + getWidth() /2f - fontDrawer.getStringWidth(getOption().getName()) /2f,

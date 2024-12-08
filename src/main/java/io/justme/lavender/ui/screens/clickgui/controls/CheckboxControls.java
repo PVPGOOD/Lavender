@@ -38,9 +38,11 @@ public class CheckboxControls extends AbstractOptionComponent {
 
     }
 
-    private final FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getCheckMark14();
+    private final FontDrawer checkMark14 = La.getINSTANCE().getFontManager().getCheckMark14();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0).getRGB());
+
         RenderUtility.drawRoundRectWithOutline(
                 getX(),
                 getY(),
@@ -51,7 +53,7 @@ public class CheckboxControls extends AbstractOptionComponent {
                 getOption().getValue() ? new Color(103, 84, 150, 255) : new Color(255, 187, 213, 0) ,new Color(0, 0,0,150));
 
         if (getOption().getValue()) {
-            getFontDrawer().drawString("a", getX() + 1.8f, getY() + getHeight() /2f - 3.8f, new Color(255, 255, 255).getRGB());
+            getCheckMark14().drawString("a", getX() + 1.8f, getY() + getHeight() /2f - 3.8f, new Color(255, 255, 255).getRGB());
         }
 
         int alpha = ((int)(getAnimation().getValue()));

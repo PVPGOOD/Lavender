@@ -37,11 +37,8 @@ public class SliderControls extends AbstractOptionComponent {
     private Animation sliderAnimations = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-//        colorAnimation.update();
-//        colorAnimation.animate(MouseUtility.isHovering(getX(), getY(), getWidth(), getHeight() + 15F, mouseX, mouseY) ? Color.WHITE : new Rectangle(getX(), getY(), getWidth(), getHeight(), -1).contains(mouseX, mouseY) ? new Color(77, 76, 81).brighter().brighter() : new Color(77, 76, 81), .3F, Easings.EXPO_OUT);
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0).getRGB());
 
-//        FontDrawer fontDrawer = La.getINSTANCE().
-//        new Text(option.getName(), getRenderer(), getX(), getY(), colorAnimation.getColor().getRGB()).draw();
         float inc = getOption().getIncrement();
         float max = getOption().getMax();
         float min = getOption().getMin();
@@ -52,10 +49,10 @@ public class SliderControls extends AbstractOptionComponent {
         getSliderAnimations().animate((longValue * (value - min) / (max - min)),0.1F, Easings.LINEAR);
 
         //背景
-        RenderUtility.drawRoundRect( posX, getY() + 16, getWidth(), getHeight(), 3, new Color(81, 87, 93));
+        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, new Color(125, 131, 136));
 
         //值
-        RenderUtility.drawRoundRect(posX, getY() + 16, getSliderAnimations().getValue(), getHeight(), 3, new Color(255, 255, 255));
+        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,new Color(255, 233, 240, 255));
 
         if (isDragging()) {
             float valAbs = mouseX - (posX);
@@ -65,18 +62,17 @@ public class SliderControls extends AbstractOptionComponent {
         }
 
         //点
-        RenderUtility.drawRoundRectWithOutline(posX + getSliderAnimations().getValue() - 3,
-                getY() + 15 - 1.5f, 8, 8, 4, 0.5f,new Color(255,255,255,255),new Color(0,0,0,64));
+        int size = 6;
+        RenderUtility.drawRoundRectWithOutline(posX + getSliderAnimations().getValue() - size,
+                getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f,new Color(255, 255, 255,255),new Color(0,0,0,64));
 
 
-        if (MouseUtility.isHovering( posX, getY() + 16, getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
+        if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
             setDragging(true);
         }
 
-        //定值 自己修改
-        setWidth(150);
-        setHeight(3);
-
+        setWidth(100);
+        setHeight(5);
         getSliderAnimations().update();
     }
 

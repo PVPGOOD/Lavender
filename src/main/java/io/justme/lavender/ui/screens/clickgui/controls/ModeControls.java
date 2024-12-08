@@ -46,9 +46,11 @@ public class ModeControls extends AbstractOptionComponent {
     private float interval = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),8,1,new Color(255, 224, 235, 255),new Color(164, 158, 255, 255));
+        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(215, 198, 215, 255));
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0).getRGB());
+
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
-        fontDrawer.drawString(getOption().getValue() ,getX() + 5,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
+        fontDrawer.drawString(getOption().getValue() ,getX() + 10,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
 
         float optionInterval = 8;
 
@@ -60,7 +62,7 @@ public class ModeControls extends AbstractOptionComponent {
                     getY() + getHeight() + 1,
                     getWidth(),
                     getHeight() + getInterval() - 8,
-                    8,1,new Color(255, 224, 235, 255),
+                    10,1,new Color(255, 224, 235, 255),
                     new Color(164, 158, 255, 255));
 
             for (AbstractOptionComponent chill : getModeChill()) {
