@@ -6,6 +6,7 @@ import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.controls.*;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
+import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -21,6 +22,7 @@ import io.justme.lavender.module.Module;
 import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author JustMe.
@@ -51,10 +53,8 @@ public class PopupScreen extends AbstractComponent {
             getValueComponents().add(component);
         }
 
-        setWidth(150);
-        setHeight(200);
-
-
+        setWidth(200);
+        setHeight(250);
     }
 
     @Override
@@ -83,78 +83,82 @@ public class PopupScreen extends AbstractComponent {
                 new Color(129, 57, 80,255).getRGB());
 
         //值
-        int intervalY = 0;
+        AtomicInteger intervalY = new AtomicInteger();
         int rightSide = 10;
         int leftSide = 10;
         int initY = 30;
-        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
-            switch (abstractOptionComponent.getControlsType()) {
-                case MODE -> {
-                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY +  initY);
+        OGLUtility.scissor(getX(),getY(),animationWidth,animationHeight,()->{
+            for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+                switch (abstractOptionComponent.getControlsType()) {
+                    case MODE -> {
+                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                        abstractOptionComponent.setY(getY() + intervalY.get() +  initY);
 
-                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                    abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                        abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +  initY);
+                        abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                    intervalY += (int) (35 + abstractOptionComponent.getModeExpandingHeight());
+                        intervalY.addAndGet((int) (35 + abstractOptionComponent.getModeExpandingHeight()));
+                    }
+
+                    case COMBOX -> {
+                        abstractOptionComponent.setX(getX() + getWidth() /2f - abstractOptionComponent.getWidth() /2f);
+                        abstractOptionComponent.setY(getY() + intervalY.get() +  initY);
+
+                        abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +  initY);
+
+                        abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+
+                        intervalY.addAndGet(30);
+                    }
+
+                    case SLIDER -> {
+                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                        abstractOptionComponent.setY(getY() + intervalY.get() +  initY);
+
+                        abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
+
+                        abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+
+                        intervalY.addAndGet(25);
+                    }
+
+                    case SWITCH -> {
+                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                        abstractOptionComponent.setY(getY() + intervalY.get() +  initY);
+
+                        abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY);
+
+                        abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                        intervalY.addAndGet(25);
+                    }
+
+                    case CHECKBOX -> {
+                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY);
+
+                        abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +  initY);
+
+                        abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+                        intervalY.addAndGet(30);
+                    }
                 }
 
-                case COMBOX -> {
-                    abstractOptionComponent.setX(getX() + getWidth() /2f - abstractOptionComponent.getWidth() /2f);
-                    abstractOptionComponent.setY(getY() + intervalY +  initY);
-
-                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                    abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
-
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
-
-                    intervalY += 30;
-                }
-
-                case SLIDER -> {
-                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY +  initY);
-
-                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                    abstractOptionComponent.setDescriptionY(getY() + intervalY + initY - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
-
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
-
-                    intervalY += 25;
-                }
-
-                case SWITCH -> {
-                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY +  initY);
-
-                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                    abstractOptionComponent.setDescriptionY(getY() + intervalY + initY);
-
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
-                    intervalY += 25;
-                }
-
-                case CHECKBOX -> {
-                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY + initY);
-
-                    abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                    abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
-
-                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
-                    intervalY += 30;
-                }
             }
+        });
 
-        }
 
         if (isDragging()){
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
         } else if (isScaling()) {
-            setWidth(mouseX - getScalingWidth());
-            setHeight(mouseY - getScalingHeight());
+
+            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 200), 500));
+            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 100), 650));
 
             getAnimationWidth().setFromValue(getWidth());
             getAnimationHeight().setFromValue(getHeight());

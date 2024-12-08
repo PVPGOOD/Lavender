@@ -38,8 +38,10 @@ public class ClickScreen extends GuiScreen  {
     public ClickScreen() {
         setX(10);
         setY(10);
-        setWidth(100);
-        setHeight(100);
+
+
+        setWidth(400);
+        setHeight(460);
     }
 
     @Override
@@ -63,14 +65,13 @@ public class ClickScreen extends GuiScreen  {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-        if (isDragging()){
+        if (isDragging()) {
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
         } else if (isScaling()) {
-            setWidth(mouseX - getScalingWidth());
-            setHeight(mouseY - getScalingHeight());
+            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 400), 600));
+            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 460), 650));
         }
-
         RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
 
         int abstractComponentInitY = 30;
@@ -124,12 +125,12 @@ public class ClickScreen extends GuiScreen  {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if (mouseButton == 0){
-            if (MouseUtility.isHovering(getX(),getY(),getWidth(),20,mouseX,mouseY)){
+        if (mouseButton == 0) {
+            if (MouseUtility.isHovering(getX(), getY(), getWidth(), 20, mouseX, mouseY)) {
                 setDraggingX(mouseX - getX());
                 setDraggingY(mouseY - getY());
                 setDragging(true);
-            } else if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + getHeight() - 20,20,20,mouseX,mouseY)){
+            } else if (MouseUtility.isHovering(getX() + getWidth() - 20, getY() + getHeight() - 20, 20, 20, mouseX, mouseY)) {
                 setScalingWidth(mouseX - getWidth());
                 setScalingHeight(mouseY - getHeight());
                 setScaling(true);
@@ -139,14 +140,11 @@ public class ClickScreen extends GuiScreen  {
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             switch (abstractComponent.getName()) {
                 case "PopupComBox" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
-
-                case "CategoryPanel", "PopupScreen", "ModulePanel" -> {
-                    abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
-                }
+                case "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
-        La.getINSTANCE().getConfigScreen().mouseClicked(mouseX, mouseY,mouseButton);
+        La.getINSTANCE().getConfigScreen().mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
