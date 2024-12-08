@@ -266,9 +266,14 @@ public class PopupScreen extends AbstractComponent {
         if (state == 0){
             if (isDragging()) {
                 setDragging(false);
-            } else
+            }
+
             if (isScaling()){
                 setScaling(false);
+            }
+
+            if (-getScrollOffset() > getMaxScroll()) {
+                getScrollAnimation().animate(-getMaxScroll(),0.1f);
             }
         }
 
