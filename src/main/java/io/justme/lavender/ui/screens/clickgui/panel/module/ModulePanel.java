@@ -27,8 +27,12 @@ public class ModulePanel extends AbstractComponent {
 
     public ModulePanel() {
         this.setName("ModulePanel");
+    }
 
+    public void afterAddOptions() {
         for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
+            if (module.getName().equalsIgnoreCase("clickgui")) continue;
+
             La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(module));
         }
     }
@@ -93,6 +97,7 @@ public class ModulePanel extends AbstractComponent {
 
         if (shouldCheckAnimation && componentToRemove != null) {
             if (componentToRemove.getPopUpAnimation().isDone()) {
+
                 La.getINSTANCE().getClickScreen().getModulePanelComponent().remove(componentToRemove);
                 PopupScreen popUpScreen = new PopupScreen(componentToRemove.getModule());
 

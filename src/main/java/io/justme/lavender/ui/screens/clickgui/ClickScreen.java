@@ -7,6 +7,7 @@ import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
 import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
+import io.justme.lavender.ui.screens.clickgui.panel.popupscreen.PopupScreen;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class ClickScreen extends GuiScreen  {
     private final CopyOnWriteArrayList<AbstractComponent> components = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<AbstractControlsComponent> modulePanelComponent = new CopyOnWriteArrayList<>();
 
+    private ModulePanel modulePanel = new ModulePanel();
+    private CategoryPanel categoryPanel = new CategoryPanel();
+
     public ClickScreen() {
         setX(10);
         setY(10);
@@ -49,8 +53,9 @@ public class ClickScreen extends GuiScreen  {
 
         //这两是固定的 后续应该还有 sidebar和searchbar
         if (getComponents().isEmpty()) {
-            getComponents().add(new CategoryPanel());
-            getComponents().add(new ModulePanel());
+            getComponents().add(getCategoryPanel());
+            getComponents().add(getModulePanel());
+            getModulePanel().afterAddOptions();
         }
 
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
@@ -72,18 +77,19 @@ public class ClickScreen extends GuiScreen  {
             setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 400), 600));
             setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 460), 650));
         }
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
+
+
 
         int abstractComponentInitY = 30;
         int categoryWidth = 120;
 
-        //横线
-        RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
-        FontDrawer fontManager = La.getINSTANCE().getFontManager().getSFBold18();
-        fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
-
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        La.getINSTANCE().getConfigScreen().drawScreen(mouseX, mouseY, partialTicks);
+        if (getComponents().contains(getCategoryPanel()) && getComponents().contains(getModulePanel())) {
+            RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
+            //横线
+            RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
+            FontDrawer fontManager = La.getINSTANCE().getFontManager().getSFBold18();
+            fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
+        }
 
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             switch (abstractComponent.getName()) {
@@ -107,6 +113,10 @@ public class ClickScreen extends GuiScreen  {
 
             }
         }
+
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        La.getINSTANCE().getConfigScreen().drawScreen(mouseX, mouseY, partialTicks);
+
     }
 
     @Override
@@ -126,7 +136,7 @@ public class ClickScreen extends GuiScreen  {
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (mouseButton == 0) {
-            if (MouseUtility.isHovering(getX(), getY(), getWidth(), 20, mouseX, mouseY)) {
+            if (MouseUtility.isHovering(getX(), getY(), getWidth() - 40, 20, mouseX, mouseY)) {
                 setDraggingX(mouseX - getX());
                 setDraggingY(mouseY - getY());
                 setDragging(true);
@@ -134,13 +144,19 @@ public class ClickScreen extends GuiScreen  {
                 setScalingWidth(mouseX - getWidth());
                 setScalingHeight(mouseY - getHeight());
                 setScaling(true);
+            } else if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20, mouseX, mouseY)) {
+
+                getComponents().removeIf(abstractComponent -> abstractComponent.getName().equals("CategoryPanel"));
+                getComponents().removeIf(abstractComponent -> abstractComponent.getName().equals("ModulePanel"));
+
+                PopupScreen popUpScreen = new PopupScreen(La.getINSTANCE().getModuleManager().getClickGui());
+                getComponents().add(popUpScreen);
             }
         }
 
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             switch (abstractComponent.getName()) {
-                case "PopupComBox" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
-                case "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
+                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
@@ -150,14 +166,9 @@ public class ClickScreen extends GuiScreen  {
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
 
-
         for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
             switch (abstractComponent.getName()) {
-                case "PopupComBox" -> abstractComponent.mouseReleased(mouseX, mouseY, state);
-
-                case "CategoryPanel", "PopupScreen", "ModulePanel" -> {
-                    abstractComponent.mouseReleased(mouseX, mouseY, state);
-                }
+                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractComponent.mouseReleased(mouseX, mouseY, state);
             }
         }
 

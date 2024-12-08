@@ -36,8 +36,7 @@ public class PopupScreen extends AbstractComponent {
 
     private float ScrollOffset = 0;
     private float maxScroll = 0;
-    private float x,y,width,height;
-    private float draggingX,draggingY,scalingWidth, scalingHeight;
+    private float x,y,width,height,draggingX,draggingY,scalingWidth, scalingHeight,lastMouseX,lastMouseY;
     private boolean dragging,scaling,expanded;
     private Module module;
     private CopyOnWriteArrayList<AbstractOptionComponent> valueComponents = new CopyOnWriteArrayList<>();
@@ -76,7 +75,9 @@ public class PopupScreen extends AbstractComponent {
         float animationHeight = isScaling() ? getHeight() : getAnimationHeight().getValue();
         float animationWidth = isScaling() ? getWidth() : getAnimationWidth().getValue();
 
-        RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,new Color(La.getINSTANCE().getClickScreen().getClickGuiColor().getRGB()));
+        Color color = getModule().getName().equalsIgnoreCase("clickgui") ?
+                new Color(255,255,255) : getModule().isToggle() ? new Color(La.getINSTANCE().getClickScreen().getClickGuiColor().getRGB()) :  new Color(201, 201, 201, 255);
+        RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium22();
 
@@ -259,10 +260,15 @@ public class PopupScreen extends AbstractComponent {
         }
 
 
+        setLastMouseX(mouseX);
+        setLastMouseY(mouseY);
     }
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
+        float animationHeight = isScaling() ? getHeight() : getAnimationHeight().getValue();
+        float animationWidth = isScaling() ? getWidth() : getAnimationWidth().getValue();
+
         if (state == 0){
             if (isDragging()) {
                 setDragging(false);
@@ -270,6 +276,28 @@ public class PopupScreen extends AbstractComponent {
 
             if (isScaling()){
                 setScaling(false);
+            }
+
+            if (MouseUtility.isHovering(getX(),getY(),animationWidth,20,mouseX,mouseY)) {
+                if (getLastMouseX() == mouseX && getLastMouseY() == mouseY) {
+
+                    if (!this.getModule().getName().equalsIgnoreCase("clickgui")) {
+                        getModule().setToggle(!getModule().isToggle());
+                    } else {
+                        var clickScreen = La.getINSTANCE().getClickScreen();
+
+                        AbstractComponent abstractComponent = La.getINSTANCE().getClickScreen().getComponents().stream()
+                                .filter(abstractComponent1 -> abstractComponent1.getName().equalsIgnoreCase("PopupScreen"))
+                                .findFirst().orElse(null);
+
+                        if (abstractComponent != null) {
+                            clickScreen.getComponents().add(clickScreen.getModulePanel());
+                            clickScreen.getComponents().add(clickScreen.getCategoryPanel());
+                        }
+
+                        clickScreen.getComponents().remove(this);
+                    }
+                }
             }
 
             if (-getScrollOffset() > getMaxScroll()) {
