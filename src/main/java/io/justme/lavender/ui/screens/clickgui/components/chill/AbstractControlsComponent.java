@@ -49,4 +49,9 @@ public abstract class AbstractControlsComponent extends AbstractComponent {
     public abstract void mouseReleased(int mouseX, int mouseY, int state);
     @Override
     public abstract void keyTyped(char typedChar, int keyCode) throws IOException;
+
+    @Override
+    public void handleMouseInput() throws IOException {
+
+    }
 }

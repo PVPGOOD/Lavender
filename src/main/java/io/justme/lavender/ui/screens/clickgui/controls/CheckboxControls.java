@@ -92,4 +92,9 @@ public class CheckboxControls extends AbstractOptionComponent {
 
     }
 
+    @Override
+    public void handleMouseInput() throws IOException {
+
+    }
+
 }

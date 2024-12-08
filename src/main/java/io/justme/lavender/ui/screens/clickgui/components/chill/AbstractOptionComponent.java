@@ -43,4 +43,7 @@ public abstract class AbstractOptionComponent extends AbstractComponent {
     public abstract void mouseReleased(int mouseX, int mouseY, int state);
     @Override
     public abstract void keyTyped(char typedChar, int keyCode) throws IOException;
+    @Override
+    public abstract void handleMouseInput() throws IOException;
+
 }

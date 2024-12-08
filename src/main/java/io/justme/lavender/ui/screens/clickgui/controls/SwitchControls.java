@@ -96,4 +96,9 @@ public class SwitchControls extends AbstractOptionComponent {
     public void keyTyped(char typedChar, int keyCode) throws IOException {
 
     }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+
+    }
 }

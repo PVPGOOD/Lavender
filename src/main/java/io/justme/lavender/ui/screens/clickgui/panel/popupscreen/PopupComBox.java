@@ -104,4 +104,9 @@ public class PopupComBox extends AbstractComponent {
             La.getINSTANCE().getClickScreen().getComponents().remove(this);
         }
     }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+
+    }
 }

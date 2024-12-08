@@ -96,6 +96,11 @@ public class SliderControls extends AbstractOptionComponent {
 
     }
 
+    @Override
+    public void handleMouseInput() throws IOException {
+
+    }
+
     private float calculatePercentage(float valAbs, float longValue, float value, float max) {
         float percent = valAbs / (longValue * Math.max(Math.min(value / max, 0), 1));
         return Math.min(Math.max(0, percent), 1);

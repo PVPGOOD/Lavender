@@ -113,4 +113,9 @@ public class ModeControls extends AbstractOptionComponent {
 
     }
 
+    @Override
+    public void handleMouseInput() throws IOException {
+
+    }
+
 }

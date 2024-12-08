@@ -38,7 +38,6 @@ public class ModulePanel extends AbstractComponent {
 
     }
 
-    private float lastMouseX,lastMouseY;
     private Module lastModule;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -105,10 +104,6 @@ public class ModulePanel extends AbstractComponent {
                 componentToRemove = null;
             }
         }
-
-
-        setLastMouseX(mouseX);
-        setLastMouseY(mouseY);
     }
 
     @Override
@@ -174,6 +169,11 @@ public class ModulePanel extends AbstractComponent {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
+
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
 
     }
 }

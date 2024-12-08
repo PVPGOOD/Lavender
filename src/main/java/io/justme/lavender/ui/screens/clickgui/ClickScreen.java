@@ -189,5 +189,13 @@ public class ClickScreen extends GuiScreen  {
         return false;
     }
 
+    @Override
+    public void handleMouseInput() throws IOException {
+        super.handleMouseInput();
+
+        for (AbstractComponent component : getComponents()) {
+            component.handleMouseInput();
+        }
+    }
 
 }
