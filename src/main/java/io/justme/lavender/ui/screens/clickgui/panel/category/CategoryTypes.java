@@ -8,8 +8,8 @@ import lombok.Getter;
  **/
 @Getter
 public enum CategoryTypes {
-    CLIENT_SETTINGS("Manage Settings"),
-    MANAGER_POPPING("Manage Popping"),;
+    CLIENT_SETTINGS("Settings"),
+    MANAGER_POPPING("Pop-ups");
 
     private final String name;
 

@@ -239,18 +239,17 @@ public class PopupScreen extends AbstractComponent {
                     setScaling(true);
                 }
 
+                if (isExpanded()) {
+                    if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20,mouseX,mouseY)){
+                        La.getINSTANCE().getClickScreen().getComponents().remove(this);
+                        La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(getModule()));
+                    }
 
-                getScrollbarControls().mouseClicked(mouseX, mouseY, mouseButton);
-
-//                if (isHover(mouseX,mouseY)) {
                     for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                         abstractOptionComponent.mouseClicked(mouseX,mouseY,mouseButton);
                     }
-//                }
 
-                if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20,mouseX,mouseY)){
-                    La.getINSTANCE().getClickScreen().getComponents().remove(this);
-                    La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(getModule()));
+                    getScrollbarControls().mouseClicked(mouseX, mouseY, mouseButton);
                 }
 
             }
