@@ -19,13 +19,14 @@ public abstract class AbstractOptionComponent extends AbstractComponent {
 
     private float descriptionX,descriptionY, descriptionWidth, descriptionHeight;
     private FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-    public String comBoxChillName;
 
+    public float modeExpandingHeight;
+
+    public String comBoxChillName;
     @Getter
     @Setter
-    //value
-    //有点特殊..
     public static String comBoxSelectingName;
+
     public ControlsType controlsType;
 
     public boolean isHover(int mouseX, int mouseY) {

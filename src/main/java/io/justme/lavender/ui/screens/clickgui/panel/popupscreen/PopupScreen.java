@@ -95,8 +95,9 @@ public class PopupScreen extends AbstractComponent {
 
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                    intervalY += 35;
+                    intervalY += (int) (35 + abstractOptionComponent.getModeExpandingHeight());
                 }
 
                 case COMBOX -> {
@@ -105,6 +106,8 @@ public class PopupScreen extends AbstractComponent {
 
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
+
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
                     intervalY += 30;
                 }
@@ -116,6 +119,7 @@ public class PopupScreen extends AbstractComponent {
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY + initY - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
 
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
                     intervalY += 25;
                 }
@@ -127,6 +131,7 @@ public class PopupScreen extends AbstractComponent {
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY + initY);
 
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
                     intervalY += 25;
                 }
 
@@ -137,11 +142,11 @@ public class PopupScreen extends AbstractComponent {
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY +  initY);
 
+                    abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
                     intervalY += 30;
                 }
             }
 
-            abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
         }
 
         if (isDragging()){
@@ -187,11 +192,11 @@ public class PopupScreen extends AbstractComponent {
                     setScaling(true);
                 }
 
-                if (isHover(mouseX,mouseY)) {
+//                if (isHover(mouseX,mouseY)) {
                     for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                         abstractOptionComponent.mouseClicked(mouseX,mouseY,mouseButton);
                     }
-                }
+//                }
 
                 if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20,mouseX,mouseY)){
                     La.getINSTANCE().getClickScreen().getComponents().remove(this);
@@ -239,11 +244,6 @@ public class PopupScreen extends AbstractComponent {
             switchControls.setOption((BoolValue) setting);
             switchControls.afterAddOption();
             component = switchControls;
-        } else if (setting instanceof ModeValue) {
-            ModeControls modeControls = new ModeControls();
-            modeControls.setOption((ModeValue) setting);
-            modeControls.afterAddOption();
-            component = modeControls;
         } else if (setting instanceof MultiBoolValue) {
             ComBoxControls comBoxControls = new ComBoxControls();
             comBoxControls.setOption((MultiBoolValue) setting);
@@ -252,6 +252,11 @@ public class PopupScreen extends AbstractComponent {
             SliderControls sliderControls = new SliderControls();
             sliderControls.setOption((NumberValue) setting);
             component = sliderControls;
+        } else if (setting instanceof ModeValue) {
+            ModeControls modeControls = new ModeControls();
+            modeControls.setOption((ModeValue) setting);
+            modeControls.afterAddOption();
+            component = modeControls;
         }
 
 

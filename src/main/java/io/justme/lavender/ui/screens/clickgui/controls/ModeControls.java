@@ -50,7 +50,7 @@ public class ModeControls extends AbstractOptionComponent {
         getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0).getRGB());
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
-        fontDrawer.drawString(getOption().getValue() ,getX() + 10,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
+        fontDrawer.drawString(getOption().getValue() ,getX() + 10   ,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
 
         float optionInterval = 8;
 
@@ -78,6 +78,7 @@ public class ModeControls extends AbstractOptionComponent {
         }
 
 
+        setModeExpandingHeight(optionInterval + 5);
         setWidth(100);
         setHeight(25);
     }
