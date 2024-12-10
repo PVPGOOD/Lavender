@@ -9,7 +9,6 @@ import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.ui.elements.ElementsManager;
-import io.justme.lavender.ui.screens.ScreenTest;
 import io.justme.lavender.ui.screens.clickgui.ClickScreen;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
@@ -20,7 +19,6 @@ import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjglx.input.Keyboard;
@@ -118,9 +116,6 @@ public class La {
             Minecraft.getMinecraft().displayGuiScreen(configScreen);
         }
 
-        if (event.getKeyCode() == Keyboard.KEY_G) {
-            Minecraft.getMinecraft().displayGuiScreen(new ScreenTest());
-        }
     }
 
     public static io.justme.lavender.La getINSTANCE() {

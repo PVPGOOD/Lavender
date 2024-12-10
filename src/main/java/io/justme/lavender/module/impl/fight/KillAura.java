@@ -1,7 +1,13 @@
 package io.justme.lavender.module.impl.fight;
 
 import com.mojang.authlib.GameProfile;
+import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_8to1_9.Protocol1_8To1_9;
+import com.viaversion.viaversion.protocols.v1_9_1to1_9_3.packet.ServerboundPackets1_9_3;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
@@ -128,8 +134,7 @@ public class KillAura extends Module implements IMinecraft {
         getTargetsInWorld();
         if (!getTargets().isEmpty()) {
             getTargets().removeIf(
-                    target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue().floatValue()) ||
-                            !getTablist().contains(target.getName()));
+                    target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue()));
         }
 
         if (!getTargets().isEmpty()) {
@@ -252,7 +257,7 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void doAttack() {
-        if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getInstance().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             mc.thePlayer.swingItem();
             attackPacket();
         } else {
@@ -282,12 +287,12 @@ public class KillAura extends Module implements IMinecraft {
                 mc.thePlayer.itemInUseCount = 1;
                 if (mc.isSingleplayer()) return;
 
-                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(
-                        new BlockPos(-1, -1, -1),
-                        255,
-                        mc.thePlayer.getHeldItem(),
-                        0, 0, 0
-                ));
+                if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+                    PacketWrapper useItem = PacketWrapper.create(29, null, La.getINSTANCE().getUserConnection());
+                    useItem.write(Types.VAR_INT, 1);
+                    useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+                }
+
             }
             case "Key" -> mc.gameSettings.keyBindUseItem.pressed = true;
             case "Visual" ->  mc.thePlayer.itemInUseCount = 1;

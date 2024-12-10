@@ -34,9 +34,7 @@ public class HUD extends Module {
 
     @EventTarget
     public void on2D(Event2DRender event2DRender) {
-        La.getINSTANCE().getFontManager().getSFBold18().drawString(La.getINSTANCE().getLa(), 0,0,-1);
-
-        RenderUtility.drawRoundRect(0,0,100,100,1,new Color(0));
+//        La.getINSTANCE().getFontManager().getSFBold18().drawString(La.getINSTANCE().getLa(), 0,0,-1);
 
         for (AbstractElements abstractElements : La.getINSTANCE().getElementsManager().getElements()) {
             abstractElements.draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
