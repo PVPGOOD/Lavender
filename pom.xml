@@ -162,34 +162,28 @@
         <dependency>
             <groupId>com.viaversion</groupId>
             <artifactId>Viaversion</artifactId>
-            <version>4.9.3-SNAPSHOT</version>
+            <version>5.2.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/ViaVersion-5.0.5-downgraded.jar</systemPath>
+            <systemPath>${project.basedir}/libraries/viaversion/ViaVersion-5.2.0.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>com.viaversion</groupId>
             <artifactId>ViaBackWards</artifactId>
-            <version>common-4.9.2</version>
+            <version>5.2.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/ViaBackwards-5.0.4-downgraded.jar</systemPath>
+            <systemPath>${project.basedir}/libraries/viaversion/ViaBackwards-5.2.0.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>com.viaversion</groupId>
             <artifactId>ViaRewind</artifactId>
-            <version>3.0.6-SNAPSHOT</version>
+            <version>4.0.4-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/ViaRewind-4.0.3-downgraded.jar</systemPath>
+            <systemPath>${project.basedir}/libraries/viaversion/ViaRewind-4.0.4.jar</systemPath>
         </dependency>
 
-        <dependency>
-            <groupId>com.viaversion</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>2.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libraries/viaversion/snakeyaml-2.2.jar</systemPath>
-        </dependency>
+
         <!-- end -->
         <!-- ViaVersion end-->
 
@@ -263,6 +257,14 @@
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.3</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <dependency>

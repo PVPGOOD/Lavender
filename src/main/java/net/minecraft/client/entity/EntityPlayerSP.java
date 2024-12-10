@@ -1,5 +1,11 @@
 package net.minecraft.client.entity;
 
+import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.player.EventMove;
@@ -214,7 +220,18 @@ public class EntityPlayerSP extends AbstractClientPlayer
     public void swingItem()
     {
         super.swingItem();
-        this.sendQueue.addToSendQueue(new C0APacketAnimation());
+
+        if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+            if (La.getINSTANCE().getUserConnection() == null) {
+                La.getINSTANCE().print("UserConnection is null");
+                return;
+            }
+            PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.SWING, null, La.getINSTANCE().getUserConnection());
+            useItem.write(Types.VAR_INT, 0);
+            useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+        } else {
+            this.sendQueue.addToSendQueue(new C0APacketAnimation());
+        }
     }
 
     public void respawnPlayer()

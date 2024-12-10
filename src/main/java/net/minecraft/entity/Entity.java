@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventSafeWalk;
 import io.justme.lavender.events.player.EventStrafe;
@@ -1733,6 +1736,9 @@ public abstract class Entity implements ICommandSender
 
     public float getCollisionBorderSize()
     {
+        if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return 0F;
+        }
         return 0.1F;
     }
 
