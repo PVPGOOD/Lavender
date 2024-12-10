@@ -1,7 +1,7 @@
 package io.justme.lavender.utility.network;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.impl.exploit.disabler.Disabler;
+import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
 

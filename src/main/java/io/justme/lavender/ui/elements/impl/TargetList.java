@@ -1,7 +1,7 @@
 package io.justme.lavender.ui.elements.impl;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.impl.fight.KillAura;
+import io.justme.lavender.module.impl.blatant.fight.KillAura;
 import io.justme.lavender.ui.elements.AbstractElements;
 import io.justme.lavender.ui.elements.ElementsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;

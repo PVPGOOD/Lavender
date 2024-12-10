@@ -4,7 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 import io.justme.lavender.La;
-import io.justme.lavender.module.impl.visual.BlockStyle;
+import io.justme.lavender.module.impl.blatant.visual.BlockStyle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

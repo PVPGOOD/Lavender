@@ -4,7 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import io.justme.lavender.La;
-import io.justme.lavender.module.impl.movements.KeepSprint;
+import io.justme.lavender.module.impl.blatant.movements.KeepSprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;

@@ -1,8 +1,7 @@
 package net.minecraft.client.renderer;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.impl.visual.BlockStyle;
-import io.justme.lavender.ui.screens.clickgui.ClickScreen;
+import io.justme.lavender.module.impl.blatant.visual.BlockStyle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

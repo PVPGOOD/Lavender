@@ -1,15 +1,15 @@
 package io.justme.lavender.module;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.impl.exploit.disabler.Disabler;
-//import io.justme.lavender.module.impl.exploit.packetDebugger.PacketDebugger;
-import io.justme.lavender.module.impl.fight.KillAura;
-import io.justme.lavender.module.impl.fight.Velocity;
-import io.justme.lavender.module.impl.movements.*;
-import io.justme.lavender.module.impl.movements.noslowdown.NoSlowDown;
-import io.justme.lavender.module.impl.movements.speed.Speed;
-import io.justme.lavender.module.impl.player.*;
-import io.justme.lavender.module.impl.visual.*;
+import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
+//import io.justme.lavender.module.impl.blatant.exploit.packetDebugger.PacketDebugger;
+import io.justme.lavender.module.impl.blatant.fight.KillAura;
+import io.justme.lavender.module.impl.blatant.fight.Velocity;
+import io.justme.lavender.module.impl.blatant.movements.*;
+import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
+import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
+import io.justme.lavender.module.impl.blatant.player.*;
+import io.justme.lavender.module.impl.blatant.visual.*;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
