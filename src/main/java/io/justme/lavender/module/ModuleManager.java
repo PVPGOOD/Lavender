@@ -10,6 +10,7 @@ import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
 import io.justme.lavender.module.impl.blatant.player.*;
 import io.justme.lavender.module.impl.blatant.visual.*;
+import io.justme.lavender.module.impl.legit.fight.AutoClicker;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
@@ -25,6 +26,7 @@ public class ModuleManager extends Manager<Module> {
     //fight
     private final KillAura killAura = new KillAura();
     private final Velocity velocity = new Velocity();
+
     //visual
     private final HUD hud = new HUD();
     private final BlockStyle blockStyle = new BlockStyle();
@@ -50,9 +52,15 @@ public class ModuleManager extends Manager<Module> {
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
 
+
+    //blatant
+    private final AutoClicker autoClicker = new AutoClicker();
+
     public void onInitialization(){
 
         getElements().addAll(Arrays.asList(
+                //blatant
+
                 //fight
                 getKillAura(),
                 getVelocity(),
@@ -78,8 +86,11 @@ public class ModuleManager extends Manager<Module> {
                 getNoJumpDelay(),
                 getNoFall(),
                 //exploit
-                getDisabler()
+                getDisabler(),
 //                getPacketDebugger()
+
+                //legit
+                getAutoClicker()
         ));
 
         getElements().forEach(Module::reflectValues);
