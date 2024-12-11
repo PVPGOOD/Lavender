@@ -7,55 +7,130 @@ import io.justme.lavender.events.player.EventMove;
 import io.justme.lavender.events.player.EventStrafe;
 import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.impl.blatant.movements.speed.AbstractSpeed;
+import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
+import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.player.MovementUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
+import lombok.Getter;
+import lombok.Setter;
+import net.lenni0451.asmevents.event.enums.EnumEventType;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.potion.Potion;
 
 /**
  * @author JustMe.
  * @since 2024/5/10
  **/
+@Getter
+@Setter
 public class WatchdogLowHopSpeed extends AbstractSpeed {
+
+    private boolean canJump = false;
+    private TimerUtility timerUtility = new TimerUtility();
+
     public WatchdogLowHopSpeed() {
         super("WatchdogLowHop");
     }
     
-    private boolean collided;
-    private int stage;
-    private int stair;
-    private double less;
-    private boolean lessSlow;
-    private double speed;
-
-    private boolean a = false;
-
 
     @Override
     public void onEnable() {
-
+        offGroundTicks = 0;
+        getTimerUtility().reset();
     }
 
     @Override
     public void onDisable() {
-
+        offGroundTicks = 0;
+        getTimerUtility().reset();
     }
 
     @Override
     public void onPacket(EventPacket event) {
-
+        if (event.getPacket() instanceof S08PacketPlayerPosLook) {
+            La.getINSTANCE().getNotificationsManager().push("Lag Check","speed was disabled.", NotificationsEnum.WARNING,1);
+            La.getINSTANCE().getModuleManager().getModuleByName("Speed").setStatus(false);
+        }
     }
 
     @Override
     public void onMotionUpdate(EventMotionUpdate event) {
 
     }
-
+    private boolean reset;
     @Override
     public void onUpdate(EventUpdate event) {
-        if (mc.thePlayer.onGround) {
+        if (PlayerUtility.isOnGround()) {
             offGroundTicks = 0;
         } else {
             offGroundTicks++;
         }
+
+        if (PlayerUtility.moving()) {
+            switch (offGroundTicks) {
+                case 0:
+                    mc.thePlayer.motionY = jumpBoostMotion(0.42f);
+
+                    if (mc.thePlayer.isCollidedVertically && !PlayerUtility.isInLiquid()) {
+                        if (mc.thePlayer.hurtTime > 4) {
+                            mc.thePlayer.motionX *= 1.007;
+                            mc.thePlayer.motionZ *= 1.007;
+                        }
+
+                        if (mc.thePlayer.motionY < 0.1 && mc.thePlayer.motionY > 0.01) {
+                            mc.thePlayer.motionX *= 1.005;
+                            mc.thePlayer.motionZ *= 1.005;
+                        }
+
+                        if (mc.thePlayer.motionY < 0.005 && mc.thePlayer.motionY > 0) {
+                            mc.thePlayer.motionX *= 1.005;
+                            mc.thePlayer.motionZ *= 1.005;
+                        }
+
+                        if (mc.thePlayer.motionY < 0.001 && mc.thePlayer.motionY > -0.03) {
+                                if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+                                    mc.thePlayer.motionX *= 1.005;
+                                    mc.thePlayer.motionZ *= 1.005;
+                                } else {
+                                    mc.thePlayer.motionX *= 1.002;
+                                    mc.thePlayer.motionZ *= 1.002;
+                                }
+                            }
+                            if (mc.thePlayer.onGround) {
+                                mc.thePlayer.motionY = PlayerUtility.getJumpBoostModifier(.42F);
+                                PlayerUtility.setMotion((float) Math.max(PlayerUtility.getBaseMoveSpeed(), .4756F + .04F * PlayerUtility.getSpeedEffect()));
+                            }
+                        }
+
+
+                        break;
+                    case 1:
+                        System.out.println("jump 1");
+                        if (mc.thePlayer.hurtTime == 0) {
+                            mc.thePlayer.motionY = 0.39;
+                        }
+                        break;
+                    case 3:
+
+                        System.out.println("jump 2");
+                        if (mc.thePlayer.hurtTime == 0) {
+                            mc.thePlayer.motionY -= 0.13;
+                        }
+                        break;
+                    case 4:
+
+                        System.out.println("jump 3");
+                        if (mc.thePlayer.hurtTime == 0) {
+                            mc.thePlayer.motionY -= 0.2;
+                        }
+                        break;
+                }
+            }
+            if (mc.thePlayer.isCollidedHorizontally && PlayerUtility.moving() && mc.thePlayer.onGround) {
+                PlayerUtility.setMotion(PlayerUtility.getBaseMoveSpeed());
+                System.out.println("jump2");
+            }
+
     }
 
     @Override
@@ -65,49 +140,20 @@ public class WatchdogLowHopSpeed extends AbstractSpeed {
     public int offGroundTicks = 0;
     @Override
     public void onStrafe(EventStrafe event) {
+        if (!PlayerUtility.moving() || noAction()) return;
 
 
-        switch (offGroundTicks) {
-            case 0: {
-                //auto jump
-                if (PlayerUtility.moving()) {
-                    La.getINSTANCE().print("Jump!");
-                    mc.thePlayer.motionY = 0.42;
-                }
-                break;
-            }
-            case 8:
-                var speed = predictedMotion(mc.thePlayer.motionY, 3);
-                La.getINSTANCE().print("Filled! " +  speed);
-                mc.thePlayer.motionY = speed;
-                break;
-        }
     }
 
-    private double getHypixelSpeed(int stage) {
-        double value = 0.26 / 15;
-        double firstValue = 0.4145 / 12.5;
-        double decr = (((double) stage / 500) * 2);
-
-        if (stage == 0) {
-            value = 0.64 * 0.134;
-        } else if (stage == 1) {
-            value = firstValue;
-        } else if (stage >= 2) {
-            value = firstValue - decr;
-        }
-        if (collided) {
-            value = 0.2;
-            if (stage == 0)
-                value = 0;
+    public double jumpBoostMotion(final double motionY) {
+        if (mc.thePlayer.isPotionActive(Potion.jump)) {
+            return motionY + (mc.thePlayer.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
         }
 
-        return Math.max(value, 0.26);
+        return motionY;
     }
 
-    public static double predictedMotion(final double motion, final int ticks) {
-        return MovementUtility.predictedMotion(motion, ticks);
-    }
+
 
     private boolean noAction() {
         return ((mc.thePlayer.isInWater()
