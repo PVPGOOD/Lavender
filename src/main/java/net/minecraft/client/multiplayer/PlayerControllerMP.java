@@ -421,13 +421,16 @@ public class PlayerControllerMP
             this.syncCurrentPlayItem();
 
 
-            if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
-                if (La.getINSTANCE().getUserConnection() == null) {
-                    La.getINSTANCE().print("UserConnection is null");
-                } else {
-                    PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.USE_ITEM, null, La.getINSTANCE().getUserConnection());
-                    useItem.write(Types.VAR_INT, 1);
-                    useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+
+            if ((mc.thePlayer.getItemInUse() != null) && (mc.thePlayer.getItemInUse().getItem() != null) && mc.thePlayer.getItemInUse().getItem() instanceof ItemSword) {
+                if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+                    if (La.getINSTANCE().getUserConnection() == null) {
+                        La.getINSTANCE().print("UserConnection is null");
+                    } else {
+                        PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.USE_ITEM, null, La.getINSTANCE().getUserConnection());
+                        useItem.write(Types.VAR_INT, 1);
+                        useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+                    }
                 }
             } else {
                 this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(playerIn.inventory.getCurrentItem()));
