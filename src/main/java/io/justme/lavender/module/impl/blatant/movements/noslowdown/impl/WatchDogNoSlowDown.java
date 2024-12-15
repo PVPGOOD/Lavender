@@ -1,6 +1,11 @@
 package io.justme.lavender.module.impl.blatant.movements.noslowdown.impl;
 
+import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.game.EventWorldReload;
 import io.justme.lavender.events.network.EventPacket;
@@ -8,11 +13,9 @@ import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.player.EventSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.noslowdown.AbstractNoSlowDown;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucketMilk;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemPotion;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
 
 /**
@@ -44,12 +47,16 @@ public class WatchDogNoSlowDown extends AbstractNoSlowDown {
             if (offGroundTicks == 4 && sendEating) {
                 sendEating = false;
                 if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
-                    getPacketUtility().sendFinalPacket(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
+                    getPacketUtility().sendFinalPacket(new C08PacketPlayerBlockPlacement(
+                            new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
                 }
 
-            } else if (mc.thePlayer.isUsingItem()) {
-                event.setY(event.getY() + 1E-14);
             }
+//            } else if (mc.thePlayer.isUsingItem()) {
+//                event.setY(event.getY() + 1E-14);
+//            }
+        } else {
+
         }
     }
 
@@ -70,6 +77,19 @@ public class WatchDogNoSlowDown extends AbstractNoSlowDown {
                                 }
                                 sendEating = true;
                                 event.setCancelled(true);
+                            }
+                        }
+                    }else {
+                        if (Minecraft.getMinecraft().thePlayer.getHeldItem() != null) {
+                            if (Minecraft.getMinecraft().thePlayer.getHeldItem().getItem() instanceof ItemSword) {
+                                if (event.getPacket() instanceof C08PacketPlayerBlockPlacement) {
+
+                                    if (mc.thePlayer.ticksExisted % 2 != 0) {
+                                        int slot = mc.thePlayer.inventory.currentItem;
+
+                                        La.getINSTANCE().print("reset", "NoSlowDown");
+                                    }
+                                }
                             }
                         }
                     }

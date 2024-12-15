@@ -342,7 +342,19 @@ public class PlayerControllerMP
         if (i != this.currentPlayerItem)
         {
             this.currentPlayerItem = i;
-            this.netClientHandler.addToSendQueue(new C09PacketHeldItemChange(this.currentPlayerItem));
+
+
+            if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+                if (La.getINSTANCE().getUserConnection() == null) {
+                    La.getINSTANCE().print("UserConnection is null");
+                } else {
+                    PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.SET_CARRIED_ITEM, null, La.getINSTANCE().getUserConnection());
+                    useItem.write(Types.SHORT, (short) this.currentPlayerItem);
+                    useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+                }
+            } else {
+                this.netClientHandler.addToSendQueue(new C09PacketHeldItemChange(this.currentPlayerItem));
+            }
         }
     }
 
