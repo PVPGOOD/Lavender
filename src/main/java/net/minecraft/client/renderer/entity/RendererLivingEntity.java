@@ -3,6 +3,9 @@ package net.minecraft.client.renderer.entity;
 import com.google.common.collect.Lists;
 import java.nio.FloatBuffer;
 import java.util.List;
+
+import io.justme.lavender.La;
+import io.justme.lavender.events.render.RotationUpdateEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -152,14 +155,24 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     f2 = f1 - f;
                 }
 
-//                float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+                float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
 
-                float f7;
-                if (entity == Minecraft.getMinecraft().thePlayer) {
-                    f7 = entity.prevRotationPitchHead + (entity.rotationPitchHead - entity.prevRotationPitchHead) * partialTicks;
-                } else {
-                    f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
-                }
+                RotationUpdateEvent event = new RotationUpdateEvent(entity, f, f1, f2, f7, partialTicks);
+                La.getINSTANCE().getEventManager().call(event);
+
+                f = event.getRenderYawOffset();
+                f1 = event.getRotationYawHead();
+                f2 = event.getRenderHeadYaw();
+                f7 = event.getRenderHeadPitch();
+
+//                float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+//
+//                float f7;
+//                if (entity == Minecraft.getMinecraft().thePlayer) {
+//                    f7 = entity.prevRotationPitchHead + (entity.rotationPitchHead - entity.prevRotationPitchHead) * partialTicks;
+//                } else {
+//                    f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+//                }
 
                 this.renderLivingAt(entity, x, y, z);
                 float f8 = this.handleRotationFloat(entity, partialTicks);

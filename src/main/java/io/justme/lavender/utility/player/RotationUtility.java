@@ -1,11 +1,12 @@
 package io.justme.lavender.utility.player;
 
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import net.minecraft.util.*;
 import org.lwjglx.input.Keyboard;
 import org.lwjglx.util.vector.Vector2f;
 
@@ -68,5 +69,109 @@ public class RotationUtility {
             yaw = (float) Math.toDegrees((Math.atan2(-x, z) + MathHelper.PI2) % MathHelper.PI2);
         }
         return yaw;
+    }
+
+
+    public Vector2f calculate(final Vector3d from, final Vector3d to) {
+
+        final Vector3d diff = to.subtract(from);
+        final double distance = Math.hypot(diff.getX(), diff.getZ());
+        final float yaw = (float) (MathHelper.atan2(diff.getZ(), diff.getX()) * MathHelper.TO_DEGREES) - 90.0F;
+        final float pitch = (float) (-(MathHelper.atan2(diff.getY(), distance) * MathHelper.TO_DEGREES));
+        return new Vector2f(yaw, pitch);
+    }
+
+    public Vector2f calculate(final Vec3 to) {
+        return calculate(mc.thePlayer.getCustomPositionVector().add(0, mc.thePlayer.getEyeHeight(), 0), new Vector3d(to.xCoord, to.yCoord, to.zCoord));
+    }
+
+    public Vector2f calculate(final Vector3d to) {
+        return calculate(mc.thePlayer.getCustomPositionVector().add(0, mc.thePlayer.getEyeHeight(), 0), to);
+    }
+
+    public Vector2f calculate(final Vector3d position, final EnumFacing enumFacing) {
+        double x = position.getX() + 0.5D;
+        double y = position.getY() + 0.5D;
+        double z = position.getZ() + 0.5D;
+
+        x += (double) enumFacing.getDirectionVec().getX() * 0.5D;
+        y += (double) enumFacing.getDirectionVec().getY() * 0.5D;
+        z += (double) enumFacing.getDirectionVec().getZ() * 0.5D;
+        return calculate(new Vector3d(x, y, z));
+    }
+
+    public Vector2f calculate(final Entity entity) {
+        return calculate(entity.getCustomPositionVector().add(0, Math.max(0, Math.min(mc.thePlayer.posY - entity.posY +
+                mc.thePlayer.getEyeHeight(), (entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY) * 0.9)), 0));
+    }
+
+    public Vector2f calculate(final Entity entity, final boolean adaptive, final double range) {
+        Vector2f normalRotations = calculate(entity);
+        if (!adaptive || RaycastUtility.rayCast(normalRotations, range).typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+            return normalRotations;
+        }
+
+        for (double yPercent = 1; yPercent >= 0; yPercent -= 0.25) {
+            for (double xPercent = 1; xPercent >= -0.5; xPercent -= 0.5) {
+                for (double zPercent = 1; zPercent >= -0.5; zPercent -= 0.5) {
+                    Vector2f adaptiveRotations = calculate(entity.getCustomPositionVector().add(
+                            (entity.getEntityBoundingBox().maxX - entity.getEntityBoundingBox().minX) * xPercent,
+                            (entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY) * yPercent,
+                            (entity.getEntityBoundingBox().maxZ - entity.getEntityBoundingBox().minZ) * zPercent));
+
+                    if (RaycastUtility.rayCast(adaptiveRotations, range).typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                        return adaptiveRotations;
+                    }
+                }
+            }
+        }
+
+        return normalRotations;
+    }
+
+    @Getter
+    public class Vector3d {
+
+        private final double x;
+        private final double y;
+        private final double z;
+
+        public Vector3d(final double x, final double y, final double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public Vector3d add(final double x, final double y, final double z) {
+            return new Vector3d(this.x + x, this.y + y, this.z + z);
+        }
+
+        public Vector3d add(final Vector3d vector) {
+            return add(vector.x, vector.y, vector.z);
+        }
+
+        public Vector3d subtract(final double x, final double y, final double z) {
+            return add(-x, -y, -z);
+        }
+
+        public Vector3d subtract(final Vector3d vector) {
+            return add(-vector.x, -vector.y, -vector.z);
+        }
+
+        public double length() {
+            return Math.sqrt(x * x + y * y + z * z);
+        }
+
+        public Vector3d multiply(final double v) {
+            return new Vector3d(x * v, y * v, z * v);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof Vector3d)) return false;
+
+            Vector3d vector = (Vector3d) obj;
+            return ((Math.floor(x) == Math.floor(vector.x)) && Math.floor(y) == Math.floor(vector.y) && Math.floor(z) == Math.floor(vector.z));
+        }
     }
 }

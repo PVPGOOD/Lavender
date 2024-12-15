@@ -23,6 +23,7 @@ public class MathHelper
     private static final double field_181163_d;
     private static final double[] field_181164_e;
     private static final double[] field_181165_f;
+    public static final float TO_DEGREES = 180.0F / PI;
 
     public static float sin(float p_76126_0_)
     {

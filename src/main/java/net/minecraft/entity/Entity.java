@@ -10,6 +10,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventSafeWalk;
 import io.justme.lavender.events.player.EventStrafe;
+import io.justme.lavender.utility.player.RotationUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -2366,5 +2367,38 @@ public abstract class Entity implements ICommandSender
         }
 
         EnchantmentHelper.applyArthropodEnchantments(entityLivingBaseIn, entityIn);
+    }
+
+
+    public MovingObjectPosition rayTraceCustom(double blockReachDistance, float yaw, float pitch) {
+        final Vec3 vec3 = this.getPositionEyes(1.0F);
+        final Vec3 vec31 = this.getLookCustom(yaw, pitch);
+        final Vec3 vec32 = vec3.addVector(vec31.xCoord * blockReachDistance, vec31.yCoord * blockReachDistance, vec31.zCoord * blockReachDistance);
+        return this.worldObj.rayTraceBlocks(vec3, vec32, false, false, true);
+    }
+
+
+    public MovingObjectPosition customRayTrace(final double blockReachDistance, final float partialTicks, final float yaw, final float pitch) {
+        final Vec3 vec3 = this.getPositionEyes(partialTicks);
+        final Vec3 vec4 = this.getCustomLook(partialTicks, yaw, pitch);
+        final Vec3 vec5 = vec3.addVector(vec4.xCoord * blockReachDistance, vec4.yCoord * blockReachDistance, vec4.zCoord * blockReachDistance);
+        return this.worldObj.rayTraceBlocks(vec3, vec5, false, false, true);
+    }
+
+    public Vec3 getCustomLook(final float partialTicks, final float yaw, final float pitch) {
+        if (partialTicks == 1.0f || partialTicks == 2.0f) {
+            return this.getVectorForRotation(pitch, yaw);
+        }
+        final float f = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * partialTicks;
+        final float f2 = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * partialTicks;
+        return this.getVectorForRotation(f, f2);
+    }
+
+    public RotationUtility.Vector3d getCustomPositionVector() {
+        return new RotationUtility.Vector3d(posX, posY, posZ);
+    }
+
+    public Vec3 getLookCustom(float yaw, float pitch) {
+        return this.getVectorForRotation(pitch, yaw);
     }
 }

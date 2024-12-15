@@ -5,11 +5,13 @@ import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.player.EventAttack;
 import io.justme.lavender.events.player.EventMotionUpdate;
+import io.justme.lavender.events.render.RotationUpdateEvent;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
@@ -18,6 +20,7 @@ import io.justme.lavender.utility.math.MathUtility;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.network.PacketUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
+import io.justme.lavender.utility.player.RaycastUtility;
 import io.justme.lavender.utility.player.RotationUtility;
 import io.justme.lavender.utility.world.WorldUtility;
 import io.justme.lavender.value.impl.BoolValue;
@@ -29,6 +32,7 @@ import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -36,11 +40,14 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C09PacketHeldItemChange;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldSettings;
+import org.lwjglx.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +63,11 @@ import java.util.stream.Collectors;
 @ModuleInfo(name = "KillAura", description = "IDK.", category = Category.FIGHT)
 public class KillAura extends Module implements IMinecraft {
 
+    //rotation
+    public float[] rotating;
+    public float[] lastRotation;
+    public float tickingYaw, tickingPitch;
+
     private final TimerUtility attackTimer = new TimerUtility(), switchTimer = new TimerUtility();
     private final ArrayList<EntityLivingBase> targets = new ArrayList<>();
     private final PacketUtility packetUtility = new PacketUtility();
@@ -65,12 +77,16 @@ public class KillAura extends Module implements IMinecraft {
     private final BoolValue
             autoBlock = new BoolValue("AutoBlock",false),
             syncCurrentPlayItem = new BoolValue("SyncItem",false),
-            attackTargetEntityWithCurrentItem = new BoolValue("AttackTargetEntityWithCurrentItem",false),
-            ray_cast = new BoolValue("Attack_RayCast",false),
+            attackTargetEntityWithCurrentItem = new BoolValue("Atk Target With Item",false),
+            ray_cast = new BoolValue("RayCast",false),
             ray_cast_block = new BoolValue("Block_RayCast",false);
 
     private final ModeValue
             attackMode = new ModeValue("Mode", new String[]{"Single", "Switch"}, "Switch");
+
+    private final ModeValue
+            rotationMode = new ModeValue("Rotation Mode", new String[]{"Normal", "Adaptive"}, "Normal");
+
 
     private final NumberValue
             cps = new NumberValue("CPS", 15.0, 1, 20.0, 1),
@@ -93,27 +109,54 @@ public class KillAura extends Module implements IMinecraft {
 
     @Override
     public void onDisable() {
+        if (mc.thePlayer == null) return;
+
+        lastRotation = new float[]{mc.thePlayer.rotationYaw, mc.thePlayer.renderYawOffset, mc.thePlayer.rotationPitch};
         resetStatus();
         super.onDisable();
     }
 
     @Override
     public void onEnable() {
+        if (mc.thePlayer == null) return;
+        lastRotation = new float[]{mc.thePlayer.rotationYaw, mc.thePlayer.renderYawOffset, mc.thePlayer.rotationPitch};
         resetStatus();
+
         super.onEnable();
     }
 
+    int curringSlot;
     private void resetStatus() {
         if (Minecraft.getMinecraft().thePlayer == null) return;
 
         //正常重置状态
         if (isBlocking()) {
+
+            if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+                if (La.getINSTANCE().getUserConnection() == null) {
+                    La.getINSTANCE().print("UserConnection is null");
+                } else {
+
+                    int slot = mc.thePlayer.inventory.currentItem;
+
+                    if (slot != getCurringSlot()) {
+                        PacketWrapper switch0 = PacketWrapper.create(ServerboundPackets1_9.SET_CARRIED_ITEM, null, La.getINSTANCE().getUserConnection());
+                        switch0.write(Types.SHORT, (short) (slot));
+                        setCurringSlot(slot);
+                        switch0.scheduleSendToServer(Protocol1_9To1_8.class);
+                        La.getINSTANCE().print("set " + slot);
+                        setCurringSlot(slot);
+                    }
+
+                }
+            }
             doUnblock();
         }
 
         cleanTargets();
         resetKillAuraTimer(true, true);
         setIndex(0);
+        La.getINSTANCE().getModuleManager().getRotations().setRotating(false);
     }
 
     @EventTarget
@@ -156,11 +199,11 @@ public class KillAura extends Module implements IMinecraft {
             }
         } else {
             setTarget(null);
+            La.getINSTANCE().getModuleManager().getRotations().setRotating(true);
         }
 
         if (getTarget() != null) {
-            event.setYaw(RotationUtility.getRotationToEntity(getTarget())[0]);
-            event.setPitch(RotationUtility.getRotationToEntity(getTarget())[1]);
+            onRotations(event,getTarget());
 
             switch (event.getType()) {
                 case PRE -> {
@@ -200,6 +243,8 @@ public class KillAura extends Module implements IMinecraft {
         if (shouldUnBlock()) {
             doUnblock();
         }
+
+        getTargets().clear();
     }
 
     @EventTarget
@@ -267,7 +312,18 @@ public class KillAura extends Module implements IMinecraft {
             Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
         }
 
-        getPacketUtility().sendPacketFromLa(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK));
+        if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+            if (La.getINSTANCE().getUserConnection() == null) {
+                La.getINSTANCE().print("UserConnection is null");
+            } else {
+                PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_9.INTERACT, null, La.getINSTANCE().getUserConnection());
+                wrapper.write(Types.VAR_INT, getTarget().getEntityId());
+                wrapper.write(Types.VAR_INT,1);
+                wrapper.scheduleSendToServer(Protocol1_9To1_8.class);
+            }
+        }
+
+
 
         if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR && getAttackTargetEntityWithCurrentItem().getValue())
         {
@@ -284,9 +340,39 @@ public class KillAura extends Module implements IMinecraft {
                 if (mc.isSingleplayer()) return;
 
                 if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
-                    PacketWrapper useItem = PacketWrapper.create(29, null, La.getINSTANCE().getUserConnection());
-                    useItem.write(Types.VAR_INT, 1);
-                    useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+
+                    int slot = mc.thePlayer.inventory.currentItem;
+
+                    if (slot != getCurringSlot()) {
+                        La.getINSTANCE().print("normal now ab");
+                        getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(slot));
+                        setCurringSlot(slot);
+                    }
+
+
+                    if (La.getINSTANCE().getUserConnection() == null) {
+                        La.getINSTANCE().print("UserConnection is null");
+                    } else {
+
+                        PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.USE_ITEM, null, La.getINSTANCE().getUserConnection());
+                        useItem.write(Types.VAR_INT, 1);
+                        useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+
+                        if (mc.thePlayer.onGround) {
+                            getPacketUtility().sendFinalPacket(new C08PacketPlayerBlockPlacement(
+                                    new BlockPos(-1, -1, -1),
+                                    255, mc.thePlayer.getCurrentEquippedItem(),
+                                    0, 0, 0
+                            ));
+                            La.getINSTANCE().print("blocking");
+                        }
+                    }
+                } else {
+                    getPacketUtility().sendFinalPacket(new C08PacketPlayerBlockPlacement(
+                            new BlockPos(-1, -1, -1),
+                            255, mc.thePlayer.getCurrentEquippedItem(),
+                            0, 0, 0
+                    ));
                 }
 
             }
@@ -295,18 +381,80 @@ public class KillAura extends Module implements IMinecraft {
         }
     }
 
+
+    private TimerUtility setSlotTimerUtility = new TimerUtility();
     private void doUnblock(){
         setBlocking(false);
 
         switch (getBlockModeValue().getValue()) {
             case "Watchdog" -> {
                 mc.thePlayer.itemInUseCount = 0;
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+
+                int slot = mc.thePlayer.inventory.currentItem;
+
+                if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
+                    if (La.getINSTANCE().getUserConnection() == null) {
+                        La.getINSTANCE().print("UserConnection is null");
+                    } else {
+                        PacketWrapper switch0 = PacketWrapper.create(ServerboundPackets1_9.SET_CARRIED_ITEM, null, La.getINSTANCE().getUserConnection());
+                        switch0.write(Types.SHORT, (short) (8));
+                        setCurringSlot(8);
+                        switch0.scheduleSendToServer(Protocol1_9To1_8.class);
+                                    La.getINSTANCE().print("set 47");
+            //
+//                PacketWrapper switch1 = PacketWrapper.create(ServerboundPackets1_9.SET_CARRIED_ITEM, null, La.getINSTANCE().getUserConnection());
+//                switch1.write(Types.SHORT, (short) slot);
+//                switch1.scheduleSendToServer(Protocol1_9To1_8.class);
+                    }
+                } else {
+                    getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(8));
+                    setCurringSlot(8);
+                    La.getINSTANCE().print("set");
+
+//                    if (getSetSlotTimerUtility().hasTimeElapsed(1000)) {
+//                        getSetSlotTimerUtility().reset();
+//                        La.getINSTANCE().print("set");
+//                        getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(slot));
+//                    }
+                }
+
+
+                La.getINSTANCE().print("reset");
             }
             case "Key" -> mc.gameSettings.keyBindUseItem.pressed = false;
             case "Visual" ->  mc.thePlayer.itemInUseCount = 0;
         }
     }
+
+    public void onRotations(EventMotionUpdate event, EntityLivingBase target) {
+        switch (getRotationMode().getValue()) {
+            case "Normal":
+                rotating = RotationUtility.getRotationToEntity(target);
+                break;
+            case "Adaptive":
+                rotating = new float[]{RotationUtility.calculate(target, true, range.getValue()).getX(), Math.min(RotationUtility.calculate(target, true, range.getValue()).getY(), 90)};
+                randomiseTargetRotations();
+                rotating[0] += tickingYaw;
+                rotating[1] += tickingPitch;
+                if (RaycastUtility.rayCast(new Vector2f(rotating[0], rotating[1]), range.getValue()).typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) {
+                    tickingYaw = tickingPitch = 0;
+                }
+                break;
+        }
+
+        lastRotation[0] = rotating[0];
+        lastRotation[2] = Math.min(90, rotating[1]);
+
+        La.getINSTANCE().getModuleManager().getRotations().setRotating(true);
+        event.setYaw(lastRotation[0]);
+        event.setPitch(lastRotation[2]);
+    }
+
+    public void randomiseTargetRotations() {
+        tickingYaw += (float) (Math.random() - 0.5f);
+        tickingPitch += (float) (Math.random() - 0.5f) * 2;
+    }
+
 
     private void cleanTargets() {
         setTarget(null);

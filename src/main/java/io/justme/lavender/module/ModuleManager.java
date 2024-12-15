@@ -33,6 +33,7 @@ public class ModuleManager extends Manager<Module> {
     private final NoCamClip noCamClip = new NoCamClip();
     private final NoHurtCam noHurtCam = new NoHurtCam();
     private final ClickGui clickGui = new ClickGui();
+    private final Rotations rotations = new Rotations();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -70,6 +71,7 @@ public class ModuleManager extends Manager<Module> {
                 getNoHurtCam(),
                 getNoCamClip(),
                 getClickGui(),
+                getRotations(),
                 //movements
                 getNoslow(),
                 getSprint(),
