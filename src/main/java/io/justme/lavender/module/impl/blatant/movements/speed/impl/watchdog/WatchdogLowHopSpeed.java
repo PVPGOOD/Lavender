@@ -35,14 +35,19 @@ public class WatchdogLowHopSpeed extends AbstractSpeed {
 
     @Override
     public void onEnable() {
-        offGroundTicks = 0;
+
         getTimerUtility().reset();
+        if (!PlayerUtility.isOnGround()) {
+            offGroundTicks = -1;
+        }
     }
 
     @Override
     public void onDisable() {
-        offGroundTicks = 0;
         getTimerUtility().reset();
+        if (!PlayerUtility.isOnGround()) {
+            offGroundTicks = -1;
+        }
     }
 
     @Override
@@ -60,10 +65,17 @@ public class WatchdogLowHopSpeed extends AbstractSpeed {
     private boolean reset;
     @Override
     public void onUpdate(EventUpdate event) {
+
         if (PlayerUtility.isOnGround()) {
             offGroundTicks = 0;
-        } else {
-            offGroundTicks++;
+        }
+
+        if (offGroundTicks != -1) {
+            if (PlayerUtility.isOnGround()) {
+                offGroundTicks = 0;
+            } else {
+                offGroundTicks++;
+            }
         }
 
         if (PlayerUtility.moving()) {
@@ -72,30 +84,27 @@ public class WatchdogLowHopSpeed extends AbstractSpeed {
                     mc.thePlayer.motionY = jumpBoostMotion(0.42f);
 
                     if (mc.thePlayer.isCollidedVertically && !PlayerUtility.isInLiquid()) {
-                        if (mc.thePlayer.hurtTime > 4) {
-                            mc.thePlayer.motionX *= 1.007;
-                            mc.thePlayer.motionZ *= 1.007;
-                        }
+//                        if (mc.thePlayer.hurtTime > 4) {
+//                            mc.thePlayer.motionX *= 1.007;
+//                            mc.thePlayer.motionZ *= 1.007;
+//                        }
 
-                        if (mc.thePlayer.motionY < 0.1 && mc.thePlayer.motionY > 0.01) {
-                            mc.thePlayer.motionX *= 1.005;
-                            mc.thePlayer.motionZ *= 1.005;
-                        }
-
-                        if (mc.thePlayer.motionY < 0.005 && mc.thePlayer.motionY > 0) {
-                            mc.thePlayer.motionX *= 1.005;
-                            mc.thePlayer.motionZ *= 1.005;
-                        }
-
-                        if (mc.thePlayer.motionY < 0.001 && mc.thePlayer.motionY > -0.03) {
-                                if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
-                                    mc.thePlayer.motionX *= 1.005;
-                                    mc.thePlayer.motionZ *= 1.005;
-                                } else {
-                                    mc.thePlayer.motionX *= 1.002;
-                                    mc.thePlayer.motionZ *= 1.002;
-                                }
+                        if (mc.thePlayer.hurtTime == 0) {
+                            if (mc.thePlayer.motionY < 0.1 && mc.thePlayer.motionY > 0.01) {
+                                mc.thePlayer.motionX *= 1.002;
+                                mc.thePlayer.motionZ *= 1.002;
                             }
+
+                            if (mc.thePlayer.motionY < 0.005 && mc.thePlayer.motionY > 0) {
+                                mc.thePlayer.motionX *= 1.002;
+                                mc.thePlayer.motionZ *= 1.002;
+                            }
+
+                            if (mc.thePlayer.motionY < 0.001 && mc.thePlayer.motionY > -0.03) {
+                                mc.thePlayer.motionX *= 1.002;
+                                mc.thePlayer.motionZ *= 1.002;
+                            }
+                        }
                             if (mc.thePlayer.onGround) {
                                 mc.thePlayer.motionY = PlayerUtility.getJumpBoostModifier(.42F);
                                 PlayerUtility.setMotion((float) Math.max(PlayerUtility.getBaseMoveSpeed(), .4756F + .04F * PlayerUtility.getSpeedEffect()));
@@ -105,21 +114,16 @@ public class WatchdogLowHopSpeed extends AbstractSpeed {
 
                         break;
                     case 1:
-                        System.out.println("jump 1");
                         if (mc.thePlayer.hurtTime == 0) {
                             mc.thePlayer.motionY = 0.39;
                         }
                         break;
                     case 3:
-
-                        System.out.println("jump 2");
                         if (mc.thePlayer.hurtTime == 0) {
                             mc.thePlayer.motionY -= 0.13;
                         }
                         break;
                     case 4:
-
-                        System.out.println("jump 3");
                         if (mc.thePlayer.hurtTime == 0) {
                             mc.thePlayer.motionY -= 0.2;
                         }
@@ -128,7 +132,6 @@ public class WatchdogLowHopSpeed extends AbstractSpeed {
             }
             if (mc.thePlayer.isCollidedHorizontally && PlayerUtility.moving() && mc.thePlayer.onGround) {
                 PlayerUtility.setMotion(PlayerUtility.getBaseMoveSpeed());
-                System.out.println("jump2");
             }
 
     }
