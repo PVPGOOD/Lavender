@@ -9,7 +9,6 @@ import io.justme.lavender.module.ModuleInfo;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -24,15 +23,21 @@ import net.minecraft.util.MathHelper;
 public class Rotations extends Module {
 
     private float yaw;
+
     public float yawOffset;
+
     private float pitch;
+
     private float prevYaw;
+
     public float preYawOffset;
+
     private float prevPitch;
+
     private boolean isRotating;
 
-    @EventTarget
-    public void onTick(EventTick eventTick) {
+    @EventTarget()
+    public void onTick(EventTick event) {
         this.prevYaw = this.yaw;
         this.preYawOffset = this.yawOffset;
         this.prevPitch = this.pitch;
@@ -43,18 +48,22 @@ public class Rotations extends Module {
     public void onMotionUpdate(EventMotionUpdate event) {
         this.yaw = event.getYaw();
         this.pitch = event.getPitch();
+        this.isRotating = event.isRotate();
     }
+
+
 
     @EventTarget()
     public void onRotationUpdate(RotationUpdateEvent event) {
         Entity entity = event.getEntity();
         float partialTicks = event.getPartialTicks();
-        if (entity instanceof EntityPlayerSP && entity.ridingEntity == null && partialTicks != 1.0F && isRotating()) {
+        if (entity instanceof EntityPlayerSP && entity.ridingEntity == null && partialTicks != 1.0F && this.isRotating) {
             event.setRenderYawOffset(this.interpolateAngle(partialTicks, this.preYawOffset, this.yawOffset));
             event.setRenderHeadYaw(this.interpolateAngle(partialTicks, this.prevYaw, this.yaw) - event.getRenderYawOffset());
             event.setRenderHeadPitch(this.lerp(partialTicks, this.prevPitch, this.pitch));
         }
     }
+
     public void renderYawOffset(float yaw) {
         double currentPosX = mc.thePlayer.posX;
         double prevPosX = mc.thePlayer.prevPosX;
@@ -72,7 +81,7 @@ public class Rotations extends Module {
             targetYawOffset = (float) Math.toDegrees(Math.atan2(deltaZ, deltaX)) - 90.0F;
         }
 
-        // 如果正在挥动，优先使用yaw值覆盖
+//        // 如果正在挥动，优先使用yaw值覆盖
 //        if (mc.thePlayer.swingProgress > 0.0F) {
 //            targetYawOffset = yaw;
 //        }
@@ -93,7 +102,6 @@ public class Rotations extends Module {
             this.yawOffset += clampedDifference * 0.2F;
         }
 
-        // 更新玩家的显示yaw偏移值，但不影响身体的晃动
         mc.thePlayer.prevRenderYawOffset = mc.thePlayer.renderYawOffset;
         mc.thePlayer.renderYawOffset = this.yawOffset;
     }
@@ -105,7 +113,4 @@ public class Rotations extends Module {
     public float lerp(float factor, float start, float end) {
         return start + factor * (end - start);
     }
-
-
-
 }
