@@ -64,6 +64,7 @@ public class ModulePanelWindow extends AbstractCategory {
         for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
             if (categoryComponents.isHover(mouseX,mouseY)) {
                 La.getINSTANCE().getClickScreen().setCurrentCategory(categoryComponents.getAbstractCategory());
+                this.refreshModule(categoryComponents.getAbstractCategory());
             }
         }
     }

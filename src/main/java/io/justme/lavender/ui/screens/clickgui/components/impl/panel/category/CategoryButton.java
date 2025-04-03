@@ -23,7 +23,7 @@ public class CategoryButton extends AbstractControlsComponent {
 
     public CategoryButton(CategoryType category) {
         abstractCategory = category;
-        this.neededIcon = false;
+        this.neededIcon = true;
         this.category = category;
     }
 

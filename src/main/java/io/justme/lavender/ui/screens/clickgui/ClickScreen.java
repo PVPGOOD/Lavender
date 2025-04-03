@@ -2,7 +2,6 @@ package io.justme.lavender.ui.screens.clickgui;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
@@ -56,7 +55,7 @@ public class ClickScreen extends GuiScreen  {
         if (getAbstractPanels().isEmpty()) {
             getAbstractPanels().add(getCategoryPanel());
             getAbstractPanels().add(getModulePanel());
-            getModulePanel().afterAddOptions();
+            getModulePanel().FirstAddonModule();
         }
 
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {

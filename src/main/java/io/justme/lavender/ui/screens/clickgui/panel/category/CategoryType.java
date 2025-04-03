@@ -12,11 +12,10 @@ public enum CategoryType {
     MANAGER_POPPING("Pop-ups"),
 
     FIGHT("Fight"),
-    MOVEMENTS("Movements"),
     VISUAL("Visual"),
-    MISC("Miscellaneous"),
-    EXPLOIT("Exploit"),
+    MOVEMENTS("Movements"),
     PLAYER("Player"),
+    MISC("Misc"),
     World("World"),
     Exploit("Exploit");
 

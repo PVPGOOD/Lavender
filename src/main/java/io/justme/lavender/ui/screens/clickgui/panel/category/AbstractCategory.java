@@ -1,5 +1,8 @@
 package io.justme.lavender.ui.screens.clickgui.panel.category;
 
+import io.justme.lavender.La;
+import io.justme.lavender.module.Module;
+import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,5 +31,14 @@ public abstract class AbstractCategory {
     public abstract void mouseReleased(int mouseX, int mouseY, int state);
     public abstract void keyTyped(char typedChar, int keyCode) throws IOException;
     public abstract void handleMouseInput() throws IOException;
+
+
+    public void refreshModule(CategoryType category) {
+        La.getINSTANCE().getClickScreen().getModulePanelComponent().clear();
+        La.getINSTANCE().getModuleManager().getElements().stream()
+                .filter(module -> !module.getName().equalsIgnoreCase("clickgui"))
+                .filter(module -> module.getCategory().getName().equalsIgnoreCase(category.getName()))
+                .forEach(module -> La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(module)));
+    }
 
 }

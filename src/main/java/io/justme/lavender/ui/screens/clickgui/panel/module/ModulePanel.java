@@ -1,9 +1,11 @@
 package io.justme.lavender.ui.screens.clickgui.panel.module;
 
 import io.justme.lavender.La;
+import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.panel.popup.PopupPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -30,7 +32,7 @@ public class ModulePanel extends AbstractPanel {
         this.setName("ModulePanel");
     }
 
-    public void afterAddOptions() {
+    public void FirstAddonModule() {
         for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
             if (module.getName().equalsIgnoreCase("clickgui")) continue;
 
