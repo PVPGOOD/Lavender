@@ -2,6 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.components;
 
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
+import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
@@ -25,7 +26,7 @@ public abstract class AbstractControlsComponent {
     public float x,y,width,height;
 
     //category
-    public Category abstractCategory;
+    public CategoryType abstractCategory;
     private final Animation categoryTypeBackgroundAlpha = new Animation(155);
 
     //module

@@ -6,6 +6,7 @@ import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
+import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.panel.popup.PopupPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -30,7 +31,7 @@ public class ClickScreen extends GuiScreen  {
     private float x,y,width,height;
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling;
-    private Category currentCategory = Category.FIGHT;
+    private CategoryType currentCategory = CategoryType.FIGHT;
     private Color clickGuiColor = new Color(255, 240, 245);
 
     private final CopyOnWriteArrayList<AbstractPanel> abstractPanels = new CopyOnWriteArrayList<>();

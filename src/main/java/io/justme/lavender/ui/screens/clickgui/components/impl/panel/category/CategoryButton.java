@@ -1,9 +1,9 @@
-package io.justme.lavender.ui.screens.clickgui.panel.category.chill;
+package io.justme.lavender.ui.screens.clickgui.components.impl.panel.category;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.module.Category;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
@@ -16,14 +16,21 @@ import java.io.IOException;
  * @since 2024/12/5
  **/
 @Getter
-public class CategoryModuleButton extends AbstractControlsComponent {
+public class CategoryButton extends AbstractControlsComponent {
 
+    public CategoryType category;
+    private final boolean neededIcon;
 
-    public Category category;
+    public CategoryButton(CategoryType category) {
+        abstractCategory = category;
+        this.neededIcon = false;
+        this.category = category;
+    }
 
-    public CategoryModuleButton(Category category) {
+    public CategoryButton(CategoryType category,boolean neededIcon) {
         abstractCategory = category;
 
+        this.neededIcon = neededIcon;
         this.category = category;
     }
 
@@ -45,14 +52,15 @@ public class CategoryModuleButton extends AbstractControlsComponent {
                 getY() + (getHeight() / 4),
                 new Color(129, 57, 80,255).getRGB());
 
-        RenderUtility.drawImage(
-                new ResourceLocation("la/clickgui/category/" + getCategory().getName() + ".png"),
-                getX() + 8,
-                getY() + (getHeight() / 4),
-                12,
-                12,
-                new Color(129, 57, 80,255));
-
+        if (isNeededIcon()) {
+            RenderUtility.drawImage(
+                    new ResourceLocation("la/clickgui/category/" + getCategory().getName() + ".png"),
+                    getX() + 8,
+                    getY() + (getHeight() / 4),
+                    12,
+                    12,
+                    new Color(129, 57, 80,255));
+        }
     }
 
     @Override
