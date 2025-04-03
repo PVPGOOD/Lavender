@@ -1,7 +1,12 @@
 package io.justme.lavender.ui.elements;
 
+import io.justme.lavender.ui.elements.quadrant.Quadrant;
+import io.justme.lavender.ui.elements.quadrant.QuadrantEnum;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+
 import java.io.IOException;
 
 /**
@@ -13,7 +18,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractElements {
 
-    private float posX, posY, draggingX, draggingY;
+    private float posX, posY,width,height, draggingX, draggingY;
 
     private ElementsEnum elementsEnum;
 
@@ -45,5 +50,10 @@ public abstract class AbstractElements {
 
     public boolean isVisible() {
         return true;
+    }
+
+    public QuadrantEnum getQuadrant() {
+        Quadrant quadrant = new Quadrant();
+        return quadrant.getQuadrant(posX, posY);
     }
 }

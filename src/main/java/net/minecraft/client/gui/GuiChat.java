@@ -4,8 +4,7 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.List;
 
-import io.justme.lavender.La;
-import io.justme.lavender.ui.elements.AbstractElements;
+import io.justme.lavender.ui.screens.element.ElementScreen;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -17,6 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjglx.input.Mouse;
+
+import javax.lang.model.util.Elements;
 
 public class GuiChat extends GuiScreen
 {
@@ -30,8 +31,7 @@ public class GuiChat extends GuiScreen
     protected GuiTextField inputField;
     private String defaultInputFieldText = "";
 
-    //elements
-    private AbstractElements elements;
+    private ElementScreen elementScreen = new ElementScreen();
 
     public GuiChat()
     {
@@ -52,17 +52,16 @@ public class GuiChat extends GuiScreen
         this.inputField.setFocused(true);
         this.inputField.setText(this.defaultInputFieldText);
         this.inputField.setCanLoseFocus(false);
+
+        elementScreen.initGui();
     }
 
     public void onGuiClosed()
     {
-        for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements()) {
-            elements.reset();
-            elements.setDragging(false);
-        }
-
         Keyboard.enableRepeatEvents(false);
         this.mc.ingameGUI.getChatGUI().resetScroll();
+
+        elementScreen.onGuiClosed();
     }
 
     public void updateScreen()
@@ -72,9 +71,6 @@ public class GuiChat extends GuiScreen
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements())
-            elements.keyTyped(typedChar,keyCode);
-
         this.waitingOnAutocomplete = false;
 
         if (keyCode == 15)
@@ -124,6 +120,8 @@ public class GuiChat extends GuiScreen
 
             this.mc.displayGuiScreen((GuiScreen)null);
         }
+
+        elementScreen.keyTyped(typedChar, keyCode);
     }
 
     public void handleMouseInput() throws IOException
@@ -156,9 +154,6 @@ public class GuiChat extends GuiScreen
     {
         if (mouseButton == 0)
         {
-            for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements())
-                elements.mouseClicked(mouseX,mouseY,mouseButton);
-
             IChatComponent ichatcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
 
             if (this.handleComponentClick(ichatcomponent))
@@ -168,18 +163,15 @@ public class GuiChat extends GuiScreen
         }
 
         this.inputField.mouseClicked(mouseX, mouseY, mouseButton);
+
+        elementScreen.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-
-        for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements())
-            elements.mouseReleased(mouseX,mouseY,state);
-
-        super.mouseReleased(mouseX,mouseY,state);
+    protected void mouseReleased(int mouseX,int mouseY,int mouseButton) {
+        elementScreen.mouseReleased(mouseX, mouseY, mouseButton);
     }
-
 
     protected void setText(String newChatText, boolean shouldOverwrite)
     {
@@ -295,21 +287,8 @@ public class GuiChat extends GuiScreen
             this.handleComponentHover(ichatcomponent, mouseX, mouseY);
         }
 
-        for (AbstractElements element : La.getINSTANCE().getElementsManager().getElements()) {
-            if (element.isDragging()) {
-                elements = element;
-            }
-            element.draw(partialTicks,mouseX,mouseY);
-        }
 
-        if (elements != null) {
-            if (elements.isDragging()) {
-                elements.onDrag(mouseX,mouseY);
-            }  else {
-                elements.reset();
-            }
-        }
-
+        elementScreen.drawScreen(mouseX, mouseY, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
