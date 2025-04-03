@@ -8,6 +8,7 @@ import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import javax.swing.Timer;
 
+import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,8 @@ import java.io.IOException;
 public class ModuleButton extends AbstractControlsComponent {
 
     private Module module;
+    private Animation moduleButtonXAnimation = new Animation();
+    private Animation moduleButtonYAnimation = new Animation();
 
     public ModuleButton(Module module) {
         setModule(module);

@@ -2,7 +2,9 @@ package io.justme.lavender.ui.screens.clickgui.panel.category;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
+import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
+import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,10 +37,24 @@ public abstract class AbstractCategory {
 
     public void refreshModule(CategoryType category) {
         La.getINSTANCE().getClickScreen().getModulePanelComponent().clear();
+
         La.getINSTANCE().getModuleManager().getElements().stream()
                 .filter(module -> !module.getName().equalsIgnoreCase("clickgui"))
                 .filter(module -> module.getCategory().getName().equalsIgnoreCase(category.getName()))
-                .forEach(module -> La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(module)));
+                .forEach(module -> {
+                    var moduleButton = new ModuleButton(module);
+
+                    var modulePanel = La.getINSTANCE().getClickScreen().getAbstractPanels().stream()
+                            .filter(panel -> panel instanceof ModulePanel)
+                            .findFirst()
+                            .orElse(null);
+
+                    if (modulePanel == null) return;
+
+                    moduleButton.setModuleButtonXAnimation(new Animation(modulePanel.getX() + modulePanel.getWidth() / 2f));
+                    moduleButton.setModuleButtonYAnimation(new Animation(modulePanel.getY() + modulePanel.getHeight() / 2f));
+                    La.getINSTANCE().getClickScreen().getModulePanelComponent().add(moduleButton);
+                });
     }
 
 }

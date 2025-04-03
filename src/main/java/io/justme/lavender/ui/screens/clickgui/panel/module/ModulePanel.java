@@ -60,67 +60,71 @@ public class ModulePanel extends AbstractPanel {
 
         for (AbstractControlsComponent abstractControlsComponent : La.getINSTANCE().getClickScreen().getModulePanelComponent()) {
 
-            if (intervalX + buttonWidth + 15 > getWidth()) {
-                intervalX = 0;
-                intervalY += buttonHeight + 15;
-            }
+            if (abstractControlsComponent instanceof ModuleButton moduleButton) {
 
-            float abstractControlsComponentsX = getX() + intervalX + abstractComponentInitX;
-            float abstractControlsComponentsY = getY() + intervalY + abstractComponentInitY;
-
-            if (abstractControlsComponent.isDragging() && abstractControlsComponent.getModule() == getLastModule()) {
-                abstractControlsComponent.setX(mouseX - abstractControlsComponent.getDraggingX());
-                abstractControlsComponent.setY(mouseY - abstractControlsComponent.getDraggingY());
-            } else if (!abstractControlsComponent.isPoppingUp()) {
-                if (La.getINSTANCE().getClickScreen().isDragging()) {
-                    abstractControlsComponent.setX(abstractControlsComponentsX);
-                    abstractControlsComponent.setY(abstractControlsComponentsY);
-                    abstractControlsComponent.getModuleXAnimation().setValue(abstractControlsComponentsX);
-                    abstractControlsComponent.getModuleYAnimation().setValue(abstractControlsComponentsY);
-                } else {
-                    abstractControlsComponent.setX(abstractControlsComponent.getModuleXAnimation().getValue());
-                    abstractControlsComponent.setY(abstractControlsComponent.getModuleYAnimation().getValue());
-                    abstractControlsComponent.getModuleXAnimation().animate(abstractControlsComponentsX, 0.1f);
-                    abstractControlsComponent.getModuleYAnimation().animate(abstractControlsComponentsY, 0.1f);
+                if (intervalX + buttonWidth + 15 > getWidth()) {
+                    intervalX = 0;
+                    intervalY += buttonHeight + 15;
                 }
-            }
 
+                float abstractControlsComponentsX = getX() + intervalX + abstractComponentInitX;
+                float abstractControlsComponentsY = getY() + intervalY + abstractComponentInitY;
 
-            if (Mouse.isButtonDown(0)) {
-                if (abstractControlsComponent.isHover(mouseX, mouseY) && getLastModule() == abstractControlsComponent.getModule()) {
-                    if (abstractControlsComponent.getClickedTimerUtility().hasTimeElapsed(100)) {
-                        abstractControlsComponent.setDraggingX(mouseX - abstractControlsComponent.getX());
-                        abstractControlsComponent.setDraggingY(mouseY - abstractControlsComponent.getY());
-                        abstractControlsComponent.setDragging(true);
+                if (abstractControlsComponent.isDragging() && abstractControlsComponent.getModule() == getLastModule()) {
+                    abstractControlsComponent.setX(mouseX - abstractControlsComponent.getDraggingX());
+                    abstractControlsComponent.setY(mouseY - abstractControlsComponent.getDraggingY());
+                } else if (!abstractControlsComponent.isPoppingUp()) {
+                    if (La.getINSTANCE().getClickScreen().isDragging()) {
+                        abstractControlsComponent.setX(abstractControlsComponentsX);
+                        abstractControlsComponent.setY(abstractControlsComponentsY);
+                        moduleButton.getModuleButtonXAnimation().setValue(abstractControlsComponentsX);
+                        moduleButton.getModuleButtonYAnimation().setValue(abstractControlsComponentsY);
+                    } else {
+                        abstractControlsComponent.setX(moduleButton.getModuleButtonXAnimation().getValue());
+                        abstractControlsComponent.setY(moduleButton.getModuleButtonYAnimation().getValue());
+                        moduleButton.getModuleButtonXAnimation().animate(abstractControlsComponentsX, 0.1f);
+                        moduleButton.getModuleButtonYAnimation().animate(abstractControlsComponentsY, 0.1f);
                     }
                 }
+
+
+                if (Mouse.isButtonDown(0)) {
+                    if (abstractControlsComponent.isHover(mouseX, mouseY) && getLastModule() == abstractControlsComponent.getModule()) {
+                        if (abstractControlsComponent.getClickedTimerUtility().hasTimeElapsed(100)) {
+                            abstractControlsComponent.setDraggingX(mouseX - abstractControlsComponent.getX());
+                            abstractControlsComponent.setDraggingY(mouseY - abstractControlsComponent.getY());
+                            abstractControlsComponent.setDragging(true);
+                        }
+                    }
+                }
+
+
+
+                abstractControlsComponent.setWidth(buttonWidth);
+                abstractControlsComponent.setHeight(buttonHeight);
+
+                abstractControlsComponent.drawScreen(mouseX, mouseY, partialTicks);
+                intervalX += buttonWidth + 15;
+
+                moduleButton.getModuleButtonYAnimation().update();
+                moduleButton.getModuleButtonXAnimation().update();
             }
 
+            if (shouldCheckAnimation && componentToRemove != null) {
+                if (componentToRemove.getPopUpAnimation().isDone()) {
 
+                    La.getINSTANCE().getClickScreen().getModulePanelComponent().remove(componentToRemove);
+                    PopupPanel popUpPanel = new PopupPanel(componentToRemove.getModule());
 
-            abstractControlsComponent.setWidth(buttonWidth);
-            abstractControlsComponent.setHeight(buttonHeight);
+                    popUpPanel.setX(componentToRemove.getX());
+                    popUpPanel.setY(componentToRemove.getY());
+                    La.getINSTANCE().getClickScreen().getAbstractPanels().add(popUpPanel);
 
-            abstractControlsComponent.drawScreen(mouseX, mouseY, partialTicks);
-            intervalX += buttonWidth + 15;
-
-            abstractControlsComponent.getModuleYAnimation().update();
-            abstractControlsComponent.getModuleXAnimation().update();
-        }
-
-        if (shouldCheckAnimation && componentToRemove != null) {
-            if (componentToRemove.getPopUpAnimation().isDone()) {
-
-                La.getINSTANCE().getClickScreen().getModulePanelComponent().remove(componentToRemove);
-                PopupPanel popUpPanel = new PopupPanel(componentToRemove.getModule());
-
-                popUpPanel.setX(componentToRemove.getX());
-                popUpPanel.setY(componentToRemove.getY());
-                La.getINSTANCE().getClickScreen().getAbstractPanels().add(popUpPanel);
-
-                shouldCheckAnimation = false;
-                componentToRemove = null;
+                    shouldCheckAnimation = false;
+                    componentToRemove = null;
+                }
             }
+
         }
     }
 
