@@ -2,7 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.panel.module.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;

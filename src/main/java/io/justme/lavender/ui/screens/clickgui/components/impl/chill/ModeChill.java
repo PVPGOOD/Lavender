@@ -1,8 +1,8 @@
-package io.justme.lavender.ui.screens.clickgui.controls.chill;
+package io.justme.lavender.ui.screens.clickgui.components.impl.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;

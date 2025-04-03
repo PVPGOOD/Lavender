@@ -1,8 +1,7 @@
-package io.justme.lavender.ui.screens.clickgui.components.chill;
+package io.justme.lavender.ui.screens.clickgui.components;
 
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
@@ -18,11 +17,12 @@ import java.io.IOException;
 //大杂烩
 @Getter
 @Setter
-public abstract class AbstractControlsComponent extends AbstractComponent {
+public abstract class AbstractControlsComponent {
 
     private final TimerUtility clickedTimerUtility = new TimerUtility();
     private float draggingX,draggingY;
     private boolean dragging,shouldPop,PoppingUp;
+    public float x,y,width,height;
 
     //category
     public Category abstractCategory;
@@ -36,21 +36,14 @@ public abstract class AbstractControlsComponent extends AbstractComponent {
     private final Animation popUpAnimation = new Animation(1);
 
     public boolean isHover(int mouseX, int mouseY) {
-        return super.isHover(mouseX, mouseY);
+        return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();
     }
 
-    @Override
     public abstract void initGui();
-    @Override
     public abstract void drawScreen(int mouseX, int mouseY, float partialTicks);
-    @Override
     public abstract void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException;
-    @Override
     public abstract void mouseReleased(int mouseX, int mouseY, int state);
-    @Override
     public abstract void keyTyped(char typedChar, int keyCode) throws IOException;
-
-    @Override
     public void handleMouseInput() throws IOException {
 
     }

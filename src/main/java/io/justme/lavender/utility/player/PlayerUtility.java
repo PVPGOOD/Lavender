@@ -129,6 +129,7 @@ public class PlayerUtility  {
     }
 
     public boolean isOnGround(){
+        if (Minecraft.getMinecraft().thePlayer == null) return false;
         return mc.thePlayer.onGround;
     }
 

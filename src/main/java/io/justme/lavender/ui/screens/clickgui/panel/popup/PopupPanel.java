@@ -1,11 +1,14 @@
-package io.justme.lavender.ui.screens.clickgui.panel.popupscreen;
+package io.justme.lavender.ui.screens.clickgui.panel.popup;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.controls.*;
-import io.justme.lavender.ui.screens.clickgui.controls.scrollbar.ScrollbarControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.ModeControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.SliderControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchControls;
+import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.scrollbar.ScrollbarControls;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -32,7 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 @Getter
 @Setter
-public class PopupScreen extends AbstractComponent {
+public class PopupPanel extends AbstractPanel {
 
     private int mouseX,mouseY;
     private float ScrollOffset = 0;
@@ -46,7 +49,7 @@ public class PopupScreen extends AbstractComponent {
     private ScrollbarControls scrollbarControls = new ScrollbarControls();
 
 
-    public PopupScreen(Module module) {
+    public PopupPanel(Module module) {
         this.setName("PopupScreen");
         this.module = module;
 
@@ -97,7 +100,7 @@ public class PopupScreen extends AbstractComponent {
 
         OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
-                switch (abstractOptionComponent.getControlsType()) {
+                switch (abstractOptionComponent.getComponentsType()) {
                     case MODE -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
@@ -241,7 +244,7 @@ public class PopupScreen extends AbstractComponent {
 
                 if (isExpanded()) {
                     if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20,mouseX,mouseY)){
-                        La.getINSTANCE().getClickScreen().getComponents().remove(this);
+                        La.getINSTANCE().getClickScreen().getAbstractPanels().remove(this);
                         La.getINSTANCE().getClickScreen().getModulePanelComponent().add(new ModuleButton(getModule()));
                     }
 
@@ -288,16 +291,16 @@ public class PopupScreen extends AbstractComponent {
                     } else {
                         var clickScreen = La.getINSTANCE().getClickScreen();
 
-                        AbstractComponent abstractComponent = La.getINSTANCE().getClickScreen().getComponents().stream()
+                        AbstractPanel abstractPanel = La.getINSTANCE().getClickScreen().getAbstractPanels().stream()
                                 .filter(abstractComponent1 -> abstractComponent1.getName().equalsIgnoreCase("PopupScreen"))
                                 .findFirst().orElse(null);
 
-                        if (abstractComponent != null) {
-                            clickScreen.getComponents().add(clickScreen.getModulePanel());
-                            clickScreen.getComponents().add(clickScreen.getCategoryPanel());
+                        if (abstractPanel != null) {
+                            clickScreen.getAbstractPanels().add(clickScreen.getModulePanel());
+                            clickScreen.getAbstractPanels().add(clickScreen.getCategoryPanel());
                         }
 
-                        clickScreen.getComponents().remove(this);
+                        clickScreen.getAbstractPanels().remove(this);
                     }
                 }
             }

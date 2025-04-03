@@ -1,7 +1,7 @@
-package io.justme.lavender.ui.screens.clickgui.controls;
+package io.justme.lavender.ui.screens.clickgui.components.impl;
 
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.components.ComponentsType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -26,7 +26,7 @@ public class SliderControls extends AbstractOptionComponent {
     private boolean dragging;
 
     public SliderControls() {
-        this.controlsType = ControlsType.SLIDER;
+        this.componentsType = ComponentsType.SLIDER;
     }
 
     @Override

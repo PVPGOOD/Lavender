@@ -1,7 +1,5 @@
-package io.justme.lavender.ui.screens.clickgui.components;
+package io.justme.lavender.ui.screens.clickgui.panel;
 
-import io.justme.lavender.value.impl.BoolValue;
-import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,11 +13,10 @@ import java.io.IOException;
 //parent
 @Getter
 @Setter
-public abstract class AbstractComponent {
+public abstract class AbstractPanel {
 
     public String name;
     public float x,y,width,height;
-
 
     public boolean isHover(int mouseX, int mouseY) {
         return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();

@@ -1,9 +1,9 @@
-package io.justme.lavender.ui.screens.clickgui.controls;
+package io.justme.lavender.ui.screens.clickgui.components.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.components.ComponentsType;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -28,7 +28,7 @@ public class CheckboxControls extends AbstractOptionComponent {
     private Animation scaleAnimation = new Animation(0);
 
     public CheckboxControls() {
-        this.controlsType = ControlsType.CHECKBOX;
+        this.componentsType = ComponentsType.CHECKBOX;
         setWidth(10);
         setHeight(10);
     }

@@ -1,9 +1,9 @@
-package io.justme.lavender.ui.screens.clickgui.panel.popupscreen;
+package io.justme.lavender.ui.screens.clickgui.panel.popup;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
-import io.justme.lavender.ui.screens.clickgui.controls.chill.ComBoxChill;
+import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.chill.ComBoxChill;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.value.impl.BoolValue;
@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 //感觉有点啰嗦了...
 @Getter
 @Setter
-public class PopupComBox extends AbstractComponent {
+public class PopupComBox extends AbstractPanel {
 
     private MultiBoolValue comBoxOption;
     private CopyOnWriteArrayList<AbstractControlsComponent> checkBoxChill = new CopyOnWriteArrayList<>();
@@ -85,7 +85,7 @@ public class PopupComBox extends AbstractComponent {
         }
 
         if (MouseUtility.isHovering(getX() + getWidth(),getY(),20,20,mouseX,mouseY)) {
-            La.getINSTANCE().getClickScreen().getComponents().remove(this);
+            La.getINSTANCE().getClickScreen().getAbstractPanels().remove(this);
         }
     }
 
@@ -101,7 +101,7 @@ public class PopupComBox extends AbstractComponent {
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
         if (keyCode == 1) {
-            La.getINSTANCE().getClickScreen().getComponents().remove(this);
+            La.getINSTANCE().getClickScreen().getAbstractPanels().remove(this);
         }
     }
 

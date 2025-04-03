@@ -1,6 +1,6 @@
-package io.justme.lavender.ui.screens.clickgui.controls.scrollbar;
+package io.justme.lavender.ui.screens.clickgui.components.impl.scrollbar;
 
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;

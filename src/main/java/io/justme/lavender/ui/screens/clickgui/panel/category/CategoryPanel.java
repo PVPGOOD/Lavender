@@ -3,8 +3,8 @@ package io.justme.lavender.ui.screens.clickgui.panel.category;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryModuleButton;
 import io.justme.lavender.ui.screens.clickgui.panel.category.chill.CategoryOtherButton;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -20,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @since 2024/12/5
  **/
 @Getter
-public class CategoryPanel extends AbstractComponent {
+public class CategoryPanel extends AbstractPanel {
 
     private final CopyOnWriteArrayList<AbstractControlsComponent> categoryComponents = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<AbstractControlsComponent> otherComponents = new CopyOnWriteArrayList<>();

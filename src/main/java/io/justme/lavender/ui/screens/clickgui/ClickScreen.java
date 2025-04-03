@@ -3,11 +3,11 @@ package io.justme.lavender.ui.screens.clickgui;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Category;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
 import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
-import io.justme.lavender.ui.screens.clickgui.panel.popupscreen.PopupScreen;
+import io.justme.lavender.ui.screens.clickgui.panel.popup.PopupPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class ClickScreen extends GuiScreen  {
     private Category currentCategory = Category.FIGHT;
     private Color clickGuiColor = new Color(255, 240, 245);
 
-    private final CopyOnWriteArrayList<AbstractComponent> components = new CopyOnWriteArrayList<>();
+    private final CopyOnWriteArrayList<AbstractPanel> abstractPanels = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<AbstractControlsComponent> modulePanelComponent = new CopyOnWriteArrayList<>();
 
     private ModulePanel modulePanel = new ModulePanel();
@@ -52,14 +52,14 @@ public class ClickScreen extends GuiScreen  {
     public void initGui() {
 
         //这两是固定的 后续应该还有 sidebar和searchbar
-        if (getComponents().isEmpty()) {
-            getComponents().add(getCategoryPanel());
-            getComponents().add(getModulePanel());
+        if (getAbstractPanels().isEmpty()) {
+            getAbstractPanels().add(getCategoryPanel());
+            getAbstractPanels().add(getModulePanel());
             getModulePanel().afterAddOptions();
         }
 
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            abstractComponent.initGui();
+        for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+            abstractPanel.initGui();
         }
 
         super.initGui();
@@ -83,7 +83,7 @@ public class ClickScreen extends GuiScreen  {
         int abstractComponentInitY = 30;
         int categoryWidth = 120;
 
-        if (getComponents().contains(getCategoryPanel()) && getComponents().contains(getModulePanel())) {
+        if (getAbstractPanels().contains(getCategoryPanel()) && getAbstractPanels().contains(getModulePanel())) {
             RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
             //横线
             RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
@@ -91,25 +91,25 @@ public class ClickScreen extends GuiScreen  {
             fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
         }
 
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            switch (abstractComponent.getName()) {
+        for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+            switch (abstractPanel.getName()) {
                 case "CategoryPanel" -> {
-                    abstractComponent.setX(getX());
-                    abstractComponent.setY(getY() + abstractComponentInitY);
-                    abstractComponent.setWidth(categoryWidth);
-                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
-                    abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+                    abstractPanel.setX(getX());
+                    abstractPanel.setY(getY() + abstractComponentInitY);
+                    abstractPanel.setWidth(categoryWidth);
+                    abstractPanel.setHeight(getHeight() - abstractComponentInitY);
+                    abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
                 }
 
                 case "ModulePanel" -> {
-                    abstractComponent.setX(getX() + categoryWidth);
-                    abstractComponent.setY(getY() + abstractComponentInitY);
-                    abstractComponent.setWidth(getWidth() - categoryWidth);
-                    abstractComponent.setHeight(getHeight() - abstractComponentInitY);
-                    abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+                    abstractPanel.setX(getX() + categoryWidth);
+                    abstractPanel.setY(getY() + abstractComponentInitY);
+                    abstractPanel.setWidth(getWidth() - categoryWidth);
+                    abstractPanel.setHeight(getHeight() - abstractComponentInitY);
+                    abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
                 }
 
-                case "PopupScreen", "PopupComBox" -> abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+                case "PopupScreen", "PopupComBox" -> abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
 
             }
         }
@@ -122,10 +122,10 @@ public class ClickScreen extends GuiScreen  {
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
 
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            abstractComponent.keyTyped(typedChar, keyCode);
+        for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+            abstractPanel.keyTyped(typedChar, keyCode);
 
-            if (abstractComponent.getName().equalsIgnoreCase("PopupComBox")) {
+            if (abstractPanel.getName().equalsIgnoreCase("PopupComBox")) {
                 return;
             }
         }
@@ -146,17 +146,17 @@ public class ClickScreen extends GuiScreen  {
                 setScaling(true);
             } else if (MouseUtility.isHovering(getX() + getWidth() - 20 ,getY() + 1,20,20, mouseX, mouseY)) {
 
-                getComponents().removeIf(abstractComponent -> abstractComponent.getName().equals("CategoryPanel"));
-                getComponents().removeIf(abstractComponent -> abstractComponent.getName().equals("ModulePanel"));
+                getAbstractPanels().removeIf(abstractComponent -> abstractComponent.getName().equals("CategoryPanel"));
+                getAbstractPanels().removeIf(abstractComponent -> abstractComponent.getName().equals("ModulePanel"));
 
-                PopupScreen popUpScreen = new PopupScreen(La.getINSTANCE().getModuleManager().getClickGui());
-                getComponents().add(popUpScreen);
+                PopupPanel popUpPanel = new PopupPanel(La.getINSTANCE().getModuleManager().getClickGui());
+                getAbstractPanels().add(popUpPanel);
             }
         }
 
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            switch (abstractComponent.getName()) {
-                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractComponent.mouseClicked(mouseX, mouseY, mouseButton);
+        for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+            switch (abstractPanel.getName()) {
+                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractPanel.mouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
@@ -166,9 +166,9 @@ public class ClickScreen extends GuiScreen  {
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
 
-        for (AbstractComponent abstractComponent : La.getINSTANCE().getClickScreen().getComponents()) {
-            switch (abstractComponent.getName()) {
-                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractComponent.mouseReleased(mouseX, mouseY, state);
+        for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+            switch (abstractPanel.getName()) {
+                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractPanel.mouseReleased(mouseX, mouseY, state);
             }
         }
 
@@ -204,7 +204,7 @@ public class ClickScreen extends GuiScreen  {
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
 
-        for (AbstractComponent component : getComponents()) {
+        for (AbstractPanel component : getAbstractPanels()) {
             component.handleMouseInput();
         }
     }

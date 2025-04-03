@@ -1,11 +1,11 @@
-package io.justme.lavender.ui.screens.clickgui.controls;
+package io.justme.lavender.ui.screens.clickgui.components.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractComponent;
-import io.justme.lavender.ui.screens.clickgui.components.chill.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.controls.type.ControlsType;
-import io.justme.lavender.ui.screens.clickgui.panel.popupscreen.PopupComBox;
+import io.justme.lavender.ui.screens.clickgui.components.ComponentsType;
+import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.panel.popup.PopupComBox;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class ComBoxControls extends AbstractOptionComponent {
     public MultiBoolValue option;
 
     public ComBoxControls() {
-        this.controlsType = ControlsType.COMBOX;
+        this.componentsType = ComponentsType.COMBOX;
     }
 
     @Override
@@ -51,10 +51,10 @@ public class ComBoxControls extends AbstractOptionComponent {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 
         if (isHover(mouseX,mouseY)) {
-            CopyOnWriteArrayList<AbstractComponent> component = La.getINSTANCE().getClickScreen().getComponents();
+            CopyOnWriteArrayList<AbstractPanel> component = La.getINSTANCE().getClickScreen().getAbstractPanels();
 
-            for (AbstractComponent abstractComponent : component) {
-                if (abstractComponent.getName().contains("PopupComBox")) {
+            for (AbstractPanel abstractPanel : component) {
+                if (abstractPanel.getName().contains("PopupComBox")) {
                     return;
                 }
             }
