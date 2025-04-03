@@ -74,8 +74,11 @@ public class ClickScreen extends GuiScreen  {
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
         } else if (isScaling()) {
-            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 400), 600));
-            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 460), 650));
+            setWidth(mouseX - getScalingWidth());
+            setHeight(mouseY - getScalingHeight());
+
+//            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 400), 600));
+//            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 460), 650));
         }
 
 

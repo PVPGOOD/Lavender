@@ -29,6 +29,9 @@ public abstract class AbstractControlsComponent {
     public CategoryType abstractCategory;
     private final Animation categoryTypeBackgroundAlpha = new Animation(155);
 
+    private final Animation moduleXAnimation = new Animation();
+    private final Animation moduleYAnimation = new Animation();
+
     //module
     private Module module;
     private final Animation moduleButtonPosXAnimation = new Animation();
