@@ -86,7 +86,7 @@ public class ClickScreen extends GuiScreen  {
         if (getAbstractPanels().contains(getCategoryPanel()) && getAbstractPanels().contains(getModulePanel())) {
             RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
             //横线
-            RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
+//            RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
             FontDrawer fontManager = La.getINSTANCE().getFontManager().getSFBold18();
             fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
         }

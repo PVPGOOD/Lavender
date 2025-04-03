@@ -39,17 +39,10 @@ public class CategoryPanel extends AbstractPanel {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         //背景
-        RenderUtility.drawRoundRectWithCustomRounded(
-                //为什么不靠边呢
-                getX() - 1 ,
-                getY(),
-                getWidth(),
-                getHeight(),
-                new Color(253, 235, 241),28,0,0,0);
 
         //分类图标
         //模块分类
-        int categoryComponentsInitY = 25;
+        int categoryComponentsInitY = 0;
         var requestInterval = 0;
         for (AbstractCategory categoryComponents : getCategoryComponents()) {
 
@@ -58,7 +51,6 @@ public class CategoryPanel extends AbstractPanel {
                     categoryComponents.setX(getX() + 4);
                     categoryComponents.setY(getY() + categoryComponentsInitY);
                     categoryComponents.setWidth(getWidth() - 8);
-                    categoryComponents.setHeight(20);
                     requestInterval += (int) categoryComponents.getRequestInterval();
                 }
 
@@ -66,7 +58,6 @@ public class CategoryPanel extends AbstractPanel {
                     categoryComponents.setX(getX() + 4);
                     categoryComponents.setY(getY() + categoryComponentsInitY + requestInterval + 25);
                     categoryComponents.setWidth(getWidth() - 8);
-                    categoryComponents.setHeight(20);
                 }
             }
 

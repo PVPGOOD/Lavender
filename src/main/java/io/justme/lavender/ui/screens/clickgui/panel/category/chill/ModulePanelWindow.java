@@ -6,6 +6,7 @@ import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsCompone
 import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButton;
 import io.justme.lavender.ui.screens.clickgui.panel.category.AbstractCategory;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
+import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -44,19 +45,28 @@ public class ModulePanelWindow extends AbstractCategory {
         int categoryComponentsIntervalY = 0;
         int categoryComponentsInitY = 25;
 
+        RenderUtility.drawRoundRect(
+                getX(),
+                getY() + 25,
+                getWidth(),
+                getHeight(),
+                8,
+                new Color(255, 228, 238));
+
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY ,new Color(129, 57, 80,128).getRGB());
+        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1,new Color(129, 57, 80,128).getRGB());
 
         for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
             categoryComponents.setX(getX() + 4);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY + 15);
-            categoryComponents.setWidth(110);
+            categoryComponents.setWidth(105);
             categoryComponents.setHeight(26);
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
             categoryComponentsIntervalY += 35;
         }
 
 
+        setHeight(categoryComponentsIntervalY + 15);
         setRequestInterval(categoryComponentsIntervalY);
     }
     @Override
