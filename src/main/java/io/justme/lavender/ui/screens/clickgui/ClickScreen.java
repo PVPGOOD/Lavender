@@ -8,8 +8,10 @@ import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryPanel;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.panel.popup.PopupPanel;
+import io.justme.lavender.ui.screens.clickgui.panel.settings.SettingPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
+import io.justme.lavender.value.impl.BoolValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
@@ -38,6 +40,7 @@ public class ClickScreen extends GuiScreen  {
 
     private ModulePanel modulePanel = new ModulePanel();
     private CategoryPanel categoryPanel = new CategoryPanel();
+    private SettingPanel settingPanel = new SettingPanel();
 
     public ClickScreen() {
         setX(10);
@@ -55,6 +58,7 @@ public class ClickScreen extends GuiScreen  {
         if (getAbstractPanels().isEmpty()) {
             getAbstractPanels().add(getCategoryPanel());
             getAbstractPanels().add(getModulePanel());
+            getAbstractPanels().add(getSettingPanel());
             getModulePanel().FirstAddonModule();
         }
 
@@ -95,25 +99,41 @@ public class ClickScreen extends GuiScreen  {
         }
 
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
-            switch (abstractPanel.getName()) {
-                case "CategoryPanel" -> {
-                    abstractPanel.setX(getX());
-                    abstractPanel.setY(getY() + abstractComponentInitY);
-                    abstractPanel.setWidth(categoryWidth);
-                    abstractPanel.setHeight(getHeight() - abstractComponentInitY);
-                    abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
-                }
 
-                case "ModulePanel" -> {
+            if (abstractPanel.getName().equals("CategoryPanel")) {
+                abstractPanel.setX(getX());
+                abstractPanel.setY(getY() + abstractComponentInitY);
+                abstractPanel.setWidth(categoryWidth);
+                abstractPanel.setHeight(getHeight() - abstractComponentInitY);
+                abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
+            }
+
+            if (getCurrentCategory() == CategoryType.MISC ||
+                    getCurrentCategory() == CategoryType.FIGHT ||
+                    getCurrentCategory() == CategoryType.MOVEMENTS ||
+                    getCurrentCategory() == CategoryType.PLAYER ||
+                    getCurrentCategory() == CategoryType.Exploit || getCurrentCategory() == CategoryType.VISUAL) {
+                if (abstractPanel.getName().equals("ModulePanel")) {
                     abstractPanel.setX(getX() + categoryWidth);
                     abstractPanel.setY(getY() + abstractComponentInitY);
                     abstractPanel.setWidth(getWidth() - categoryWidth);
                     abstractPanel.setHeight(getHeight() - abstractComponentInitY);
                     abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
                 }
+            }
 
+            if (getCurrentCategory() == CategoryType.CLIENT_SETTINGS) {
+                if (abstractPanel.getName().equals("SettingPanel")) {
+                    abstractPanel.setX(getX() + categoryWidth);
+                    abstractPanel.setY(getY() + abstractComponentInitY);
+                    abstractPanel.setWidth(getWidth() - categoryWidth);
+                    abstractPanel.setHeight(getHeight() - abstractComponentInitY);
+                    abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
+                }
+            }
+
+            switch (abstractPanel.getName()) {
                 case "PopupScreen", "PopupComBox" -> abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
-
             }
         }
 
@@ -157,9 +177,28 @@ public class ClickScreen extends GuiScreen  {
             }
         }
 
+
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+
+
+            if (getCurrentCategory() == CategoryType.MISC ||
+                    getCurrentCategory() == CategoryType.FIGHT ||
+                    getCurrentCategory() == CategoryType.MOVEMENTS ||
+                    getCurrentCategory() == CategoryType.PLAYER ||
+                    getCurrentCategory() == CategoryType.Exploit || getCurrentCategory() == CategoryType.VISUAL) {
+                if (abstractPanel.getName().equals("ModulePanel")) {
+                    abstractPanel.mouseClicked(mouseX, mouseY, mouseButton);
+                }
+            }
+
+            if (getCurrentCategory() == CategoryType.CLIENT_SETTINGS) {
+                if (abstractPanel.getName().equals("SettingPanel")) {
+                    abstractPanel.mouseClicked(mouseX, mouseY, mouseButton);
+                }
+            }
+
             switch (abstractPanel.getName()) {
-                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractPanel.mouseClicked(mouseX, mouseY, mouseButton);
+                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" ,"SettingPanel" -> abstractPanel.mouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
