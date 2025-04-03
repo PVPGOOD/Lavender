@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.elements.impl;
+package io.justme.lavender.ui.elements.impl.arraylist;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
@@ -24,7 +24,7 @@ import java.util.Comparator;
  **/
 @Getter
 @Setter
-public class ArrayList extends AbstractElements {
+public class LegacyArrayList extends AbstractElements {
 
     private ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
     private float x,y,width,height;
@@ -33,8 +33,8 @@ public class ArrayList extends AbstractElements {
 
     private Animation scalingAnimations = new Animation();
 
-    public ArrayList() {
-        super(ElementsEnum.ArrayList);
+    public LegacyArrayList() {
+        super(ElementsEnum.LegacyArrayList);
     }
 
     @Override
@@ -53,8 +53,6 @@ public class ArrayList extends AbstractElements {
                     return getY() < height / 2f + 80 ? -fontRenderer.getStringWidth(name) : fontRenderer.getStringWidth(name);
                 }))
                 .toList();
-
-
 
         var interval = 0.0f;
         int index = 0;

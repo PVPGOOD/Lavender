@@ -25,6 +25,7 @@ public class Module implements IMinecraft {
     public Category category;
     public int key;
     private boolean toggle;
+    private final Animation animationInterval = new Animation();
     private final Animation animation = new Animation();
     private final ArrayList<DefaultValue<?>> options = new ArrayList<>();
 

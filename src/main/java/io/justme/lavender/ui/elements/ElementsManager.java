@@ -1,6 +1,7 @@
 package io.justme.lavender.ui.elements;
 
-import io.justme.lavender.ui.elements.impl.ArrayList;
+import io.justme.lavender.ui.elements.impl.arraylist.CircleArrayList;
+import io.justme.lavender.ui.elements.impl.arraylist.LegacyArrayList;
 import io.justme.lavender.ui.elements.impl.Notifications;
 import io.justme.lavender.ui.elements.impl.TargetList;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -21,14 +22,16 @@ import java.util.stream.Collectors;
 @Setter
 public class ElementsManager extends Manager<AbstractElements> {
 
-    private final ArrayList arrayList = new ArrayList();
+    private final LegacyArrayList legacyArrayList = new LegacyArrayList();
+    private final CircleArrayList circleArrayList = new CircleArrayList();
     private final Notifications notifications = new Notifications();
     private final TargetList targetList = new TargetList();
 
     public ElementsManager() {
 
         getElements().addAll(Arrays.asList(
-                getArrayList(),
+                getLegacyArrayList(),
+                getCircleArrayList(),
                 getNotifications(),
                 getTargetList()
         ));
