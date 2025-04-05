@@ -209,8 +209,26 @@ public class ClickScreen extends GuiScreen  {
     public void mouseReleased(int mouseX, int mouseY, int state) {
 
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
+
+
+            if (getCurrentCategory() == CategoryType.MISC ||
+                    getCurrentCategory() == CategoryType.FIGHT ||
+                    getCurrentCategory() == CategoryType.MOVEMENTS ||
+                    getCurrentCategory() == CategoryType.PLAYER ||
+                    getCurrentCategory() == CategoryType.Exploit || getCurrentCategory() == CategoryType.VISUAL) {
+                if (abstractPanel.getName().equals("ModulePanel")) {
+                    abstractPanel.mouseReleased(mouseX, mouseY, state);
+                }
+            }
+
+            if (getCurrentCategory() == CategoryType.CLIENT_SETTINGS) {
+                if (abstractPanel.getName().equals("SettingPanel")) {
+                    abstractPanel.mouseReleased(mouseX, mouseY, state);
+                }
+            }
+
             switch (abstractPanel.getName()) {
-                case "PopupComBox", "CategoryPanel", "PopupScreen", "ModulePanel" -> abstractPanel.mouseReleased(mouseX, mouseY, state);
+                case "PopupComBox", "CategoryPanel", "PopupScreen" -> abstractPanel.mouseReleased(mouseX, mouseY, state);
             }
         }
 

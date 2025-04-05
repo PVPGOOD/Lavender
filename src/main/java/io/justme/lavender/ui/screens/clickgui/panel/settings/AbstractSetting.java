@@ -1,5 +1,6 @@
 package io.justme.lavender.ui.screens.clickgui.panel.settings;
 
+import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.value.DefaultValue;
 import lombok.Getter;
 import lombok.Setter;
