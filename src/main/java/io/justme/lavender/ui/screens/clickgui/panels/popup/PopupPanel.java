@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.panel.popup;
+package io.justme.lavender.ui.screens.clickgui.panels.popup;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
@@ -6,10 +6,10 @@ import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.ModeComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.SliderComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.scrollbar.ScrollbarComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
+import io.justme.lavender.ui.screens.clickgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -100,7 +100,7 @@ public class PopupPanel extends AbstractPanel {
 
         OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
-                switch (abstractOptionComponent.getComponentsType()) {
+                switch (abstractOptionComponent.getComponentType()) {
                     case MODE -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);

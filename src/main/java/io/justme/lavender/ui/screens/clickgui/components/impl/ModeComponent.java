@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.components.impl;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.components.ComponentsType;
+import io.justme.lavender.ui.screens.clickgui.components.ComponentType;
 import io.justme.lavender.ui.screens.clickgui.components.impl.chill.ModeChill;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -29,7 +29,7 @@ public class ModeComponent extends AbstractOptionComponent {
     private CopyOnWriteArrayList<AbstractOptionComponent> modeChill = new CopyOnWriteArrayList<>();
 
     public ModeComponent() {
-        this.componentsType = ComponentsType.MODE;
+        this.componentType = ComponentType.MODE;
     }
 
     public void afterAddOption() {

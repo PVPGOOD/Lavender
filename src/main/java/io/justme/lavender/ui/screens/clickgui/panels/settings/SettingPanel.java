@@ -1,10 +1,9 @@
-package io.justme.lavender.ui.screens.clickgui.panel.settings;
+package io.justme.lavender.ui.screens.clickgui.panels.settings;
 
 import io.justme.lavender.La;
-import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.setting.SettingType;
-import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
-import io.justme.lavender.ui.screens.clickgui.panel.settings.impl.SettingWindow;
+import io.justme.lavender.ui.screens.clickgui.panels.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.panels.settings.impl.SettingWindow;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;

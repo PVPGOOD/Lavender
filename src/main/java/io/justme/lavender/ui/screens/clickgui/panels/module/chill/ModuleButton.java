@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.panel.module.chill;
+package io.justme.lavender.ui.screens.clickgui.panels.module.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;

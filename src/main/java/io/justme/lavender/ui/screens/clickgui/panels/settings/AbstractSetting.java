@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.panel.settings;
+package io.justme.lavender.ui.screens.clickgui.panels.settings;
 
 import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.value.DefaultValue;

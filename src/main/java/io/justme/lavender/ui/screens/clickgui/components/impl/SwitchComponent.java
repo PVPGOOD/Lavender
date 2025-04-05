@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.components.impl;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.components.ComponentsType;
+import io.justme.lavender.ui.screens.clickgui.components.ComponentType;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -27,7 +27,7 @@ public class SwitchComponent extends AbstractOptionComponent {
     private Animation scaleAnimation = new Animation();
 
     public SwitchComponent() {
-        this.componentsType = ComponentsType.SWITCH;
+        this.componentType = ComponentType.SWITCH;
     }
 
     public void afterAddOption() {

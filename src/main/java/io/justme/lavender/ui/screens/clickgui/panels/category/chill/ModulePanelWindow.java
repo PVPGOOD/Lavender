@@ -1,11 +1,11 @@
-package io.justme.lavender.ui.screens.clickgui.panel.category.chill;
+package io.justme.lavender.ui.screens.clickgui.panels.category.chill;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButtonComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.category.AbstractCategory;
-import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
+import io.justme.lavender.ui.screens.clickgui.panels.category.AbstractCategory;
+import io.justme.lavender.ui.screens.clickgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;

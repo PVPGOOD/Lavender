@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.components.impl.panel.category;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
+import io.justme.lavender.ui.screens.clickgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import net.minecraft.util.ResourceLocation;

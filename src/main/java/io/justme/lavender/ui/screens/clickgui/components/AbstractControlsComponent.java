@@ -1,8 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.components;
 
-import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
+import io.justme.lavender.ui.screens.clickgui.panels.category.CategoryType;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;

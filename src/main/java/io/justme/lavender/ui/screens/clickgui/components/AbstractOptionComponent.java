@@ -24,7 +24,7 @@ public abstract class AbstractOptionComponent {
     @Getter
     @Setter
     public static String comBoxSelectingName;
-    public ComponentsType componentsType;
+    public ComponentType componentType;
 
     public boolean isHover(int mouseX, int mouseY) {
         return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight();

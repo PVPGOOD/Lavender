@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.panel.category;
+package io.justme.lavender.ui.screens.clickgui.panels.category;
 
 import lombok.Getter;
 

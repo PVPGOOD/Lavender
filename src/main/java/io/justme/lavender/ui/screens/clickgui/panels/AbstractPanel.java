@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.panel;
+package io.justme.lavender.ui.screens.clickgui.panels;
 
 import lombok.Getter;
 import lombok.Setter;

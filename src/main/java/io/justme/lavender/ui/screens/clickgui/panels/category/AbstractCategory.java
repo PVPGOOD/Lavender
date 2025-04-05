@@ -1,9 +1,8 @@
-package io.justme.lavender.ui.screens.clickgui.panel.category;
+package io.justme.lavender.ui.screens.clickgui.panels.category;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.screens.clickgui.panel.module.ModulePanel;
-import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
+import io.justme.lavender.ui.screens.clickgui.panels.module.ModulePanel;
+import io.justme.lavender.ui.screens.clickgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;

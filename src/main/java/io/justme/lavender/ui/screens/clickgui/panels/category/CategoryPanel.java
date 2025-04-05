@@ -1,8 +1,8 @@
-package io.justme.lavender.ui.screens.clickgui.panel.category;
+package io.justme.lavender.ui.screens.clickgui.panels.category;
 
-import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
-import io.justme.lavender.ui.screens.clickgui.panel.category.chill.ModulePanelWindow;
-import io.justme.lavender.ui.screens.clickgui.panel.category.chill.OtherCategoryPanel;
+import io.justme.lavender.ui.screens.clickgui.panels.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.panels.category.chill.ModulePanelWindow;
+import io.justme.lavender.ui.screens.clickgui.panels.category.chill.OtherCategoryPanel;
 import lombok.Getter;
 
 import java.io.IOException;

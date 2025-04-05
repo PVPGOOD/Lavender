@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.panel.settings.impl;
+package io.justme.lavender.ui.screens.clickgui.panels.settings.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
@@ -7,7 +7,7 @@ import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.ModeComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.SliderComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.settings.AbstractSetting;
+import io.justme.lavender.ui.screens.clickgui.panels.settings.AbstractSetting;
 import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -80,7 +80,7 @@ public class SettingWindow extends AbstractSetting {
         int leftSide = 10;
         int initY = 30;
         for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
-            switch (abstractOptionComponent.getComponentsType()) {
+            switch (abstractOptionComponent.getComponentType()) {
                 case MODE -> {
                     abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
                     abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);

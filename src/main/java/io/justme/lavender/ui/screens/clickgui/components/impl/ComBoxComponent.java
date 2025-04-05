@@ -2,10 +2,10 @@ package io.justme.lavender.ui.screens.clickgui.components.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.ComponentsType;
-import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.components.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.panel.popup.PopupComBox;
+import io.justme.lavender.ui.screens.clickgui.panels.popup.PopupComBox;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class ComBoxComponent extends AbstractOptionComponent {
     public MultiBoolValue option;
 
     public ComBoxComponent() {
-        this.componentsType = ComponentsType.COMBOX;
+        this.componentType = ComponentType.COMBOX;
     }
 
     @Override

@@ -1,7 +1,7 @@
-package io.justme.lavender.ui.screens.clickgui.panel.popup;
+package io.justme.lavender.ui.screens.clickgui.panels.popup;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.components.impl.chill.ComBoxChill;
 import io.justme.lavender.utility.gl.RenderUtility;
