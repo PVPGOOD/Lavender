@@ -22,13 +22,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Getter
 @Setter
-public class ModeControls extends AbstractOptionComponent {
+public class ModeComponent extends AbstractOptionComponent {
 
     private ModeValue option;
     private boolean expanded;
     private CopyOnWriteArrayList<AbstractOptionComponent> modeChill = new CopyOnWriteArrayList<>();
 
-    public ModeControls() {
+    public ModeComponent() {
         this.componentsType = ComponentsType.MODE;
     }
 

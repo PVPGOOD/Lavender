@@ -20,12 +20,12 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class SliderControls extends AbstractOptionComponent {
+public class SliderComponent extends AbstractOptionComponent {
 
     private NumberValue option = new NumberValue("slider",2,2,10f,1);
     private boolean dragging;
 
-    public SliderControls() {
+    public SliderComponent() {
         this.componentsType = ComponentsType.SLIDER;
     }
 

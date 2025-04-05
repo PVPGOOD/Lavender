@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.components.impl.chill;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
-import io.justme.lavender.ui.screens.clickgui.components.impl.CheckboxControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.CheckboxComponent;
 import io.justme.lavender.value.impl.BoolValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,14 +22,14 @@ import java.io.IOException;
 public class ComBoxChill extends AbstractControlsComponent {
 
     private BoolValue boolOption;
-    private CheckboxControls checkboxControls;
+    private CheckboxComponent checkboxComponent;
 
     public ComBoxChill(BoolValue boolOption) {
         this.boolOption = boolOption;
 
-        CheckboxControls controls = new CheckboxControls();
+        CheckboxComponent controls = new CheckboxComponent();
         controls.setOption(boolOption);
-        setCheckboxControls(controls);
+        setCheckboxComponent(controls);
     }
 
     @Override
@@ -44,22 +44,22 @@ public class ComBoxChill extends AbstractControlsComponent {
         //背景
         fontDrawer.drawString(getBoolOption().getName(),getX() + 2,getY() + getHeight() /2f - fontDrawer.getHeight() /2f,new Color(0).getRGB());
 
-        getCheckboxControls().setX(getX());
-        getCheckboxControls().setY(getY() + getHeight());
+        getCheckboxComponent().setX(getX());
+        getCheckboxComponent().setY(getY() + getHeight());
 
-        getCheckboxControls().drawScreen(mouseX, mouseY, partialTicks);
+        getCheckboxComponent().drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 
 
-        getCheckboxControls().mouseClicked(mouseX, mouseY, mouseButton);
+        getCheckboxComponent().mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
-        getCheckboxControls().mouseReleased(mouseX, mouseY, state);
+        getCheckboxComponent().mouseReleased(mouseX, mouseY, state);
     }
 
     @Override

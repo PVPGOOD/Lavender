@@ -2,13 +2,13 @@ package io.justme.lavender.ui.screens.clickgui.panel.popup;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxControls;
-import io.justme.lavender.ui.screens.clickgui.components.impl.ModeControls;
-import io.justme.lavender.ui.screens.clickgui.components.impl.SliderControls;
-import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.ModeComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.SliderComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.components.impl.scrollbar.ScrollbarControls;
+import io.justme.lavender.ui.screens.clickgui.components.impl.scrollbar.ScrollbarComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -46,7 +46,7 @@ public class PopupPanel extends AbstractPanel {
     private CopyOnWriteArrayList<AbstractOptionComponent> valueComponents = new CopyOnWriteArrayList<>();
     private Animation animationHeight = new Animation(20);
     private Animation animationWidth = new Animation(100);
-    private ScrollbarControls scrollbarControls = new ScrollbarControls();
+    private ScrollbarComponent scrollbarComponent = new ScrollbarComponent();
 
 
     public PopupPanel(Module module) {
@@ -160,7 +160,7 @@ public class PopupPanel extends AbstractPanel {
                 }
 
             }
-            getScrollbarControls().drawScreen(mouseX, mouseY, partialTicks);
+            getScrollbarComponent().drawScreen(mouseX, mouseY, partialTicks);
 
         });
 
@@ -176,15 +176,15 @@ public class PopupPanel extends AbstractPanel {
             getAnimationHeight().setFromValue(getHeight());
         }
 
-        getScrollbarControls().setWidth(3);
-        getScrollbarControls().setHeight(250);
-        getScrollbarControls().setX(getX() + getWidth() - getScrollbarControls().getWidth());
-        getScrollbarControls().setY(getY() + initY);
+        getScrollbarComponent().setWidth(3);
+        getScrollbarComponent().setHeight(250);
+        getScrollbarComponent().setX(getX() + getWidth() - getScrollbarComponent().getWidth());
+        getScrollbarComponent().setY(getY() + initY);
 
-        getScrollbarControls().setScrollOffset(getScrollOffset());
-        getScrollbarControls().setMaxScrollOffset(getMaxScroll());
-        getScrollbarControls().setContentHeight(intervalY.get());
-        getScrollbarControls().setViewHeight(animationHeight - initY);
+        getScrollbarComponent().setScrollOffset(getScrollOffset());
+        getScrollbarComponent().setMaxScrollOffset(getMaxScroll());
+        getScrollbarComponent().setContentHeight(intervalY.get());
+        getScrollbarComponent().setViewHeight(animationHeight - initY);
 
         getAnimationWidth().animate(isExpanded() ? getWidth() : 100, 0.1f);
         getAnimationHeight().animate(isExpanded() ? getHeight() : 20, 0.1f);
@@ -252,7 +252,7 @@ public class PopupPanel extends AbstractPanel {
                         abstractOptionComponent.mouseClicked(mouseX,mouseY,mouseButton);
                     }
 
-                    getScrollbarControls().mouseClicked(mouseX, mouseY, mouseButton);
+                    getScrollbarComponent().mouseClicked(mouseX, mouseY, mouseButton);
                 }
 
             }
@@ -325,23 +325,23 @@ public class PopupPanel extends AbstractPanel {
         AbstractOptionComponent component = null;
 
         if (setting instanceof BoolValue)  {
-            SwitchControls switchControls = new SwitchControls();
-            switchControls.setOption((BoolValue) setting);
-            switchControls.afterAddOption();
-            component = switchControls;
+            SwitchComponent switchComponent = new SwitchComponent();
+            switchComponent.setOption((BoolValue) setting);
+            switchComponent.afterAddOption();
+            component = switchComponent;
         } else if (setting instanceof MultiBoolValue) {
-            ComBoxControls comBoxControls = new ComBoxControls();
-            comBoxControls.setOption((MultiBoolValue) setting);
-            component = comBoxControls;
+            ComBoxComponent comBoxComponent = new ComBoxComponent();
+            comBoxComponent.setOption((MultiBoolValue) setting);
+            component = comBoxComponent;
         } else if (setting instanceof NumberValue) {
-            SliderControls sliderControls = new SliderControls();
-            sliderControls.setOption((NumberValue) setting);
-            component = sliderControls;
+            SliderComponent sliderComponent = new SliderComponent();
+            sliderComponent.setOption((NumberValue) setting);
+            component = sliderComponent;
         } else if (setting instanceof ModeValue) {
-            ModeControls modeControls = new ModeControls();
-            modeControls.setOption((ModeValue) setting);
-            modeControls.afterAddOption();
-            component = modeControls;
+            ModeComponent modeComponent = new ModeComponent();
+            modeComponent.setOption((ModeValue) setting);
+            modeComponent.afterAddOption();
+            component = modeComponent;
         }
 
 

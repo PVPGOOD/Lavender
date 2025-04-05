@@ -1,17 +1,10 @@
 package io.justme.lavender.ui.screens.clickgui.panel.category;
 
-import io.justme.lavender.La;
-import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
-import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
-import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButton;
 import io.justme.lavender.ui.screens.clickgui.panel.category.chill.ModulePanelWindow;
 import io.justme.lavender.ui.screens.clickgui.panel.category.chill.OtherCategoryPanel;
-import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 

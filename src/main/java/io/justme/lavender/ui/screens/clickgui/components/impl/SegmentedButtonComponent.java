@@ -1,9 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.components.impl;
 
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
-import io.justme.lavender.utility.gl.RenderUtility;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -11,7 +9,7 @@ import java.io.IOException;
  * @since 2025/4/4
  **/
 
-public class SegmentedButtonControls extends AbstractOptionComponent {
+public class SegmentedButtonComponent extends AbstractOptionComponent {
     @Override
     public void initGui() {
 

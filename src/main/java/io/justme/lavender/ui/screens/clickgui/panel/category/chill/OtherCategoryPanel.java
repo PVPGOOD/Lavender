@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.panel.category.chill;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
-import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButton;
+import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButtonComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.AbstractCategory;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -28,8 +28,8 @@ public class OtherCategoryPanel extends AbstractCategory {
     public OtherCategoryPanel() {
         setName("OtherCategoryPanel");
 
-        getCategoryComponents().add(new CategoryButton(CategoryType.CLIENT_SETTINGS,false));
-        getCategoryComponents().add(new CategoryButton(CategoryType.MANAGER_POPPING,false));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.CLIENT_SETTINGS,false));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.MANAGER_POPPING,false));
     }
 
     @Override

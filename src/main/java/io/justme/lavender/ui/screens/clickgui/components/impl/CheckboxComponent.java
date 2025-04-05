@@ -20,14 +20,14 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class CheckboxControls extends AbstractOptionComponent {
+public class CheckboxComponent extends AbstractOptionComponent {
 
     private BoolValue option;
 
     private Animation animation = new Animation(100);
     private Animation scaleAnimation = new Animation(0);
 
-    public CheckboxControls() {
+    public CheckboxComponent() {
         this.componentsType = ComponentsType.CHECKBOX;
         setWidth(10);
         setHeight(10);

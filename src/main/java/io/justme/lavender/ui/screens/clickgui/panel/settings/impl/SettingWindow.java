@@ -3,16 +3,13 @@ package io.justme.lavender.ui.screens.clickgui.panel.settings.impl;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxControls;
-import io.justme.lavender.ui.screens.clickgui.components.impl.ModeControls;
-import io.justme.lavender.ui.screens.clickgui.components.impl.SliderControls;
-import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchControls;
-import io.justme.lavender.ui.screens.clickgui.panel.AbstractPanel;
-import io.justme.lavender.ui.screens.clickgui.panel.module.chill.ModuleButton;
+import io.justme.lavender.ui.screens.clickgui.components.impl.ComBoxComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.ModeComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.SliderComponent;
+import io.justme.lavender.ui.screens.clickgui.components.impl.SwitchComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.settings.AbstractSetting;
 import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.BoolValue;
@@ -186,23 +183,23 @@ public class SettingWindow extends AbstractSetting {
         AbstractOptionComponent component = null;
 
         if (setting instanceof BoolValue)  {
-            SwitchControls switchControls = new SwitchControls();
-            switchControls.setOption((BoolValue) setting);
-            switchControls.afterAddOption();
-            component = switchControls;
+            SwitchComponent switchComponent = new SwitchComponent();
+            switchComponent.setOption((BoolValue) setting);
+            switchComponent.afterAddOption();
+            component = switchComponent;
         } else if (setting instanceof MultiBoolValue) {
-            ComBoxControls comBoxControls = new ComBoxControls();
-            comBoxControls.setOption((MultiBoolValue) setting);
-            component = comBoxControls;
+            ComBoxComponent comBoxComponent = new ComBoxComponent();
+            comBoxComponent.setOption((MultiBoolValue) setting);
+            component = comBoxComponent;
         } else if (setting instanceof NumberValue) {
-            SliderControls sliderControls = new SliderControls();
-            sliderControls.setOption((NumberValue) setting);
-            component = sliderControls;
+            SliderComponent sliderComponent = new SliderComponent();
+            sliderComponent.setOption((NumberValue) setting);
+            component = sliderComponent;
         } else if (setting instanceof ModeValue) {
-            ModeControls modeControls = new ModeControls();
-            modeControls.setOption((ModeValue) setting);
-            modeControls.afterAddOption();
-            component = modeControls;
+            ModeComponent modeComponent = new ModeComponent();
+            modeComponent.setOption((ModeValue) setting);
+            modeComponent.afterAddOption();
+            component = modeComponent;
         }
 
 

@@ -21,11 +21,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  **/
 @Getter
 @Setter
-public class ComBoxControls extends AbstractOptionComponent {
+public class ComBoxComponent extends AbstractOptionComponent {
 
     public MultiBoolValue option;
 
-    public ComBoxControls() {
+    public ComBoxComponent() {
         this.componentsType = ComponentsType.COMBOX;
     }
 

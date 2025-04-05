@@ -16,18 +16,18 @@ import java.io.IOException;
  * @since 2024/12/5
  **/
 @Getter
-public class CategoryButton extends AbstractControlsComponent {
+public class CategoryButtonComponent extends AbstractControlsComponent {
 
     public CategoryType category;
     private final boolean neededIcon;
 
-    public CategoryButton(CategoryType category) {
+    public CategoryButtonComponent(CategoryType category) {
         abstractCategory = category;
         this.neededIcon = true;
         this.category = category;
     }
 
-    public CategoryButton(CategoryType category,boolean neededIcon) {
+    public CategoryButtonComponent(CategoryType category, boolean neededIcon) {
         abstractCategory = category;
 
         this.neededIcon = neededIcon;

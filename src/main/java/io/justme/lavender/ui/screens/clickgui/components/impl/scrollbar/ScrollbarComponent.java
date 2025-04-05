@@ -14,7 +14,7 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class ScrollbarControls extends AbstractControlsComponent {
+public class ScrollbarComponent extends AbstractControlsComponent {
 
     private float backgroundHeight;
     private float sliderY,sliderHeight;

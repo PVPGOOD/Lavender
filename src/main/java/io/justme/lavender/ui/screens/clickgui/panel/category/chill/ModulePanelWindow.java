@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.panel.category.chill;
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.components.AbstractControlsComponent;
-import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButton;
+import io.justme.lavender.ui.screens.clickgui.components.impl.panel.category.CategoryButtonComponent;
 import io.justme.lavender.ui.screens.clickgui.panel.category.AbstractCategory;
 import io.justme.lavender.ui.screens.clickgui.panel.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -26,12 +26,12 @@ public class ModulePanelWindow extends AbstractCategory {
 
     public ModulePanelWindow() {
         setName("ModulePanelWindow");
-        getCategoryComponents().add(new CategoryButton(CategoryType.FIGHT));
-        getCategoryComponents().add(new CategoryButton(CategoryType.VISUAL));
-        getCategoryComponents().add(new CategoryButton(CategoryType.MOVEMENTS));
-        getCategoryComponents().add(new CategoryButton(CategoryType.PLAYER));
-        getCategoryComponents().add(new CategoryButton(CategoryType.World));
-        getCategoryComponents().add(new CategoryButton(CategoryType.Exploit));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.FIGHT));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.VISUAL));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.MOVEMENTS));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.PLAYER));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.World));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.Exploit));
 
     }
 

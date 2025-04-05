@@ -20,13 +20,13 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class SwitchControls extends AbstractOptionComponent {
+public class SwitchComponent extends AbstractOptionComponent {
 
     private BoolValue option;
     private Animation animation;
     private Animation scaleAnimation = new Animation();
 
-    public SwitchControls() {
+    public SwitchComponent() {
         this.componentsType = ComponentsType.SWITCH;
     }
 
