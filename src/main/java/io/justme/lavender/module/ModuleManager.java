@@ -10,6 +10,7 @@ import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
 import io.justme.lavender.module.impl.blatant.player.*;
 import io.justme.lavender.module.impl.blatant.visual.*;
+import io.justme.lavender.module.impl.legit.fight.AimAssist;
 import io.justme.lavender.module.impl.legit.fight.AutoClicker;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
@@ -53,13 +54,14 @@ public class ModuleManager extends Manager<Module> {
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
 
-
     //blatant
     private final AutoClicker autoClicker = new AutoClicker();
+    private final AimAssist aimAssist = new AimAssist();
 
     public void onInitialization(){
 
         getElements().addAll(Arrays.asList(
+                getRotations(),
                 //blatant
 
                 //fight
@@ -71,7 +73,6 @@ public class ModuleManager extends Manager<Module> {
                 getNoHurtCam(),
                 getNoCamClip(),
                 getClickGui(),
-                getRotations(),
                 //movements
                 getNoslow(),
                 getSprint(),
@@ -92,7 +93,8 @@ public class ModuleManager extends Manager<Module> {
 //                getPacketDebugger()
 
                 //legit
-                getAutoClicker()
+                getAutoClicker(),
+                getAimAssist()
         ));
 
         getElements().forEach(Module::reflectValues);
