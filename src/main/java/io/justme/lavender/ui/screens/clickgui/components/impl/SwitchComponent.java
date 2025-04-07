@@ -42,7 +42,7 @@ public class SwitchComponent extends AbstractOptionComponent {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        FontDrawer fontDrawer = getFontDrawer();
         fontDrawer.drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0).getRGB());
 
         //背景

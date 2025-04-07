@@ -46,10 +46,10 @@ public class ModeComponent extends AbstractOptionComponent {
     private float interval = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(215, 198, 215, 255));
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0).getRGB());
+        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(255, 212, 255, 255));
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0,0,0,200).getRGB());
 
-        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
+        FontDrawer fontDrawer = getFontDrawer();
         fontDrawer.drawString(getOption().getValue() ,getX() + 10   ,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
 
         float optionInterval = 8;
@@ -62,8 +62,8 @@ public class ModeComponent extends AbstractOptionComponent {
                     getY() + getHeight() + 1,
                     getWidth(),
                     getHeight() + getInterval() - 8,
-                    10,1,new Color(255, 224, 235, 255),
-                    new Color(164, 158, 255, 255));
+                    10,1,new Color(255, 230, 241, 255),
+                    new Color(255, 223, 236, 255));
 
             for (AbstractOptionComponent chill : getModeChill()) {
                 chill.setX(getX() + 4);
@@ -77,8 +77,12 @@ public class ModeComponent extends AbstractOptionComponent {
             }
         }
 
-
-        setModeExpandingHeight(optionInterval + 5);
+        if (isExpanded()) {
+            setModeExpandingHeight(optionInterval + 25);
+        } else {
+            setModeExpandingHeight(optionInterval);
+        }
+        
         setWidth(100);
         setHeight(25);
     }

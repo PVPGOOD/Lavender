@@ -36,7 +36,7 @@ public class ScrollbarComponent extends AbstractControlsComponent {
 
         if ((getViewHeight() < getContentHeight() - 10)) {
            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getBackgroundHeight(), 2, new Color(255, 255, 255));
-           RenderUtility.drawRoundRect(getX(), getY() + getSliderY(), getWidth(), getSliderHeight(), 2, new Color(123, 113, 255));
+           RenderUtility.drawRoundRect(getX(), getY() + getSliderY(), getWidth(), getSliderHeight(), 2, new Color(255, 197, 240));
         }
     }
 

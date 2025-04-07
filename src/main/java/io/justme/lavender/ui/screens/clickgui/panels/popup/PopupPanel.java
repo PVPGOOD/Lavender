@@ -98,18 +98,18 @@ public class PopupPanel extends AbstractPanel {
         int leftSide = 10;
         int initY = 30;
 
-        OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
+//        OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                 switch (abstractOptionComponent.getComponentType()) {
                     case MODE -> {
-                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
+                        abstractOptionComponent.setX(getX() + 20);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset + 18);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
                         abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                        intervalY.addAndGet((int) (35 + abstractOptionComponent.getModeExpandingHeight()));
+                        intervalY.addAndGet((int) (40 + abstractOptionComponent.getModeExpandingHeight()));
                     }
 
                     case COMBOX -> {
@@ -126,14 +126,14 @@ public class PopupPanel extends AbstractPanel {
 
                     case SLIDER -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset + 15);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + ScrollOffset - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                        intervalY.addAndGet(25);
+                        intervalY.addAndGet(28);
                     }
 
                     case SWITCH -> {
@@ -162,7 +162,7 @@ public class PopupPanel extends AbstractPanel {
             }
             getScrollbarComponent().drawScreen(mouseX, mouseY, partialTicks);
 
-        });
+//        });
 
         if (isDragging()){
             setX(mouseX - getDraggingX());

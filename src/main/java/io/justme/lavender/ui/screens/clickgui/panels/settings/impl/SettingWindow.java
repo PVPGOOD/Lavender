@@ -66,7 +66,7 @@ public class SettingWindow extends AbstractSetting {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(), 5, new Color(255, 228, 238));
 
-        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Regular18();
+        var fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Regular18();
 
         fontDrawer.drawString(getSettingType().getName(),
                 getX() + 10,
@@ -105,8 +105,9 @@ public class SettingWindow extends AbstractSetting {
                 }
 
                 case SLIDER -> {
-                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
+                    var leftY = 15;
+                    abstractOptionComponent.setX(getX() + rightSide + 5);
+                    abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset + leftY);
 
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + ScrollOffset - fontDrawer.getHeight() /2f + abstractOptionComponent.getHeight());
@@ -117,19 +118,20 @@ public class SettingWindow extends AbstractSetting {
                 }
 
                 case SWITCH -> {
-                    abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
+                    var leftY = 15;
+                    abstractOptionComponent.setX(getX() + rightSide + 5);
+                    abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset + leftY);
 
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                    abstractOptionComponent.setDescriptionY(getY() + intervalY.get() +initY + ScrollOffset);
+                    abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
 
                     abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
-                    intervalY.addAndGet(25);
+                    intervalY.addAndGet(28 + leftY);
                 }
 
                 case CHECKBOX -> {
                     abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                    abstractOptionComponent.setY(getY() + intervalY.get() +initY + ScrollOffset);
+                    abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
 
                     abstractOptionComponent.setDescriptionX(getX() + leftSide);
                     abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + ScrollOffset);
@@ -141,8 +143,8 @@ public class SettingWindow extends AbstractSetting {
 
         }
 
-        setHeight(100);
-        setRequestInterval(120);
+        setHeight(intervalY.get() + initY);
+        setRequestInterval(intervalY.get() + initY + 15);
     }
 
     @Override
