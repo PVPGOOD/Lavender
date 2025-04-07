@@ -8,6 +8,7 @@ import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
+import io.justme.lavender.module.impl.legit.fight.Reach;
 import io.justme.lavender.utility.network.PacketUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -305,6 +306,11 @@ public class PlayerControllerMP
 
     public float getBlockReachDistance()
     {
+
+        if (La.getINSTANCE().getModuleManager().getModuleByName("Reach").isToggle()) {
+            var reach = ((Reach) La.getINSTANCE().getModuleManager().getModuleByName("Reach"));
+            return reach.getRange().getValue();
+        }
         return this.currentGameType.isCreative() ? 5.0F : 4.5F;
     }
 

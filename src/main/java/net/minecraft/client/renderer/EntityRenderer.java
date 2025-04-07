@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
+import io.justme.lavender.module.impl.legit.fight.Reach;
 import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -401,14 +402,17 @@ public class EntityRenderer implements IResourceManagerReloadListener
             boolean flag = false;
             int i = 3;
 
-            if (this.mc.playerController.extendedReach())
-            {
+            var reach = ((Reach) La.getINSTANCE().getModuleManager().getModuleByName("Reach"));
+
+            if (this.mc.playerController.extendedReach()) {
                 d0 = 6.0D;
                 d1 = 6.0D;
-            }
-            else if (d0 > 3.0D)
-            {
-                flag = true;
+            } else if (reach.isToggle()) {
+                d0 = d1 = reach.getRange().getValue().doubleValue();
+            } else {
+                if (d0 > 3.0D) {
+                    flag = true;
+                }
             }
 
             if (this.mc.objectMouseOver != null)
