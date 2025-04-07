@@ -24,6 +24,7 @@ public class EventMotionUpdate implements IEvent, ITypedEvent {
     private float prevPitch;
     private boolean onGround;
     private final EnumEventType type;
+    private boolean isRotate;
 
     public EventMotionUpdate(double x, double y, double z, float yaw, float pitch, boolean onGround, EnumEventType type) {
         this.x = x;
@@ -38,6 +39,17 @@ public class EventMotionUpdate implements IEvent, ITypedEvent {
     @Override
     public EnumEventType getType() {
         return this.type;
+    }
+
+    public void setYaw(float yaw) {
+        La.getINSTANCE().getModuleManager().getRotations().renderYawOffset(yaw);
+        this.yaw = yaw;
+        this.isRotate = true;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+        this.isRotate = true;
     }
 
 }
