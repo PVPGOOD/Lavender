@@ -9,6 +9,7 @@ import io.justme.lavender.value.impl.BoolValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.potion.Potion;
 
 @Getter
 @ModuleInfo(name = "Sprint", description = "Auto sprint.", category = Category.MOVEMENTS)
@@ -31,15 +32,14 @@ public class Sprint extends Module {
     @EventTarget
     public void onUpdate(EventUpdate event) {
 
-        var back = Minecraft.getMinecraft().gameSettings.keyBindBack.pressed;
-        var forward = Minecraft.getMinecraft().gameSettings.keyBindForward.pressed;
-        var left = Minecraft.getMinecraft().gameSettings.keyBindLeft.pressed;
-        var right = Minecraft.getMinecraft().gameSettings.keyBindRight.pressed;
+        var player = Minecraft.getMinecraft().thePlayer;
 
-        if (getAll().getValue() ? forward || back || left || right : !(left || right || back) && PlayerUtility.moving()) {
-            if (!(Minecraft.getMinecraft().thePlayer.getFoodStats().getFoodLevel() <= 6)) {
-                Minecraft.getMinecraft().thePlayer.setSprinting(true);
-            }
+        float f = 0.8F;
+
+        boolean flag3 = (float)player.getFoodStats().getFoodLevel() > 6.0F || player.capabilities.allowFlying;
+        if (!player.isSprinting() && player.movementInput.moveForward >= f && flag3 && !player.isUsingItem() && !player.isPotionActive(Potion.blindness))
+        {
+            player.setSprinting(true);
         }
     }
 }
