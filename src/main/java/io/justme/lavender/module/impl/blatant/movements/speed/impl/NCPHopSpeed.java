@@ -1,10 +1,7 @@
 package io.justme.lavender.module.impl.blatant.movements.speed.impl;
 
 import io.justme.lavender.events.network.EventPacket;
-import io.justme.lavender.events.player.EventMotionUpdate;
-import io.justme.lavender.events.player.EventMove;
-import io.justme.lavender.events.player.EventStrafe;
-import io.justme.lavender.events.player.EventUpdate;
+import io.justme.lavender.events.player.*;
 import io.justme.lavender.module.impl.blatant.movements.speed.AbstractSpeed;
 import io.justme.lavender.utility.player.PlayerUtility;
 import net.minecraft.block.Block;
@@ -106,6 +103,11 @@ public class NCPHopSpeed extends AbstractSpeed {
         }
 
         event.setSpeed(Math.max(speed, base), Math.random() / 2000);
+    }
+
+    @Override
+    public void onPostStrafe(PostStrafeEvent event) {
+
     }
 
     public double getAllowedHorizontalDistance() {

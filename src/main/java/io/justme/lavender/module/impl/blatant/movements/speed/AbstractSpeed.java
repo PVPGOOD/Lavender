@@ -1,10 +1,7 @@
 package io.justme.lavender.module.impl.blatant.movements.speed;
 
 import io.justme.lavender.events.network.EventPacket;
-import io.justme.lavender.events.player.EventMotionUpdate;
-import io.justme.lavender.events.player.EventMove;
-import io.justme.lavender.events.player.EventStrafe;
-import io.justme.lavender.events.player.EventUpdate;
+import io.justme.lavender.events.player.*;
 import io.justme.lavender.module.impl.blatant.exploit.disabler.process.PacketProcessor;
 import io.justme.lavender.module.impl.blatant.movements.speed.impl.NCPHopSpeed;
 import io.justme.lavender.module.impl.blatant.movements.speed.impl.watchdog.WatchdogLowHopSpeed;
@@ -52,4 +49,7 @@ public abstract class AbstractSpeed implements IMinecraft {
     public abstract void onUpdate(EventUpdate event);
     public abstract void onMove(EventMove event);
     public abstract void onStrafe(EventStrafe event);
+
+    public abstract void onPostStrafe(PostStrafeEvent event);
+
 }

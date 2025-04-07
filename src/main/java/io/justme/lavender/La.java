@@ -8,6 +8,7 @@ import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
+import io.justme.lavender.setting.SettingManager;
 import io.justme.lavender.ui.elements.ElementsManager;
 import io.justme.lavender.ui.screens.clickgui.ClickScreen;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
@@ -59,19 +60,26 @@ public class La {
 
     private ConfigsManager configsManager;
 
+    private SettingManager settingManager;
+
+    private final String skinLocation = "skins/9708a27eb2d4808120de9e5ea5bb542f7b8677c3809b69153e65110dbc51f3da";
+
     public void initialization() {
         eventManager = new EventManager();
         fontManager = new FontManager();
+
         moduleManager = new ModuleManager();
         moduleManager.onInitialization();
+
         elementsManager = new ElementsManager();
 
         viaMCP = new ViaMCP();
-
         asyncVersionSlider = new AsyncVersionSlider(1337, 20, 5, 110,20);
 
-        clickScreen = new ClickScreen();
+        settingManager = new SettingManager();
+        settingManager.onInitialization();
 
+        clickScreen = new ClickScreen();
         configListFrame = new ConfigListFrame();
         configButtonFrame = new ConfigButtonFrame();
         configScreen = new ConfigScreen();

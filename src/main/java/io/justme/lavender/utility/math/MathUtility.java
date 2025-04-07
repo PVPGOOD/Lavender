@@ -27,6 +27,11 @@ public class MathUtility {
         return (1.0 - amount) * old + amount * newVal;
     }
 
+
+    public float lerp(float old, float newVal, float amount) {
+        return  ((1.0f - amount) * old + amount * newVal);
+    }
+
     public Double interpolate(double oldValue, double newValue, double interpolationValue) {
         return (oldValue + (newValue - oldValue) * interpolationValue);
     }
@@ -93,4 +98,7 @@ public class MathUtility {
         return Math.max(Math.min(value, max), min);
     }
 
+    public static double wrappedDifference(double number1, double number2) {
+        return Math.min(Math.abs(number1 - number2), Math.min(Math.abs(number1 - 360) - Math.abs(number2 - 0), Math.abs(number2 - 360) - Math.abs(number1 - 0)));
+    }
 }

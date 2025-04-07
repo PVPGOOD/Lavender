@@ -12,6 +12,7 @@ import io.justme.lavender.module.impl.blatant.player.*;
 import io.justme.lavender.module.impl.blatant.visual.*;
 import io.justme.lavender.module.impl.legit.fight.AimAssist;
 import io.justme.lavender.module.impl.legit.fight.AutoClicker;
+import io.justme.lavender.module.impl.legit.fight.Reach;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
@@ -57,6 +58,7 @@ public class ModuleManager extends Manager<Module> {
     //blatant
     private final AutoClicker autoClicker = new AutoClicker();
     private final AimAssist aimAssist = new AimAssist();
+    private final Reach reach = new Reach();
 
     public void onInitialization(){
 
@@ -94,7 +96,8 @@ public class ModuleManager extends Manager<Module> {
 
                 //legit
                 getAutoClicker(),
-                getAimAssist()
+                getAimAssist(),
+                getReach()
         ));
 
         getElements().forEach(Module::reflectValues);

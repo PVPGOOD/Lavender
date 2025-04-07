@@ -40,7 +40,7 @@ public class ElementScreen extends GuiScreen {
             if (element.isDragging()) {
                 elements = element;
             }
-            element.draw(partialTicks, mouseX, mouseY);
+//            element.draw(partialTicks, mouseX, mouseY);
         }
 
         if (elements != null) {
