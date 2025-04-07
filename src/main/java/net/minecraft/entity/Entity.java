@@ -10,6 +10,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventSafeWalk;
 import io.justme.lavender.events.player.EventStrafe;
+import io.justme.lavender.events.player.PostStrafeEvent;
 import io.justme.lavender.utility.player.RotationUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -1060,6 +1061,12 @@ public abstract class Entity implements ICommandSender
             float f2 = MathHelper.cos(yaw * (float) Math.PI / 180.0F);
             this.motionX += (double)(strafe * f2 - forward * f1);
             this.motionZ += (double)(forward * f2 + strafe * f1);
+        }
+
+        if (this == Minecraft.getMinecraft().thePlayer) {
+            final PostStrafeEvent event = new PostStrafeEvent();
+
+            La.getINSTANCE().getEventManager().call(event);
         }
     }
 
