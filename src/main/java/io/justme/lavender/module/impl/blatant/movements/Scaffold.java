@@ -3,6 +3,7 @@ package io.justme.lavender.module.impl.blatant.movements;
 import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.player.EventSafeWalk;
+import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
@@ -46,8 +47,7 @@ public class Scaffold extends Module {
 
     private final NumberValue
             delayValue = new NumberValue("delayValue", 0.5, 0.0, 10.0, 0.5),
-            timesValue = new NumberValue("timesValue", 8.0, 1.0, 15.0, 1.0),
-            timerSpeed = new NumberValue("timerSpeed", 1.0, 1.0, 1.3, 0.05);
+            towerTimesValue = new NumberValue("timesValue", 8.0, 1.0, 15.0, 1.0);
 
     private final BoolValue
             towerValue = new BoolValue("Tower",false),
@@ -60,7 +60,12 @@ public class Scaffold extends Module {
             rayCast_Value = new BoolValue("ray cast",false),
             swing = new BoolValue("Swing",false);
 
-    public ScaffoldUtility.BlockData blockData;
+    private BlockPos targetBlock;
+    public ScaffoldUtility.PlaceData data;
+    private boolean placing;
+    private boolean canPlace = true;
+    private int blocksPlaced;
+
     private PacketUtility packetUtility = new PacketUtility();
     private final TimerUtility placeTimer = new TimerUtility(), towerTimer = new TimerUtility();
     private final Minecraft mc = Minecraft.getMinecraft();
@@ -73,39 +78,52 @@ public class Scaffold extends Module {
 
     @Override
     public void onDisable() {
-        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
-
-            switch (getPicks().getValue()) {
-                case "Silent": {
-                    getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-                    break;
-                }
-                case "SwitchTo": {
-                    mc.thePlayer.inventory.currentItem = getPrevSlot();
-                    break;
-                }
-            }
-
-            setSlot(-1);
-            setPrevSlot(mc.thePlayer.inventory.currentItem);
-        }
+//        if (Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null) {
+//
+//            switch (getPicks().getValue()) {
+//                case "Silent": {
+//                    getPacketUtility().sendPacketFromLa(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+//                    break;
+//                }
+//                case "SwitchTo": {
+//                    mc.thePlayer.inventory.currentItem = getPrevSlot();
+//                    break;
+//                }
+//            }
+//
+//            setSlot(-1);
+//            setPrevSlot(mc.thePlayer.inventory.currentItem);
+//        }
 
         super.onDisable();
     }
 
     @EventTarget
+    public void onUpdate(EventUpdate eventUpdate) {
+
+        double posX = mc.thePlayer.posX;
+        double posZ = mc.thePlayer.posZ;
+
+        targetBlock = new BlockPos(posX, posY, posZ).offset(EnumFacing.DOWN);
+
+        placing = false;
+
+        data = ScaffoldUtility.getPlaceData(targetBlock);
+
+        if (data == null) return;
+
+        place(data.blockPos, data.facing, ScaffoldUtility.getVec3(data));
+    }
+
+    @EventTarget
     public void onMotionUpdate(EventMotionUpdate event) {
+
+        if (getData() != null) {
+            rotation(event);
+        }
 
         switch(event.getType()) {
             case PRE -> {
-                setBlockData(ScaffoldUtility.getBlockData(
-                        new BlockPos(mc.thePlayer.posX, posY - 1, mc.thePlayer.posZ)) == null ?
-                        ScaffoldUtility.getBlockData(new BlockPos(mc.thePlayer.posX, posY - 1, mc.thePlayer.posZ).down()) :
-                        ScaffoldUtility.getBlockData(new BlockPos(mc.thePlayer.posX, posY - 1, mc.thePlayer.posZ)));
-
-                if (getBlockData() == null) return;
-
-                rotation(event);
 
                 setSlot(ScaffoldUtility.getSlot());
 
@@ -120,13 +138,6 @@ public class Scaffold extends Module {
                     }
                 }
 
-                if (getPlaceTimer().hasTimeElapsed(getDelayValue().getValue() * 100L)) {
-                    if (canPlace()) {
-                        place();
-                    }
-                }
-
-                getPlaceTimer().reset();
             }
             case POST -> {
                 switch (getKeepYModeValue().getValue()) {
@@ -183,13 +194,13 @@ public class Scaffold extends Module {
                             PlayerUtility.setSpeed(0);
                             mc.thePlayer.setPosition(mc.thePlayer.prevPosX, mc.thePlayer.posY, mc.thePlayer.prevPosZ);
 
-                            if (++towerTick <= timesValue.getValue().intValue()) {
+                            if (++towerTick <= towerTimesValue.getValue().intValue()) {
 
                                 mc.thePlayer.jump();
-
-                                if (getBlockData() != null && getPositionValue().getValue()) {
-                                    mc.thePlayer.setPosition(blockData.getBlockPos().getX() + .5, mc.thePlayer.posY, blockData.getBlockPos().getZ() + .5);
-                                }
+//
+//                                if (getBlockData() != null && getPositionValue().getValue()) {
+//                                    mc.thePlayer.setPosition(blockData.getBlockPos().getX() + .5, mc.thePlayer.posY, blockData.getBlockPos().getZ() + .5);
+//                                }
 
                             } else {
                               setTowerTick(0);
@@ -210,20 +221,20 @@ public class Scaffold extends Module {
                 Block under = mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - .5F, mc.thePlayer.posZ)).getBlock();
                 if (under == Blocks.air || !under.isFullBlock()) {
 
-                    var vec = getBlockData().getVec3();
+                    var vec = ScaffoldUtility.getVec3(data);
 
                     float[] rotations = RotationUtility.getRotationsToPosition(vec.xCoord, vec.yCoord, vec.zCoord);
 
                     var yaw = rotations[0];
                     var pitch = 80f;
 
-                    if (getBlockData().getFacing() == EnumFacing.UP) {
+                    if (data.facing == EnumFacing.UP) {
                         pitch = 90f;
                     }
 
                     for(float i = 75; i <= 85; i += 0.1F) {
                         MovingObjectPosition movingObjectPosition = WorldUtility.raytrace(yaw, i);
-                        if(movingObjectPosition != null && movingObjectPosition.sideHit == getBlockData().getFacing()) {
+                        if(movingObjectPosition != null && movingObjectPosition.sideHit == data.facing) {
                             pitch = i;
                             break;
                         }
@@ -245,19 +256,15 @@ public class Scaffold extends Module {
         }
     }
 
-    private void place() {
-        if (mc.playerController.onPlayerRightClick(
-                mc.thePlayer,
-                mc.theWorld,
-                mc.thePlayer.inventory.mainInventory[slot],
-                getBlockData().getBlockPos(),
-                getBlockData().getEnumFacing(),
-                getBlockData().getVec3())) {
 
-            if (getSwing().getValue()) {
-                mc.thePlayer.swingItem();
-            } else {
-                getPacketUtility().sendPacketFromLa(new C0APacketAnimation());
+    private void place(BlockPos pos, EnumFacing facing, Vec3 hitVec) {
+
+        if (canPlace && data != null) {
+
+            if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), pos, facing, hitVec)) {
+                mc.getNetHandler().addToSendQueue(new C0APacketAnimation());
+                placing = true;
+                blocksPlaced += 1;
             }
         }
     }
@@ -267,13 +274,13 @@ public class Scaffold extends Module {
     }
 
     private boolean raytrace() {
-        var movingObjectPosition = WorldUtility.raytrace(getYaw(),getPitch());
-
-        //合法的hitVec
-        if(movingObjectPosition != null && movingObjectPosition.sideHit == getBlockData().getFacing() && movingObjectPosition.getBlockPos().equals(getBlockData().getPos())) {
-           getBlockData().setVec3(movingObjectPosition.hitVec);
-            return true;
-        }
+//        var movingObjectPosition = WorldUtility.raytrace(getYaw(),getPitch());
+//
+//        //合法的hitVec
+//        if(movingObjectPosition != null && movingObjectPosition.sideHit == getBlockData().getFacing() && movingObjectPosition.getBlockPos().equals(getBlockData().getPos())) {
+//           getBlockData().setVec3(movingObjectPosition.hitVec);
+//            return true;
+//        }
 
         return false;
     }
