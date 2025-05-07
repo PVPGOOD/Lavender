@@ -55,6 +55,8 @@ public class AutoClicker extends Module {
         if (getDisplayingGuiCheck().getValue() && mc.currentScreen != null) return;
         if (mc.thePlayer.isBlocking() && getBlockingCheck().getValue()) return;
 
+        if (mc.objectMouseOver == null) return;
+
 //        if (eventMotionUpdate.getType() == EnumEventType.PRE) {
             var breakingBlock = false;
             var blockpos = mc.objectMouseOver.getBlockPos();

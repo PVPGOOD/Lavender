@@ -8,6 +8,7 @@ import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.MathUtility;
 import io.justme.lavender.utility.player.MovementUtility;
 import io.justme.lavender.utility.player.RotationUtility;
+import io.justme.lavender.utility.player.ValidEntity;
 import io.justme.lavender.value.impl.NumberValue;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
@@ -33,6 +34,9 @@ public class AimAssist extends Module {
 
     @EventTarget
     public void onMotionUpdate(EventMotionUpdate event) {
+
+        if ( mc.currentScreen != null) return;
+
         if (Mouse.isButtonDown(0)) {
             EntityLivingBase target = getClosestTarget();
             if (target != null && !isTargetInCrossHair(target)) {
@@ -89,6 +93,8 @@ public class AimAssist extends Module {
 
         for (Entity entity : mc.theWorld.loadedEntityList) {
             if (entity instanceof EntityPlayer && entity != mc.thePlayer && entity.isEntityAlive()) {
+                if (ValidEntity.isOnSameTeam((EntityLivingBase) entity)) continue;
+//                if (ValidEntity.isBot((EntityPlayer) entity)) continue;
                 double distance = mc.thePlayer.getDistanceToEntity(entity);
                 if (distance < closestDistance) {
                     closestDistance = distance;

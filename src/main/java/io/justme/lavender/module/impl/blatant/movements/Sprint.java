@@ -32,6 +32,8 @@ public class Sprint extends Module {
     @EventTarget
     public void onUpdate(EventUpdate event) {
 
+        if ( mc.currentScreen != null) return;
+
         var player = Minecraft.getMinecraft().thePlayer;
 
         float f = 0.8F;
