@@ -76,12 +76,20 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
     public ResourceLocation getLocationSkin()
     {
+        if (this == Minecraft.getMinecraft().thePlayer && this.getPlayerInfo() != null) {
+            return new ResourceLocation("la/skin/pvpgood");
+        }
+
         NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
         return networkplayerinfo == null ? DefaultPlayerSkin.getDefaultSkin(this.getUniqueID()) : networkplayerinfo.getLocationSkin();
     }
 
     public ResourceLocation getLocationCape()
     {
+        if (this == Minecraft.getMinecraft().thePlayer && this.getPlayerInfo() != null) {
+            return new ResourceLocation("la/cape/cape.png");
+        }
+
         if (!Config.isShowCapes())
         {
             return null;

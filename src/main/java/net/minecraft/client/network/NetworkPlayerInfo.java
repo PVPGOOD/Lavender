@@ -117,7 +117,13 @@ public class NetworkPlayerInfo
                         switch (p_180521_1_)
                         {
                             case SKIN:
-                                NetworkPlayerInfo.this.locationSkin = location;
+                                if (getGameProfile().getName().equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getName())) {
+                                    NetworkPlayerInfo.this.locationSkin = new ResourceLocation("la/skin/pvpgood");
+                                } else {
+                                    NetworkPlayerInfo.this.locationSkin = location;
+                                }
+
+
                                 NetworkPlayerInfo.this.skinType = profileTexture.getMetadata("model");
 
                                 if (NetworkPlayerInfo.this.skinType == null)
