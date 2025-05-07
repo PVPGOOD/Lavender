@@ -10,7 +10,7 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.setting.SettingManager;
 import io.justme.lavender.ui.elements.ElementsManager;
-import io.justme.lavender.ui.screens.clickgui.ClickScreen;
+import io.justme.lavender.ui.screens.clickgui.imgui.ClickScreen;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
