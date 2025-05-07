@@ -5,6 +5,7 @@ import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
 //import io.justme.lavender.module.impl.blatant.exploit.packetDebugger.PacketDebugger;
 import io.justme.lavender.module.impl.blatant.fight.KillAura;
 import io.justme.lavender.module.impl.blatant.fight.Velocity;
+import io.justme.lavender.module.impl.blatant.misc.AutoTool;
 import io.justme.lavender.module.impl.blatant.movements.*;
 import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
@@ -51,6 +52,10 @@ public class ModuleManager extends Manager<Module> {
     private final InventoryCleaner inventoryCleaner = new InventoryCleaner();
     private final InventoryMove inventoryMove = new InventoryMove();
     private final NoJumpDelay noJumpDelay = new NoJumpDelay();
+
+    //misc
+    private final AutoTool autoTool = new AutoTool();
+
     //exploit
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -93,6 +98,9 @@ public class ModuleManager extends Manager<Module> {
                 //exploit
                 getDisabler(),
 //                getPacketDebugger()
+
+                //misc
+                getAutoTool(),
 
                 //legit
                 getAutoClicker(),
