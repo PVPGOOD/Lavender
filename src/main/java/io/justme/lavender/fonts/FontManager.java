@@ -12,6 +12,7 @@ public final class FontManager {
 
     private final FontDrawer SFBold12;
     private final FontDrawer SFBold14;
+    private final FontDrawer SFBold16;
     private final FontDrawer SFBold18;
     private final FontDrawer SFBold22;
 
@@ -60,6 +61,7 @@ public final class FontManager {
         try {
             SFBold12 = createByResource("SFBOLD.ttf",12f,true);
             SFBold14 = createByResource("SFBOLD.ttf",14f,true);
+            SFBold16 = createByResource("SFBOLD.ttf",16f,true);
             SFBold18 = createByResource("SFBOLD.ttf",18f,true);
             SFBold22 = createByResource("SFBOLD.ttf",22f,true);
 

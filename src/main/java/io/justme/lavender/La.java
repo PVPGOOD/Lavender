@@ -10,6 +10,7 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.setting.SettingManager;
 import io.justme.lavender.ui.elements.ElementsManager;
+import io.justme.lavender.ui.screens.clickgui.dropdown.DropScreen;
 import io.justme.lavender.ui.screens.clickgui.imgui.ClickScreen;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
@@ -51,6 +52,7 @@ public class La {
     private UserConnection userConnection;
     //screen
     private ClickScreen clickScreen;
+    private DropScreen dropScreen;
 
     private ConfigListFrame configListFrame;
     private ConfigButtonFrame configButtonFrame;
@@ -79,10 +81,13 @@ public class La {
         settingManager = new SettingManager();
         settingManager.onInitialization();
 
+        //clickgui
         clickScreen = new ClickScreen();
         configListFrame = new ConfigListFrame();
         configButtonFrame = new ConfigButtonFrame();
         configScreen = new ConfigScreen();
+        //dropScreen
+        dropScreen = new DropScreen();
 
         notificationsManager = new NotificationsManager();
 
@@ -117,7 +122,7 @@ public class La {
         }
 
         if (event.getKeyCode() == Keyboard.KEY_RSHIFT){
-            Minecraft.getMinecraft().displayGuiScreen(clickScreen);
+            Minecraft.getMinecraft().displayGuiScreen(dropScreen);
         }
 
         if (event.getKeyCode() == Keyboard.KEY_P) {
