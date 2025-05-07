@@ -105,11 +105,6 @@ public class NCPHopSpeed extends AbstractSpeed {
         event.setSpeed(Math.max(speed, base), Math.random() / 2000);
     }
 
-    @Override
-    public void onPostStrafe(PostStrafeEvent event) {
-
-    }
-
     public double getAllowedHorizontalDistance() {
         double horizontalDistance;
         boolean useBaseModifiers = false;

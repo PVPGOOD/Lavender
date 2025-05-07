@@ -49,7 +49,4 @@ public abstract class AbstractSpeed implements IMinecraft {
     public abstract void onUpdate(EventUpdate event);
     public abstract void onMove(EventMove event);
     public abstract void onStrafe(EventStrafe event);
-
-    public abstract void onPostStrafe(PostStrafeEvent event);
-
 }

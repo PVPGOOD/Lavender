@@ -1,9 +1,5 @@
 package io.justme.lavender.module.impl.blatant.movements.noslowdown.impl;
 
-import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
