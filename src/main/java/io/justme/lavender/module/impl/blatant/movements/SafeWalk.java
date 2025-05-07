@@ -24,7 +24,20 @@ public class SafeWalk extends Module {
 
     @EventTarget
     public void onSafeWalk(EventSafeWalk walk) {
-        walk.setCancel(true);
+        if (mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
+        float yaw = mc.thePlayer.rotationYaw;
+        float pitch = mc.thePlayer.rotationPitch;
+
+        boolean isMovingBackward = mc.thePlayer.moveForward < 0;
+
+        boolean isFacing45Degrees = (yaw >= 45 && yaw <= 135) || (yaw >= -135 && yaw <= -45);
+
+        if (isMovingBackward || isFacing45Degrees) {
+            walk.setCancel(true);
+        }
     }
 
 }
