@@ -38,6 +38,7 @@ public class Rotations extends Module {
 
     @EventTarget()
     public void onTick(EventTick event) {
+        if ( mc.currentScreen != null) return;
         this.prevYaw = this.yaw;
         this.preYawOffset = this.yawOffset;
         this.prevPitch = this.pitch;
@@ -46,6 +47,7 @@ public class Rotations extends Module {
 
     @EventTarget()
     public void onMotionUpdate(EventMotionUpdate event) {
+        if ( mc.currentScreen != null) return;
         this.yaw = event.getYaw();
         this.pitch = event.getPitch();
         this.isRotating = event.isRotate();
@@ -55,6 +57,7 @@ public class Rotations extends Module {
 
     @EventTarget()
     public void onRotationUpdate(RotationUpdateEvent event) {
+        if ( mc.currentScreen != null) return;
         Entity entity = event.getEntity();
         float partialTicks = event.getPartialTicks();
         if (entity instanceof EntityPlayerSP && entity.ridingEntity == null && partialTicks != 1.0F && this.isRotating) {
