@@ -17,6 +17,8 @@ import java.util.*;
 public class SettingManager {
 
     //设置
+    private final BoolValue teamsCheck = new BoolValue("队伍检测", true);
+
     private final BoolValue notificationValue = new BoolValue("启用 通知", true);
     private final NumberValue notificationAliveValue = new NumberValue("通知存活时间", 500, 10, 1000, 10);
 

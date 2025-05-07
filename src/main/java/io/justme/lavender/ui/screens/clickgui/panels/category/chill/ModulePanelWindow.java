@@ -31,6 +31,7 @@ public class ModulePanelWindow extends AbstractCategory {
         getCategoryComponents().add(new CategoryButtonComponent(CategoryType.MOVEMENTS));
         getCategoryComponents().add(new CategoryButtonComponent(CategoryType.PLAYER));
         getCategoryComponents().add(new CategoryButtonComponent(CategoryType.World));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.MISC));
         getCategoryComponents().add(new CategoryButtonComponent(CategoryType.Exploit));
 
     }

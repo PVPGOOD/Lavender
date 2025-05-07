@@ -66,6 +66,8 @@ public class SliderComponent extends AbstractOptionComponent {
         RenderUtility.drawRoundRectWithOutline(posX + getSliderAnimations().getValue() - size,
                 getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f,new Color(255, 255, 255,255),new Color(0,0,0,64));
 
+        getFontDrawer().drawString(getOption().getValue().toString(),posX + getSliderAnimations().getValue() - size,
+                getY() + getHeight()/2f + 3,new Color(0,0,0).getRGB());
 
         if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
             setDragging(true);

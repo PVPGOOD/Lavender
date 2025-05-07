@@ -12,6 +12,7 @@ import io.justme.lavender.ui.screens.clickgui.components.impl.scrollbar.Scrollba
 import io.justme.lavender.ui.screens.clickgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.gl.shader.interfaces.Shader;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
@@ -81,6 +82,10 @@ public class PopupPanel extends AbstractPanel {
 
         Color color = getModule().getName().equalsIgnoreCase("clickgui") ?
                 new Color(255,255,255) : getModule().isToggle() ? new Color(La.getINSTANCE().getClickScreen().getClickGuiColor().getRGB()) :  new Color(201, 201, 201, 255);
+
+        Shader.bloom.run(()-> {
+            RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
+        });
         RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium22();
@@ -98,7 +103,7 @@ public class PopupPanel extends AbstractPanel {
         int leftSide = 10;
         int initY = 30;
 
-//        OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
+        OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                 switch (abstractOptionComponent.getComponentType()) {
                     case MODE -> {
@@ -162,7 +167,7 @@ public class PopupPanel extends AbstractPanel {
             }
             getScrollbarComponent().drawScreen(mouseX, mouseY, partialTicks);
 
-//        });
+        });
 
         if (isDragging()){
             setX(mouseX - getDraggingX());

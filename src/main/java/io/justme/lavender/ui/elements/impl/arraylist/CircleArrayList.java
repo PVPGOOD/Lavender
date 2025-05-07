@@ -114,8 +114,8 @@ public class CircleArrayList extends AbstractElements {
                 RenderUtility.drawRoundRect(finalX - 3, finalY - 3,
                         fontRenderer.getStringWidth(str) + 6 ,
                         fontRenderer.getHeight(),
-                        6,
-                        new Color(30, 27, 27, 255));
+                        7,
+                        new Color(0, 0, 0, 255));
 
                 fontRenderer.drawStringWithOutline(module.getName(), finalX, finalY, ColorUtility.fadeBetween(finalIndex, 10, new Color(255, 207, 0).getRGB(), new Color(63, 2, 2).getRGB()));
             });

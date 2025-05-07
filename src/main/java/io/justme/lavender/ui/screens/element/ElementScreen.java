@@ -33,8 +33,8 @@ public class ElementScreen extends GuiScreen {
         int centerX = (int) quadrant.getCenterX();
         int centerY = (int) quadrant.getCenterY();
 
-        RenderUtility.drawRect(0, centerY - 1, centerX * 2, .8f, Color.BLACK.getRGB());
-        RenderUtility.drawRect(centerX - 1, 0, .8f, centerY * 2, Color.BLACK.getRGB());
+        RenderUtility.drawRect(0, centerY - 1, centerX * 2, .4f, Color.BLACK.getRGB());
+        RenderUtility.drawRect(centerX - 1, 0, .4f, centerY * 2, Color.BLACK.getRGB());
 
         for (AbstractElements element : La.getINSTANCE().getElementsManager().getElements()) {
             if (element.isDragging()) {
