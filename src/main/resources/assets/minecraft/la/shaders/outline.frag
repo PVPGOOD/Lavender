@@ -9,13 +9,18 @@ float roundSDF(vec2 p, vec2 b, float r) {
 }
 
 void main() {
-    vec2 rectHalf = size * 0.5;
-    float distance = roundSDF(rectHalf - (gl_TexCoord[0].st * size), rectHalf - radius - outlineThickness, radius);
+    vec2 uv = gl_TexCoord[0].st;
+    vec2 p = uv * size - size * 0.5;
 
-    float blendAmount = smoothstep(0.0, 1.0, abs(distance) - outlineThickness);
+       float dist = roundSDF(p, size * 0.5 - radius - outlineThickness, radius);
 
-    vec4 insideColor = (distance < 0.0) ? color : vec4(outlineColor.rgb, 0.0);
+    float aa = 1.5;
 
-    vec4 finalColor = mix(outlineColor, insideColor, blendAmount);
-    gl_FragColor = finalColor;
+    float outer = smoothstep(outlineThickness + aa, outlineThickness - aa, abs(dist));
+    float inner = smoothstep(-aa, aa, -dist);
+
+    vec4 mixedColor = mix(outlineColor, color, inner);
+    mixedColor.a *= max(outer, inner);
+
+    gl_FragColor = mixedColor;
 }
