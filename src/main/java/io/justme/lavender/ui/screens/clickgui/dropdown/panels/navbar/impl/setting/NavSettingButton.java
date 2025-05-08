@@ -1,7 +1,7 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.setting;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.setting;
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.AbstractNavBar;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.NavBarType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.AbstractNavBar;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,10 +1,10 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar;
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractElementUI;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.category.NavCategoryButton;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.hamburger.NavHamburgerButton;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.setting.NavSettingButton;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.setting.NavSettingButtonType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.category.NavCategoryButton;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.hamburger.NavHamburgerButton;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.setting.NavSettingButton;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.setting.NavSettingButtonType;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -23,18 +23,16 @@ import java.util.ArrayList;
  **/
 @Getter
 @Setter
-public class NavBarElement extends AbstractElementUI {
+public class NavBarPanel extends AbstractPanelUI {
 
     private boolean expanded = false;
     private ScaledResolution scaledResolution;
     private ArrayList<AbstractNavBar> elements = new ArrayList<>();
 
-    public NavBarElement() {
+    public NavBarPanel() {
         getElements().add(new NavHamburgerButton());
 
         getElements().add(new NavSettingButton(NavSettingButtonType.SETTING_BUTTON));
-        getElements().add(new NavSettingButton(NavSettingButtonType.DESIGN_BUTTON));
-
         getElements().add(new NavCategoryButton(CategoryType.FIGHT));
         getElements().add(new NavCategoryButton(CategoryType.VISUAL));
         getElements().add(new NavCategoryButton(CategoryType.MOVEMENTS));
@@ -42,6 +40,7 @@ public class NavBarElement extends AbstractElementUI {
         getElements().add(new NavCategoryButton(CategoryType.MISC));
         getElements().add(new NavCategoryButton(CategoryType.World));
         getElements().add(new NavCategoryButton(CategoryType.Exploit));
+        getElements().add(new NavSettingButton(NavSettingButtonType.DESIGN_BUTTON));
     }
 
     @Override

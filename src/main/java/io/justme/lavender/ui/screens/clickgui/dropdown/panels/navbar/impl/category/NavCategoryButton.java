@@ -1,13 +1,12 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.category;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.category;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.AbstractNavBar;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.NavBarType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.AbstractNavBar;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarType;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;

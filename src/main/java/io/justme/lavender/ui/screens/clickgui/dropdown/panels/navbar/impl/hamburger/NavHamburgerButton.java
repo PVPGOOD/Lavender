@@ -1,7 +1,7 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.impl.hamburger;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.hamburger;
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.AbstractNavBar;
-import io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar.NavBarType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.AbstractNavBar;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import net.minecraft.util.ResourceLocation;
 

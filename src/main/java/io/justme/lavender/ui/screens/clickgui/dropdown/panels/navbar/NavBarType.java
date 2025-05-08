@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.element.navbar;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar;
 
 /**
  * @author JustMe.
