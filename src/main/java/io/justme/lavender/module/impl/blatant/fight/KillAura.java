@@ -75,7 +75,7 @@ public class KillAura extends Module implements IMinecraft {
     private final BoolValue
             autoBlock = new BoolValue("AutoBlock",false),
             syncCurrentPlayItem = new BoolValue("SyncItem",false),
-            attackTargetEntityWithCurrentItem = new BoolValue("Atk Target With Item",false),
+            attackTargetEntityWithCurrentItem = new BoolValue("atkWithItem",false),
             ray_cast = new BoolValue("RayCast",false),
             ray_cast_block = new BoolValue("Block_RayCast",false);
 

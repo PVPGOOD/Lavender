@@ -46,6 +46,9 @@ public class DropScreen extends GuiScreen {
             abstractPanelUI.drawScreen(mouseX, mouseY, partialTicks);
         }
 
+//        RenderUtility.drawRoundRectWithCustomRounded(0,0,mouseX,mouseY,new Color(255,255,255),25,25,25,25);
+
+
         La.getINSTANCE().getConfigScreen().drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -92,6 +95,9 @@ public class DropScreen extends GuiScreen {
 
     @Override
     public void handleMouseInput() throws IOException {
+        for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            abstractPanelUI.handleMouseInput();
+        }
         super.handleMouseInput();
     }
 }

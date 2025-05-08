@@ -77,6 +77,8 @@ public class ModulePanel extends AbstractPanelUI {
 
     @Override
     public void handleMouseInput() throws IOException {
-
+        for (AbstractModulePanel element : getElements()) {
+            element.handleMouseInput();
+        }
     }
 }

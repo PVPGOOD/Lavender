@@ -1,7 +1,6 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets;
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarType;
-import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
+import io.justme.lavender.module.Module;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,20 +12,15 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public abstract class AbstractModulePanel {
+//有点多余 但是顺手了
+public abstract class AbstractModuleValue {
 
+    public Module module;
     public float x,y,width,height;
-    public CategoryType type;
-    public ModulePanelType panelType;
     public float requestHeight = 0;
 
-    public AbstractModulePanel(CategoryType type) {
-        this.type = type;
-    }
-
-    public AbstractModulePanel(CategoryType type ,ModulePanelType panelType) {
-        this.type = type;
-        this.panelType = panelType;
+    public AbstractModuleValue(Module module) {
+        this.module = module;
     }
 
     public boolean isHover(int mouseX, int mouseY) {

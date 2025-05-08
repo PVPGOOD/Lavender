@@ -26,11 +26,16 @@ public class OGLUtility {
         GL11.glPopMatrix();
     }
 
-    public void scissor(float x, float y, float width, float height,Runnable runnable) {
+    public void scissor(float x, float y, float width, float height, Runnable runnable) {
         var scaleFactor = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
+        int scissorX = (int) (x * scaleFactor);
+        int scissorY = (int) (Minecraft.getMinecraft().displayHeight - (y + height) * scaleFactor);
+        int scissorWidth = (int) (width * scaleFactor);
+        int scissorHeight = (int) (height * scaleFactor);
+
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor((int) (x * scaleFactor), (int) (Minecraft.getMinecraft().displayHeight - (y + height) * scaleFactor), (int) (width * scaleFactor), (int) ((height + 14) * scaleFactor));
+        GL11.glScissor(scissorX, scissorY, scissorWidth, scissorHeight);
         runnable.run();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
