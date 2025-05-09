@@ -6,6 +6,7 @@ import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
 import io.justme.lavender.module.impl.blatant.fight.KillAura;
 import io.justme.lavender.module.impl.blatant.fight.Velocity;
 import io.justme.lavender.module.impl.blatant.misc.AutoTool;
+import io.justme.lavender.module.impl.blatant.misc.MouseRaw;
 import io.justme.lavender.module.impl.blatant.movements.*;
 import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
@@ -37,6 +38,7 @@ public class ModuleManager extends Manager<Module> {
     private final NoHurtCam noHurtCam = new NoHurtCam();
     private final ClickGui clickGui = new ClickGui();
     private final Rotations rotations = new Rotations();
+    private final NameTag nameTag = new NameTag();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -55,7 +57,6 @@ public class ModuleManager extends Manager<Module> {
 
     //misc
     private final AutoTool autoTool = new AutoTool();
-
     //exploit
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -80,6 +81,7 @@ public class ModuleManager extends Manager<Module> {
                 getNoHurtCam(),
                 getNoCamClip(),
                 getClickGui(),
+                getNameTag(),
                 //movements
                 getNoslow(),
                 getSprint(),
