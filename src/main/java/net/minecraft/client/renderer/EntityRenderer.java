@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
+import io.justme.lavender.events.render.Event3DRender;
 import io.justme.lavender.module.impl.legit.fight.Reach;
 import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
 import net.minecraft.block.Block;
@@ -1819,6 +1820,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("forge_render_last");
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
+
+        La.getINSTANCE().getEventManager().call(new Event3DRender(partialTicks));
 
         this.mc.mcProfiler.endStartSection("hand");
 
