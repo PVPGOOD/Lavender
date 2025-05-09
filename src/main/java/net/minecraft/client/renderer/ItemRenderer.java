@@ -365,6 +365,11 @@ public class ItemRenderer
                                     this.doBlockTransformations();
                                 }
 
+                                case "1.7" -> {
+                                    this.transformFirstPersonItem(f, f1);
+                                    this.doBlockTransformations();
+                                }
+
                                 case "Type1" -> {
                                     this.genCustom(f, f1);
                                     this.doBlockTransformations();
