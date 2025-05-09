@@ -176,7 +176,7 @@ public class ModuleList extends AbstractModulePanel {
                         if (element.mouseReleased(mouseX, mouseY, state)) {
                             if (element instanceof ModuleButton moduleButton) {
                                 switch (state) {
-                                    case 0 -> moduleButton.getModule().setToggle(!moduleButton.getModule().isToggle());
+                                    case 0 -> moduleButton.getModule().setStatus(!moduleButton.getModule().isToggle());
                                     case 1 -> moduleButton.setExpanded(!moduleButton.isExpanded());
                                 }
                             }
