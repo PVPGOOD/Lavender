@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import io.justme.lavender.La;
+import io.justme.lavender.events.render.EventNameRender;
 import io.justme.lavender.events.render.RotationUpdateEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -683,6 +684,11 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
     protected boolean canRenderName(T entity)
     {
+
+        EventNameRender event = new EventNameRender(entity);
+        La.getINSTANCE().getEventManager().call(event);
+        if (event.isCancelled()) return false;
+
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
 
         if (entity instanceof EntityPlayer && entity != entityplayersp)
