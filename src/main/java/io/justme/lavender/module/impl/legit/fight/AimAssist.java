@@ -8,7 +8,7 @@ import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.MathUtility;
 import io.justme.lavender.utility.player.MovementUtility;
 import io.justme.lavender.utility.player.RotationUtility;
-import io.justme.lavender.utility.player.ValidEntity;
+import io.justme.lavender.utility.player.ValidEntityUtility;
 import io.justme.lavender.value.impl.NumberValue;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
@@ -46,17 +46,17 @@ public class AimAssist extends Module {
 
                 // 调整yaw
                 float smoothYaw = MathUtility.lerp(event.getYaw(), event.getYaw() + wrappedYaw, (speed.getValue() * 0.1f) + MathUtility.getRandomFloat(-0.05f, 0.05f));
-                event.setYaw(smoothYaw);
+//                event.setYaw(smoothYaw);
 
                 // 调整pitch
                 if (Math.abs(wrappedPitch) > 20) {
                     float smoothPitch = MathUtility.lerp(event.getPitch(), event.getPitch() + wrappedPitch, (speed.getValue() * 0.1f) + MathUtility.getRandomFloat(-0.05f, 0.05f));
-                    event.setPitch(smoothPitch);
+//                    event.setPitch(smoothPitch);
+                    Minecraft.getMinecraft().thePlayer.rotationPitch = smoothPitch;
                 }
 
                 // 更新玩家的yaw和pitch
-                Minecraft.getMinecraft().thePlayer.rotationYaw = event.getYaw();
-                Minecraft.getMinecraft().thePlayer.rotationPitch = event.getPitch();
+                Minecraft.getMinecraft().thePlayer.rotationYaw = smoothYaw;
             }
         }
     }
@@ -93,8 +93,7 @@ public class AimAssist extends Module {
 
         for (Entity entity : mc.theWorld.loadedEntityList) {
             if (entity instanceof EntityPlayer && entity != mc.thePlayer && entity.isEntityAlive()) {
-                if (ValidEntity.isOnSameTeam((EntityLivingBase) entity)) continue;
-//                if (ValidEntity.isBot((EntityPlayer) entity)) continue;
+                if (ValidEntityUtility.isOnSameTeam((EntityLivingBase) entity)) continue;
                 double distance = mc.thePlayer.getDistanceToEntity(entity);
                 if (distance < closestDistance) {
                     closestDistance = distance;
