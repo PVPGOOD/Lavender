@@ -1,15 +1,5 @@
 package net.minecraft.client.multiplayer;
 
-import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
-import com.viaversion.viaversion.api.minecraft.BlockPosition;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
-import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import io.justme.lavender.La;
-import io.justme.lavender.module.impl.legit.fight.Reach;
-import io.justme.lavender.utility.network.PacketUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -343,19 +333,7 @@ public class PlayerControllerMP
         if (i != this.currentPlayerItem)
         {
             this.currentPlayerItem = i;
-
-
-            if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
-                if (La.getINSTANCE().getUserConnection() == null) {
-                    La.getINSTANCE().print("UserConnection is null");
-                } else {
-                    PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.SET_CARRIED_ITEM, null, La.getINSTANCE().getUserConnection());
-                    useItem.write(Types.SHORT, (short) this.currentPlayerItem);
-                    useItem.scheduleSendToServer(Protocol1_9To1_8.class);
-                }
-            } else {
-                this.netClientHandler.addToSendQueue(new C09PacketHeldItemChange(this.currentPlayerItem));
-            }
+            this.netClientHandler.addToSendQueue(new C09PacketHeldItemChange(this.currentPlayerItem));
         }
     }
 
@@ -422,7 +400,6 @@ public class PlayerControllerMP
         }
     }
 
-    //格挡的c08
     public boolean sendUseItem(EntityPlayer playerIn, World worldIn, ItemStack itemStackIn)
     {
         if (this.currentGameType == WorldSettings.GameType.SPECTATOR)
@@ -432,23 +409,7 @@ public class PlayerControllerMP
         else
         {
             this.syncCurrentPlayItem();
-
-
-
-            if ((mc.thePlayer.getItemInUse() != null) && (mc.thePlayer.getItemInUse().getItem() != null) && mc.thePlayer.getItemInUse().getItem() instanceof ItemSword) {
-                if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
-                    if (La.getINSTANCE().getUserConnection() == null) {
-                        La.getINSTANCE().print("UserConnection is null");
-                    } else {
-                        PacketWrapper useItem = PacketWrapper.create(ServerboundPackets1_9.USE_ITEM, null, La.getINSTANCE().getUserConnection());
-                        useItem.write(Types.VAR_INT, 1);
-                        useItem.scheduleSendToServer(Protocol1_9To1_8.class);
-                    }
-                }
-            } else {
-                this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(playerIn.inventory.getCurrentItem()));
-            }
-
+            this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(playerIn.inventory.getCurrentItem()));
             int i = itemStackIn.stackSize;
             ItemStack itemstack = itemStackIn.useItemRightClick(worldIn, playerIn);
 

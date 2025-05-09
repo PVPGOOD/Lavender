@@ -18,15 +18,12 @@
 
 package de.florianmichael.viamcp.fixes;
 
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import de.florianmichael.viamcp.ViaMCP;
-import io.justme.lavender.La;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -85,7 +82,7 @@ public class FixedSoundEngine {
         {
             return false;
         }
-        else if (worldIn.canBlockBePlaced(iblock.getBlock(), pos, false, side, (Entity)null, stack))
+        else if (worldIn.canBlockBePlaced(iblock.getBlock(), pos, false, side, null, stack))
         {
             int i = iblock.getMetadata(stack.getMetadata());
             IBlockState iblockstate1 = iblock.getBlock().onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
@@ -100,14 +97,14 @@ public class FixedSoundEngine {
                     iblock.getBlock().onBlockPlacedBy(worldIn, pos, iblockstate1, playerIn, stack);
                 }
 
-                if (ViaLoadingBase.getInstance().getTargetVersion().getOriginalVersion() != La.getINSTANCE().getViaMCP().NATIVE_VERSION)
+                if (ViaLoadingBase.getInstance().getTargetVersion().getOriginalVersion() != ViaMCP.NATIVE_VERSION)
                 {
                     // Using playSoundAtPos instead of playSoundEffect (I have no understanding as to why playSoundEffect is not functioning properly on 1.9+ protocols)
                     mc.theWorld.playSoundAtPos(pos.add(0.5, 0.5, 0.5), iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F, false);
                 }
                 else
                 {
-                    worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F);
+                    worldIn.playSoundEffect((float)pos.getX() + 0.5F, (float)pos.getY() + 0.5F, (float)pos.getZ() + 0.5F, iblock.getBlock().stepSound.getPlaceSound(), (iblock.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, iblock.getBlock().stepSound.getFrequency() * 0.8F);
                 }
 
                 --stack.stackSize;

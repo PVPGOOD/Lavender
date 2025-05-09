@@ -1,12 +1,9 @@
 package io.justme.lavender.module.impl.blatant.fight;
 
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viarewind.protocol.v1_9to1_8.Protocol1_9To1_8;
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.api.type.Types;
-import com.viaversion.viaversion.protocols.v1_8to1_9.packet.ServerboundPackets1_9;
+
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
+import de.florianmichael.viamcp.fixes.AttackOrder;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.player.EventAttack;
@@ -39,6 +36,7 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.*;
@@ -302,37 +300,22 @@ public class KillAura extends Module implements IMinecraft {
     }
 
     private void doAttack() {
-        if (ViaLoadingBase.getInstance().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            mc.thePlayer.swingItem();
-            attackPacket();
-        } else {
-            attackPacket();
-            mc.thePlayer.swingItem();
-        }
+        AttackOrder.sendFixedAttack(mc.thePlayer,getTarget());
     }
 
-    private void attackPacket() {
-        if (getSyncCurrentPlayItem().getValue()) {
-            Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
-        }
-
-        if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() > 47) {
-            if (La.getINSTANCE().getUserConnection() == null) {
-                La.getINSTANCE().print("UserConnection is null");
-            } else {
-                PacketWrapper wrapper = PacketWrapper.create(ServerboundPackets1_9.INTERACT, null, La.getINSTANCE().getUserConnection());
-                wrapper.write(Types.VAR_INT, getTarget().getEntityId());
-                wrapper.write(Types.VAR_INT,1);
-                wrapper.scheduleSendToServer(Protocol1_9To1_8.class);
-            }
-        }
-
-
-        if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR && getAttackTargetEntityWithCurrentItem().getValue())
-        {
-            Minecraft.getMinecraft().thePlayer.attackTargetEntityWithCurrentItem(getTarget());
-        }
-    }
+//    private void attackPacket() {
+//        if (getSyncCurrentPlayItem().getValue()) {
+//            Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
+//        }
+//
+//        getPacketUtility().sendFinalPacket(new C02PacketUseEntity(getTarget(), C02PacketUseEntity.Action.ATTACK););
+//
+//
+//        if (Minecraft.getMinecraft().playerController.currentGameType != WorldSettings.GameType.SPECTATOR && getAttackTargetEntityWithCurrentItem().getValue())
+//        {
+//            Minecraft.getMinecraft().thePlayer.attackTargetEntityWithCurrentItem(getTarget());
+//        }
+//    }
 
     private void doBlock(){
         setBlocking(true);
@@ -346,10 +329,10 @@ public class KillAura extends Module implements IMinecraft {
                         La.getINSTANCE().print("UserConnection is null");
                     } else {
 
-                        La.getINSTANCE().print("block");
-                        PacketWrapper useItem = PacketWrapper.create(29, null, La.getINSTANCE().getUserConnection());
-                        useItem.write(Types.VAR_INT, 1);
-                        useItem.scheduleSendToServer(Protocol1_9To1_8.class);
+//                        La.getINSTANCE().print("block");
+//                        PacketWrapper useItem = PacketWrapper.create(29, null, La.getINSTANCE().getUserConnection());
+//                        useItem.write(Types.VAR_INT, 1);
+//                        useItem.scheduleSendToServer(Protocol1_9To1_8.class);
 
                     }
                 } else {

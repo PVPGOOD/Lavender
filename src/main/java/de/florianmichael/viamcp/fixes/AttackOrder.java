@@ -20,7 +20,6 @@ package de.florianmichael.viamcp.fixes;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
-import de.florianmichael.viamcp.ViaMCP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +33,17 @@ public class AttackOrder {
     }
 
     public static void sendFixedAttack(EntityPlayer entityIn, Entity target) {
-        if (ViaLoadingBase.getInstance().getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            mc.thePlayer.swingItem();
+            mc.playerController.attackEntity(entityIn, target);
+        } else {
+            mc.playerController.attackEntity(entityIn, target);
+            mc.thePlayer.swingItem();
+        }
+    }
+
+    public static void sendFixedAttackNoPacketEvent(EntityPlayer entityIn, Entity target) {
+        if (ViaLoadingBase.getInstance().getTargetVersion().isOlderThanOrEqualTo(ProtocolVersion.v1_8)) {
             mc.thePlayer.swingItem();
             mc.playerController.attackEntity(entityIn, target);
         } else {
