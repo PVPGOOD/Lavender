@@ -306,11 +306,6 @@ public class PlayerControllerMP
 
     public float getBlockReachDistance()
     {
-
-        if (La.getINSTANCE().getModuleManager().getModuleByName("Reach").isToggle()) {
-            var reach = ((Reach) La.getINSTANCE().getModuleManager().getModuleByName("Reach"));
-            return reach.getRange().getValue();
-        }
         return this.currentGameType.isCreative() ? 5.0F : 4.5F;
     }
 
