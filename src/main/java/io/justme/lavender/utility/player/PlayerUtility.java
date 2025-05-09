@@ -1,6 +1,7 @@
 package io.justme.lavender.utility.player;
 
 import lombok.experimental.UtilityClass;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -228,5 +229,13 @@ public class PlayerUtility  {
 
     public static boolean enoughMovementForSprinting() {
         return Math.abs(mc.thePlayer.moveForward) >= 0.8F || Math.abs(mc.thePlayer.moveStrafing) >= 0.8F;
+    }
+
+    public Block getBlock(final double x, final double y, final double z) {
+        return mc.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
+    }
+
+    public Block blockRelativeToPlayer(final double offsetX, final double offsetY, final double offsetZ) {
+        return getBlock(mc.thePlayer.posX + offsetX, mc.thePlayer.posY + offsetY, mc.thePlayer.posZ + offsetZ);
     }
 }
