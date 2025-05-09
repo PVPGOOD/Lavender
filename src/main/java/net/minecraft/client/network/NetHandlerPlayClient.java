@@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
+import io.justme.lavender.module.impl.blatant.fight.Velocity;
 import io.netty.buffer.Unpooled;
 import java.io.File;
 import java.io.IOException;
@@ -453,10 +454,32 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         Entity entity = this.clientWorldController.getEntityByID(packetIn.getEntityID());
 
-        if (entity != null)
-        {
-            entity.setVelocity((double)packetIn.getMotionX() / 8000.0D, (double)packetIn.getMotionY() / 8000.0D, (double)packetIn.getMotionZ() / 8000.0D);
+        if (La.getINSTANCE().getModuleManager().getModuleByName("Velocity").isToggle()) {
+            if (entity != null)
+            {
+                if (entity == Minecraft.getMinecraft().thePlayer) {
+
+
+                    var velocity = ((Velocity) La.getINSTANCE().getModuleManager().getModuleByName("Velocity"));
+
+
+                    entity.setVelocity(
+                            (double)packetIn.getMotionX() / 8000 * (velocity.getX_position().getValue() / 100),
+                            (double)packetIn.getMotionY() / 8000 * (velocity.getY_position().getValue() / 100),
+                            (double)packetIn.getMotionZ() / 8000 * (velocity.getZ_position().getValue() / 100));
+                } else {
+                    entity.setVelocity((double)packetIn.getMotionX() / 8000, (double)packetIn.getMotionY() / 8000, (double)packetIn.getMotionZ() / 8000);
+                }
+
+            }
+        } else {
+            if (entity != null)
+            {
+                entity.setVelocity((double)packetIn.getMotionX() / 8000, (double)packetIn.getMotionY() / 8000, (double)packetIn.getMotionZ() / 8000);
+            }
         }
+
+
     }
 
     public void handleEntityMetadata(S1CPacketEntityMetadata packetIn)
