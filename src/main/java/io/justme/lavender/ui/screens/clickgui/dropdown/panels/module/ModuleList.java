@@ -39,6 +39,9 @@ public class ModuleList extends AbstractModulePanel {
     public ModuleList(CategoryType type) {
         super(type);
 
+        setWidth(120);
+        setHeight(300);
+
         getElements().add(new ModuleGroupHeader(type, ModulePanelType.MODULE_GROUP_HEADER));
 
         for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
@@ -53,6 +56,7 @@ public class ModuleList extends AbstractModulePanel {
 
     }
 
+    private float lastHeight = 300;
     private Animation scrollAnimation = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -80,34 +84,78 @@ public class ModuleList extends AbstractModulePanel {
                     case MODULE_BUTTON -> {
                         element.setX(getX() + 5);
                         element.setY(getY() + initY + intervalY.get() + ScrollOffset);
-                        intervalY.addAndGet((int) (32 + element.getRequestHeight()));
+                        element.setWidth(getWidth() - 10);
                         element.drawScreen(mouseX, mouseY, partialTicks);
+                        intervalY.addAndGet((int) (32 + element.getRequestHeight()));
                     }
                 }
             }
         });
 
 
+
+        if (isDragging()) {
+            setX(mouseX - getDraggingX());
+            setY(mouseY - getDraggingY());
+        }
+
+
+
+        if (isScaling()) {
+            getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 35,0.1f);
+//            setWidth(mouseX - getScalingWidth());
+//            setHeight(mouseY - getScalingHeight());
+
+            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 130), 180));
+
+            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 130), 650));
+            getExpandedHeightAnimation().setToValue(getHeight());
+            setLastHeight(getHeight());
+        } else {
+            getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 35,0.1f,Easings.QUART_OUT);
+            setHeight(getExpandedHeightAnimation().getValue());
+        }
+
+
+        getExpandedHeightAnimation().update();
         setMouseX(mouseX);
         setMouseY(mouseY);
         setMaxScroll(Math.max(0, intervalY.get() + initY - getHeight()));
 
-
-        setWidth(120);
-        setHeight(300);
         getScrollAnimation().update();
     }
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (AbstractModulePanel element : elements) {
-            switch (element.getPanelType()) {
-                case MODULE_GROUP_HEADER -> {
-                    element.mouseClicked(mouseX, mouseY, mouseButton);
-                }
 
-                case MODULE_BUTTON -> {
-                    element.mouseClicked(mouseX, mouseY, mouseButton);
+        if (mouseButton == 0) {
+            if (MouseUtility.isHovering(getX(), getY(), getWidth() , 20, mouseX, mouseY)) {
+                setDraggingX(mouseX - getX());
+                setDraggingY(mouseY - getY());
+                setDragging(true);
+            } else if (MouseUtility.isHovering(getX() + getWidth() - 20, getY() + getHeight() - 20, 20, 20, mouseX, mouseY)) {
+                setScalingWidth(mouseX - getWidth());
+                setScalingHeight(mouseY - getHeight());
+                setScaling(true);
+            }
+        }
+
+        if (mouseButton == 1) {
+            if (MouseUtility.isHovering(getX(), getY(), getWidth(), 20, mouseX, mouseY)) {
+                setExpanded(!isExpanded());
+            }
+        }
+
+        if (isExpanded()) {
+            for (AbstractModulePanel element : elements) {
+                switch (element.getPanelType()) {
+                    case MODULE_GROUP_HEADER -> {
+                        element.mouseClicked(mouseX, mouseY, mouseButton);
+                    }
+
+                    case MODULE_BUTTON -> {
+                        element.mouseClicked(mouseX, mouseY, mouseButton);
+                    }
                 }
             }
         }
@@ -116,23 +164,35 @@ public class ModuleList extends AbstractModulePanel {
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int state) {
-        for (AbstractModulePanel element : elements) {
-            switch (element.getPanelType()) {
-                case MODULE_GROUP_HEADER -> {
-                    element.mouseReleased(mouseX, mouseY, state);
-                }
 
-                case MODULE_BUTTON -> {
-                    if (element.mouseReleased(mouseX, mouseY, state)) {
-                        if (element instanceof ModuleButton moduleButton) {
-                            switch (state) {
-                                case 0 -> moduleButton.getModule().setToggle(!moduleButton.getModule().isToggle());
-                                case 1 -> moduleButton.setExpanded(!moduleButton.isExpanded());
+        if (isExpanded()) {
+            for (AbstractModulePanel element : elements) {
+                switch (element.getPanelType()) {
+                    case MODULE_GROUP_HEADER -> {
+                        element.mouseReleased(mouseX, mouseY, state);
+                    }
+
+                    case MODULE_BUTTON -> {
+                        if (element.mouseReleased(mouseX, mouseY, state)) {
+                            if (element instanceof ModuleButton moduleButton) {
+                                switch (state) {
+                                    case 0 -> moduleButton.getModule().setToggle(!moduleButton.getModule().isToggle());
+                                    case 1 -> moduleButton.setExpanded(!moduleButton.isExpanded());
+                                }
                             }
+                            return false;
                         }
-                        return false;
                     }
                 }
+            }
+        }
+
+        if (state == 0){
+            if (isDragging()) {
+                setDragging(false);
+            } else
+            if (isScaling()){
+                setScaling(false);
             }
         }
 

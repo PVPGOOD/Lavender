@@ -39,9 +39,7 @@ public class ModuleGroupHeader extends AbstractModulePanel {
 
         var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
         font.drawString(type.getName() , getX() + 30,getY() + getHeight() /2f + font.getHeight() /2f - 15, new Color(0,0,0, 166).getRGB());
-
-        Shader.roundGradientRect.drawGradientVertical(
-               getX(),getY() + getHeight(),getWidth(),3,0,new Color(255, 200, 222,255),new Color(0, 0,0,26));
+        Shader.roundGradientRect.drawGradientVertical(getX(), getY() + getHeight(), getWidth(), 3, 0, new Color(255, 200, 222, 255), new Color(0, 0, 0, 26));
 
         RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/" + type.getName() + ".png"),getX() + 8,getY() + getHeight() /2f - 8,16,16,new Color(0,0,0,200));
 //        RenderUtility.drawc(new ResourceLocation("la/clickgui/imgui/shadow/menu_shadow_bottom.png"),getX(),getY() + getHeight(),getWidth(),5,new Color(0,0,0,255));

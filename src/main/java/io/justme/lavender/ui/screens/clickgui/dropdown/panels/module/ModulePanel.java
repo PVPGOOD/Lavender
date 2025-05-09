@@ -4,6 +4,7 @@ import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.AbstractNavBar;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
 
