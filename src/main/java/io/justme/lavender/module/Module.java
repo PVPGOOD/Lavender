@@ -57,7 +57,8 @@ public class Module implements IMinecraft {
                         field.getType().isAssignableFrom(NumberValue.class) ||
                         field.getType().isAssignableFrom(ModeValue.class) ||
                         field.getType().isAssignableFrom(MultiBoolValue.class) ||
-                        field.getType().isAssignableFrom(TextValue.class)) {
+                        field.getType().isAssignableFrom(TextValue.class) ||
+                        field.getType().isAssignableFrom(NumberRangeValue.class)) {
                     if (!field.isAccessible())
                         field.setAccessible(true);
                     options.add((DefaultValue<?>) field.get(this));

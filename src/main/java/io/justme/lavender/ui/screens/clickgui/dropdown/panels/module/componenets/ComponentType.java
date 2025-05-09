@@ -10,4 +10,5 @@ public enum ComponentType {
     MODE,
     SLIDER,
     SWITCH,
+    SLIDER_RANGE,
 }

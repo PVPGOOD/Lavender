@@ -20,9 +20,9 @@ public abstract class AbstractOptionComponent {
     private FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Heavy18();
 
     public float modeExpandingHeight;
-    public String comBoxChillName;
     @Getter
     @Setter
+    //唯一性
     public static String comBoxSelectingName;
     public ComponentType componentType;
     //为了防止我以后忘记 requestInterval 由上级定义 并不需要在这里处理 2024/4/5留

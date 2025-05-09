@@ -2,16 +2,14 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenet
 
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl.*;
+import io.justme.lavender.utility.ScissorHelper;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
 import io.justme.lavender.value.DefaultValue;
-import io.justme.lavender.value.impl.BoolValue;
-import io.justme.lavender.value.impl.ModeValue;
-import io.justme.lavender.value.impl.MultiBoolValue;
-import io.justme.lavender.value.impl.NumberValue;
+import io.justme.lavender.value.impl.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,20 +58,20 @@ public class ModuleValuePanel extends AbstractModuleValue {
         AtomicInteger intervalY = new AtomicInteger();
         int rightSide = 10;
         int leftSide = 3;
-        int initY = 15;
+        int initY = 10;
 
-        OGLUtility.scissor(getX(),getY() + initY - 10,getWidth(),getHeight() + 10 ,()->{
+        ScissorHelper.scissor(getX(),getY(),getWidth(),getHeight(), () -> {
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                 switch (abstractOptionComponent.getComponentType()) {
                     case MODE -> {
-                        abstractOptionComponent.setX(getX());
+                        abstractOptionComponent.setX(getX() + 5);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY + 18);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
                         abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY );
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                        intervalY.addAndGet((int) (40 + abstractOptionComponent.getModeExpandingHeight()));
+                        intervalY.addAndGet((int) (38 + abstractOptionComponent.getModeExpandingHeight()));
                     }
 
                     case COMBOX -> {
@@ -97,7 +95,19 @@ public class ModuleValuePanel extends AbstractModuleValue {
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                        intervalY.addAndGet(32);
+                        intervalY.addAndGet(40);
+                    }
+
+                    case SLIDER_RANGE -> {
+                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide + 5);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY  + 15);
+
+                        abstractOptionComponent.setDescriptionX(getX() + leftSide);
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY );
+
+                        abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
+
+                        intervalY.addAndGet(45);
                     }
 
                     case SWITCH -> {
@@ -113,10 +123,10 @@ public class ModuleValuePanel extends AbstractModuleValue {
 
                     case CHECKBOX -> {
                         abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
-                        abstractOptionComponent.setY(getY() + intervalY.get() + initY  - 1);
+                        abstractOptionComponent.setY(getY() + intervalY.get() + initY );
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
-                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY );
+                        abstractOptionComponent.setDescriptionY(getY() + intervalY.get() + initY + 3);
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
                         intervalY.addAndGet(15);
@@ -181,7 +191,13 @@ public class ModuleValuePanel extends AbstractModuleValue {
             SliderComponent sliderComponent = new SliderComponent();
             sliderComponent.setOption((NumberValue) setting);
             component = sliderComponent;
-        } else if (setting instanceof ModeValue) {
+        } else if (setting instanceof NumberRangeValue) {
+            SliderRangeComponent sliderRangeComponent = new SliderRangeComponent();
+            sliderRangeComponent.setOption((NumberRangeValue) setting);
+            component = sliderRangeComponent;
+        }
+
+        else if (setting instanceof ModeValue) {
             ModeComponent modeComponent = new ModeComponent();
             modeComponent.setOption((ModeValue) setting);
             modeComponent.afterAddOption();

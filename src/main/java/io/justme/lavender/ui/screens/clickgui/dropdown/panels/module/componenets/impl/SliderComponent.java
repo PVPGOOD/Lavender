@@ -52,10 +52,10 @@ public class SliderComponent extends AbstractOptionComponent {
         getSliderAnimations().animate((longValue * (value - min) / (max - min)),0.1F, Easings.LINEAR);
 
         //背景
-        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, new Color(125, 131, 136));
+        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, new Color(194, 194, 194));
 
         //值
-        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,new Color(255, 233, 240, 255));
+        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,new Color(208, 188, 255, 255));
 
         if (isDragging()) {
             float valAbs = mouseX - (posX);
@@ -69,9 +69,16 @@ public class SliderComponent extends AbstractOptionComponent {
         RenderUtility.drawRoundRectWithOutline(posX + getSliderAnimations().getValue() - size,
                 getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f,new Color(255, 255, 255,255),new Color(0,0,0,64));
 
-        font.drawString(getOption().getValue().toString(),posX + getSliderAnimations().getValue() - size,
-                getY() + getHeight()/2f + 6,new Color(0,0,0,128).getRGB());
+        var values = getOption().getValue() + " / " + getOption().getMax();
+        // 绘制当前值
+        font.drawString(String.valueOf(getOption().getValue()),
+                posX + getWidth() / 2f - font.getStringWidth(getOption().getValue() + " (" + getOption().getMax() + ")") / 2f,
+                getY() + getHeight() + 6, new Color(0, 0, 0, 128).getRGB());
 
+// 绘制最大值，alpha 设置为更低
+        font.drawString(" (" + getOption().getMax() + ")",
+                posX + getWidth() / 2f - font.getStringWidth(getOption().getValue() + " (" + getOption().getMax() + ")") / 2f + font.getStringWidth(String.valueOf(getOption().getValue())),
+                getY() + getHeight() + 6, new Color(0, 0, 0, 64).getRGB());
         if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
             setDragging(true);
         }

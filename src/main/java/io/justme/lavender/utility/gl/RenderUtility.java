@@ -82,6 +82,28 @@ public class RenderUtility {
         GlStateManager.popMatrix();
     }
 
+    public void drawCircle(double x, double y, float radius, int color) {
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_TEXTURE_2D);
+
+        glEnable(GL_POINT_SMOOTH);
+        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+        glPointSize(radius * 4);
+
+        float alpha = (color >> 24 & 0xFF) / 255.0F;
+        float red = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8 & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        glColor4f(red, green, blue, alpha);
+
+        OGLUtility.render(GL_POINTS, () -> glVertex2d(x, y));
+
+        glEnable(GL_TEXTURE_2D);
+        GlStateManager.disableBlend();
+    }
+
     public void drawQuads(float x, float y, float width, float height) {
         if (Minecraft.getMinecraft().gameSettings.ofFastRender) return;
         OGLUtility.render(GL_QUADS ,() -> {

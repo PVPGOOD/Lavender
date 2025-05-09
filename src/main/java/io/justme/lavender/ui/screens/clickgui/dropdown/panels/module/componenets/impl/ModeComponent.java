@@ -1,12 +1,16 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
 
+import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ComponentType;
 
 
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl.chill.ModeChill;
+import io.justme.lavender.utility.ScissorHelper;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
+import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.impl.ModeValue;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +18,7 @@ import lombok.Setter;
 import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author JustMe.
@@ -34,7 +39,7 @@ public class ModeComponent extends AbstractOptionComponent {
 
     public void afterAddOption() {
         for (String modeOption : getOption().getModes()) {
-//            getModeChill().add(new ModeChill(modeOption));
+            getModeChill().add(new ModeChill(modeOption, getOption()));
         }
     }
 
@@ -44,45 +49,67 @@ public class ModeComponent extends AbstractOptionComponent {
     }
 
     private float interval = 0;
+    private Animation expandingRadius = new Animation();
+    private Animation expandingHeight = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(255, 212, 255, 255));
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0,0,0,155).getRGB());
 
-        FontDrawer fontDrawer = getFontDrawer();
-        fontDrawer.drawString(getOption().getValue() ,getX() + 10   ,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
 
-        float optionInterval = 8;
+        getExpandingRadius().animate(isExpanded() ? 0 : 20,0.1f);
+        getExpandingHeight().animate(isExpanded() ? getHeight() + getInterval() - 8 : 0,0.1f);
 
+        var optionInterval = new AtomicReference<>((float) 8);
         if (isExpanded()) {
+            var posX = getX();
+            var posY = getY() + getHeight() - 5;
+            ScissorHelper.scissor(posX,posY,getWidth(),getExpandingHeight().getValue(),() -> {
+                //背景
+                RenderUtility.drawRoundRectWithOutline(
+                        posX,
+                        getY() + getHeight() - 8,
+                        getWidth(),
+                        getExpandingHeight().getValue(),
+                        10,1,new Color(248, 225, 234, 255),
+                        new Color(255, 230, 241, 255));
 
-            //背景
-            RenderUtility.drawRoundRectWithOutline(
-                    getX(),
-                    getY() + getHeight() + 1,
-                    getWidth(),
-                    getHeight() + getInterval() - 8,
-                    10,1,new Color(255, 230, 241, 255),
-                    new Color(255, 223, 236, 255));
+                for (AbstractOptionComponent chill : getModeChill()) {
+                    chill.setX(getX() + 4);
+                    chill.setY(getY() + getHeight() + optionInterval.get());
+                    chill.setWidth(getWidth() - 8);
+                    chill.setHeight(17);
+                    optionInterval.updateAndGet(v -> v + 23);
+                    setInterval(optionInterval.get() - 8);
 
-            for (AbstractOptionComponent chill : getModeChill()) {
-                chill.setX(getX() + 4);
-                chill.setY(getY() + getHeight() + optionInterval + 1);
-                chill.setWidth(getWidth() - 8);
-                chill.setHeight(17);
-                optionInterval += 19;
-                setInterval(optionInterval - 5);
+                    chill.drawScreen(mouseX, mouseY, partialTicks);
+                }
+            });
 
-                chill.drawScreen(mouseX, mouseY, partialTicks);
-            }
         }
 
+        RenderUtility.drawRoundRectWithCustomRounded(
+                getX(),getY(),getWidth(),getHeight(),
+                new Color(208, 188, 254, 255),getExpandingRadius().getValue(),getExpandingRadius().getValue(),20,20);
+
+        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        fontDrawer.drawString(
+                getOption().getName(),
+                getDescriptionX() + 2,
+                getDescriptionY() + getHeight() /2f - fontDrawer.getHeight() /2f,
+                new Color(0,0,0,155).getRGB());
+
+        fontDrawer.drawString(getOption().getValue() ,
+                getX() + 10,
+                getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(0, 0, 0,155).getRGB());
+
+
         if (isExpanded()) {
-            setModeExpandingHeight(optionInterval + 25);
+            setModeExpandingHeight(optionInterval.get() + 10);
         } else {
-            setModeExpandingHeight(optionInterval);
+            setModeExpandingHeight(optionInterval.get());
         }
-        
+
+        getExpandingHeight().update();
+        getExpandingRadius().update();
         setWidth(100);
         setHeight(25);
     }
@@ -94,16 +121,22 @@ public class ModeComponent extends AbstractOptionComponent {
         }
 
         if (isExpanded()) {
+
+
+
             for (AbstractOptionComponent chill : getModeChill()) {
 
-                if (chill.isHover(mouseX,mouseY)) {
-                    getOption().setValue(chill.getComBoxChillName());
+                if (chill.isHover(mouseX, mouseY)) {
+                    if (chill instanceof ModeChill) {
+                        getOption().setValue(((ModeChill) chill).getComBoxChillName());
+                        setComBoxSelectingName(getOption().getValue());
+                    }
+
+                    chill.mouseClicked(mouseX, mouseY, mouseButton);
                 }
 
-                chill.mouseClicked(mouseX, mouseY, mouseButton);
-            }
 
-            setComBoxSelectingName(getOption().getValue());
+            }
         }
     }
 
