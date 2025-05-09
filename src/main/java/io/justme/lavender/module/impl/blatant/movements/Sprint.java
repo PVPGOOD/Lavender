@@ -31,17 +31,6 @@ public class Sprint extends Module {
 
     @EventTarget
     public void onUpdate(EventUpdate event) {
-
-        if ( mc.currentScreen != null) return;
-
-        var player = Minecraft.getMinecraft().thePlayer;
-
-        float f = 0.8F;
-
-        boolean flag3 = (float)player.getFoodStats().getFoodLevel() > 6.0F || player.capabilities.allowFlying;
-        if (!player.isSprinting() && player.movementInput.moveForward >= f && flag3 && !player.isUsingItem() && !player.isPotionActive(Potion.blindness))
-        {
-            player.setSprinting(true);
-        }
+        mc.gameSettings.keyBindSprint.pressed = true;
     }
 }
