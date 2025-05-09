@@ -113,4 +113,5 @@ public class MovementUtility {
     public static double getSpeed() {
         return getSpeed(Minecraft.getMinecraft().thePlayer);
     }
+
 }

@@ -10,14 +10,21 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.ModeValue;
+import lombok.Getter;
+import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
 
+@Getter
+@Setter
 @ModuleInfo(name = "Speed", description = "speed.", category = Category.MOVEMENTS)
 public class Speed extends Module {
 
     public final ModeValue mode = new ModeValue("Mode", new String[]{"Watchdog","NCPHop","WatchdogLowHop"}, "Watchdog");
+    public final ModeValue jumpMode = new ModeValue("Jump Mode", new String[]{"Glide", "Fast"}, "Fast");
+    public final ModeValue strafeMode = new ModeValue("Strafe Mode", new String[]{"7 Tick", "8 Tick Fast","9 Tick"}, "7 Tick");
 
-    public final BoolValue fastStop = new BoolValue("Fast Stop", true);
+    public final BoolValue fastFall = new BoolValue("Fast Fall", true);
+    public final BoolValue extraStrafe = new BoolValue("Extra Strafe", false);
 
     public Speed() {
         AbstractSpeed.onInitialization();

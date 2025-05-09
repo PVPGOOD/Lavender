@@ -82,7 +82,7 @@ public class WatchdogSpeed extends AbstractSpeed {
                 }
             }
         } else {
-            if (speed.fastStop.getValue()) mc.thePlayer.motionX = mc.thePlayer.motionZ = 0;
+            if (speed.fastFall.getValue()) mc.thePlayer.motionX = mc.thePlayer.motionZ = 0;
         }
 
         if (mc.thePlayer.isCollidedHorizontally && PlayerUtility.moving() && mc.thePlayer.onGround) {
