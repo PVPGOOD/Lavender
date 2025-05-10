@@ -8,6 +8,7 @@ import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.MathUtility;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.value.impl.BoolValue;
+import io.justme.lavender.value.impl.NumberRangeValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
@@ -26,10 +27,11 @@ import java.util.concurrent.ThreadLocalRandom;
 @ModuleInfo(name = "AutoClicker", description = "autoClicker.", category = Category.FIGHT)
 public class AutoClicker extends Module {
 
-    private final BoolValue blockingCheck = new BoolValue("blocking Check", true);
-    private final BoolValue breakingCheck = new BoolValue("breaking Check", true);
-    private final BoolValue displayingGuiCheck = new BoolValue("displaying gui Check", true);
 
+    private final NumberRangeValue delay = new NumberRangeValue("CPS", 10, 15, 5, 30,1);
+    private final BoolValue blockingCheck = new BoolValue("Block Disabled", true);
+    private final BoolValue breakingCheck = new BoolValue("Disable on Break", true);
+    private final BoolValue displayingGuiCheck = new BoolValue("Disable in GUI", true);
 
     private boolean wasHoldingMouse;
     private boolean clickingTick;
@@ -79,16 +81,17 @@ public class AutoClicker extends Module {
                 wasHoldingMouse = false;
             }
 
-            if (wasHoldingMouse) {
-                long maxDelay = (long) (1000.0 / MathUtility.getRandomDouble(4, 6));
-                long minDelay = (long) (1000.0 / MathUtility.getRandomDouble(16, 20));
-                long delay = ThreadLocalRandom.current().nextLong(minDelay, maxDelay);
+        if (wasHoldingMouse) {
+            long minDelay = (long) (1000.0 / delay.getUpperValue());
+            long maxDelay = (long) (1000.0 / delay.getLowerValue());
 
-                if (timerUtility.getTime() >= delay) {
-                    timerUtility.reset();
-                    clickingTick = true;
-                }
+            long delayValue = (long) MathUtility.getRandomDouble(minDelay, maxDelay);
+
+            if (timerUtility.getTime() >= delayValue) {
+                timerUtility.reset();
+                clickingTick = true;
             }
+        }
 //        }
     }
 }
