@@ -10,9 +10,11 @@ import io.justme.lavender.value.impl.BoolValue;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.BlockPos;
@@ -24,10 +26,10 @@ import java.util.Iterator;
 public class AutoTool extends Module {
 
     private final BoolValue
-            autoSword = new BoolValue("autoSword",false);
+            autoSword = new BoolValue("autoSword", false);
 
     private final BoolValue
-            switchBack = new BoolValue("Switch Back",false);
+            switchBack = new BoolValue("Switch Back", false);
 
     private boolean switched;
 
@@ -74,16 +76,23 @@ public class AutoTool extends Module {
                 for (int i = 36; i < 45; i++) {
                     final ItemStack stack = mc.thePlayer.inventoryContainer.getSlot(i).getStack();
 
-                    if (stack != null && stack.getItem() instanceof ItemTool tool) {
+                    if (stack != null) {
+                        if (stack.getItem() instanceof ItemTool tool) {
+                            final double eff = tool.getStrVsBlock(stack, block);
+                            if (eff > bestToolEfficiency) {
+                                bestToolEfficiency = eff;
+                                bestToolSlot = i;
+                            }
+                        } else if (stack.getItem() instanceof ItemShears) {
 
-                        final double eff = tool.getStrVsBlock(stack, block);
-
-                        if (eff > bestToolEfficiency) {
-                            bestToolEfficiency = eff;
-                            bestToolSlot = i;
+                            if (block instanceof BlockLeaves || block.getMaterial() == net.minecraft.block.material.Material.web || block.getMaterial() == net.minecraft.block.material.Material.cloth) {
+                                bestToolEfficiency = 15;
+                                bestToolSlot = i;
+                            }
                         }
                     }
                 }
+
 
                 if (bestToolSlot != -1) {
                     previousSlot = mc.thePlayer.inventory.currentItem;
