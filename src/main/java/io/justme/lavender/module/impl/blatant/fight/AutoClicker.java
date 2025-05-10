@@ -1,6 +1,5 @@
-package io.justme.lavender.module.impl.legit.fight;
+package io.justme.lavender.module.impl.blatant.fight;
 
-import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
@@ -11,13 +10,9 @@ import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.NumberRangeValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
-import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.BlockPos;
 import org.lwjglx.input.Mouse;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author JustMe.

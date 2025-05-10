@@ -7,7 +7,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.render.Event3DRender;
-import io.justme.lavender.module.impl.legit.fight.Reach;
+import io.justme.lavender.module.impl.blatant.fight.Reach;
 import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;

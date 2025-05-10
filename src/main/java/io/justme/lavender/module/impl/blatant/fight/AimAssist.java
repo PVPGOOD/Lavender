@@ -1,12 +1,10 @@
-package io.justme.lavender.module.impl.legit.fight;
+package io.justme.lavender.module.impl.blatant.fight;
 
-import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.MathUtility;
-import io.justme.lavender.utility.player.MovementUtility;
 import io.justme.lavender.utility.player.RotationUtility;
 import io.justme.lavender.utility.player.ValidEntityUtility;
 import io.justme.lavender.value.impl.BoolValue;

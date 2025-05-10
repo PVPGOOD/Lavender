@@ -1,11 +1,10 @@
-package io.justme.lavender.module.impl.legit.fight;
+package io.justme.lavender.module.impl.blatant.fight;
 
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
 
 /**
  * @author JustMe.
