@@ -26,6 +26,7 @@ public class SliderComponent extends AbstractOptionComponent {
 
     private NumberValue option = new NumberValue("slider",2,2,10f,1);
     private boolean dragging;
+    private boolean realDragging;
 
     public SliderComponent() {
         this.moduleComponentType = ModuleComponentType.SLIDER;
@@ -75,22 +76,23 @@ public class SliderComponent extends AbstractOptionComponent {
                 posX + getWidth() / 2f - font.getStringWidth(getOption().getValue() + " (" + getOption().getMax() + ")") / 2f,
                 getY() + getHeight() + 6, new Color(0, 0, 0, 128).getRGB());
 
-// 绘制最大值，alpha 设置为更低
         font.drawString(" (" + getOption().getMax() + ")",
                 posX + getWidth() / 2f - font.getStringWidth(getOption().getValue() + " (" + getOption().getMax() + ")") / 2f + font.getStringWidth(String.valueOf(getOption().getValue())),
                 getY() + getHeight() + 6, new Color(0, 0, 0, 64).getRGB());
-        if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
+        if (MouseUtility.isHovering(posX, getY(), getWidth(), getHeight(),mouseX,mouseY) && Mouse.isButtonDown(0) && isRealDragging()) {
             setDragging(true);
         }
 
-        setWidth(100);
+        setWidth(95);
         setHeight(5);
         getSliderAnimations().update();
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-
+        if (MouseUtility.isHovering(getX(), getY(), getWidth(), getHeight(),mouseX,mouseY)) {
+            setRealDragging(true);
+        }
     }
 
     @Override
@@ -98,6 +100,7 @@ public class SliderComponent extends AbstractOptionComponent {
         switch (state) {
             case 0:
                 setDragging(false);
+                setRealDragging(false);
                 break;
         }
     }
