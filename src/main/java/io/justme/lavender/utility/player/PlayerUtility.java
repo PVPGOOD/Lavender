@@ -238,4 +238,15 @@ public class PlayerUtility  {
     public Block blockRelativeToPlayer(final double offsetX, final double offsetY, final double offsetZ) {
         return getBlock(mc.thePlayer.posX + offsetX, mc.thePlayer.posY + offsetY, mc.thePlayer.posZ + offsetZ);
     }
+
+    public double predictedMotionY(final double motion, final int ticks) {
+        if (ticks == 0) return motion;
+        double predicted = motion;
+
+        for (int i = 0; i < ticks; i++) {
+            predicted = (predicted - 0.08) * 0.98F;
+        }
+
+        return predicted;
+    }
 }
