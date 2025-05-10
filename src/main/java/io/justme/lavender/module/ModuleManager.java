@@ -6,15 +6,16 @@ import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
 import io.justme.lavender.module.impl.blatant.fight.KillAura;
 import io.justme.lavender.module.impl.blatant.fight.Velocity;
 import io.justme.lavender.module.impl.blatant.misc.AutoTool;
-import io.justme.lavender.module.impl.blatant.misc.MouseRaw;
+import io.justme.lavender.module.impl.blatant.misc.FireBallWarning;
 import io.justme.lavender.module.impl.blatant.movements.*;
 import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
 import io.justme.lavender.module.impl.blatant.player.*;
 import io.justme.lavender.module.impl.blatant.visual.*;
-import io.justme.lavender.module.impl.legit.fight.AimAssist;
-import io.justme.lavender.module.impl.legit.fight.AutoClicker;
-import io.justme.lavender.module.impl.legit.fight.Reach;
+import io.justme.lavender.module.impl.blatant.fight.AimAssist;
+import io.justme.lavender.module.impl.blatant.fight.AutoClicker;
+import io.justme.lavender.module.impl.blatant.fight.Reach;
+import io.justme.lavender.module.impl.blatant.player.ChestStealer;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
@@ -54,9 +55,11 @@ public class ModuleManager extends Manager<Module> {
     private final InventoryCleaner inventoryCleaner = new InventoryCleaner();
     private final InventoryMove inventoryMove = new InventoryMove();
     private final NoJumpDelay noJumpDelay = new NoJumpDelay();
+    private final HitBox hitBox = new HitBox();
 
     //misc
     private final AutoTool autoTool = new AutoTool();
+    private final FireBallWarning fireBallWarning = new FireBallWarning();
     //exploit
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -97,12 +100,14 @@ public class ModuleManager extends Manager<Module> {
                 getInventoryCleaner(),
                 getNoJumpDelay(),
                 getNoFall(),
+                getHitBox(),
                 //exploit
                 getDisabler(),
 //                getPacketDebugger()
 
                 //misc
                 getAutoTool(),
+                getFireBallWarning(),
 
                 //legit
                 getAutoClicker(),

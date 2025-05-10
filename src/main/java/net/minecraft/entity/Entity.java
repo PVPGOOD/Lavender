@@ -11,6 +11,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventSafeWalk;
 import io.justme.lavender.events.player.EventStrafe;
 import io.justme.lavender.events.player.PostStrafeEvent;
+import io.justme.lavender.module.impl.blatant.player.HitBox;
 import io.justme.lavender.utility.player.RotationUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -1744,10 +1745,15 @@ public abstract class Entity implements ICommandSender
 
     public float getCollisionBorderSize()
     {
-        if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return 0F;
+        var hitbox = ((HitBox) La.getINSTANCE().getModuleManager().getModuleByName("Hitbox"));
+        if (hitbox.isToggle()) {
+            return hitbox.getNumberValue().getValue();
+        } else {
+            if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+                return 0F;
+            }
+            return 0.1F;
         }
-        return 0.1F;
     }
 
     public Vec3 getLookVec()
