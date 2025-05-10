@@ -1,8 +1,8 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleComponentType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -31,7 +31,7 @@ public class SliderRangeComponent extends AbstractOptionComponent {
     private Animation maxSliderAnimation = new Animation();
 
     public SliderRangeComponent() {
-        this.componentType = ComponentType.SLIDER_RANGE;
+        this.moduleComponentType = ModuleComponentType.SLIDER_RANGE;
     }
 
     @Override

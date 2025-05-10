@@ -1,8 +1,8 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl;
 
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleComponentType;
 
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -27,7 +27,7 @@ public class SwitchComponent extends AbstractOptionComponent {
     private Animation scaleAnimation = new Animation();
 
     public SwitchComponent() {
-        this.componentType = ComponentType.SWITCH;
+        this.moduleComponentType = ModuleComponentType.SWITCH;
     }
 
     public void afterAddOption() {

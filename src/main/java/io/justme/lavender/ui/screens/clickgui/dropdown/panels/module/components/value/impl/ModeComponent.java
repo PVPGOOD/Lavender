@@ -1,12 +1,12 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleComponentType;
 
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl.chill.ModeChill;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl.chill.ModeChill;
 import io.justme.lavender.utility.ScissorHelper;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -34,7 +34,7 @@ public class ModeComponent extends AbstractOptionComponent {
     private CopyOnWriteArrayList<AbstractOptionComponent> modeChill = new CopyOnWriteArrayList<>();
 
     public ModeComponent() {
-        this.componentType = ComponentType.MODE;
+        this.moduleComponentType = ModuleComponentType.MODE;
     }
 
     public void afterAddOption() {

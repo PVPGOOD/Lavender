@@ -4,7 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.AbstractModulePanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.ModulePanelType;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ModuleValuePanel;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleValuePanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;

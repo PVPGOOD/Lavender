@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl;
 
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 

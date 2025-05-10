@@ -1,8 +1,8 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.AbstractOptionComponent;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleComponentType;
 
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -28,7 +28,7 @@ public class SliderComponent extends AbstractOptionComponent {
     private boolean dragging;
 
     public SliderComponent() {
-        this.componentType = ComponentType.SLIDER;
+        this.moduleComponentType = ModuleComponentType.SLIDER;
     }
 
     @Override

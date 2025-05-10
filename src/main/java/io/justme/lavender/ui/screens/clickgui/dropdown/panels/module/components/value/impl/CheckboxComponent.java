@@ -1,10 +1,10 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.AbstractOptionComponent;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.AbstractOptionComponent;
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleComponentType;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -29,7 +29,7 @@ public class CheckboxComponent extends AbstractOptionComponent {
     private Animation scaleAnimation = new Animation(0);
 
     public CheckboxComponent() {
-        this.componentType = ComponentType.CHECKBOX;
+        this.moduleComponentType = ModuleComponentType.CHECKBOX;
         setWidth(10);
         setHeight(10);
     }

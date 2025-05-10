@@ -1,13 +1,10 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value;
 
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets.impl.*;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl.*;
 import io.justme.lavender.utility.ScissorHelper;
-import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
-import io.justme.lavender.utility.math.animation.util.Easings;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.*;
 import lombok.Getter;
@@ -62,7 +59,7 @@ public class ModuleValuePanel extends AbstractModuleValue {
 
         ScissorHelper.scissor(getX(),getY(),getWidth(),getHeight(), () -> {
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
-                switch (abstractOptionComponent.getComponentType()) {
+                switch (abstractOptionComponent.getModuleComponentType()) {
                     case MODE -> {
                         abstractOptionComponent.setX(getX() + 5);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY + 18);

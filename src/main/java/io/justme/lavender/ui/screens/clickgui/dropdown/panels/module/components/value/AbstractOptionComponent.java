@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
@@ -24,7 +24,7 @@ public abstract class AbstractOptionComponent {
     @Setter
     //唯一性
     public static String comBoxSelectingName;
-    public ComponentType componentType;
+    public ModuleComponentType moduleComponentType;
     //为了防止我以后忘记 requestInterval 由上级定义 并不需要在这里处理 2024/4/5留
 
     public boolean isHover(int mouseX, int mouseY) {

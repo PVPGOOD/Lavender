@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.componenets;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value;
 
 import io.justme.lavender.module.Module;
 import lombok.Getter;
