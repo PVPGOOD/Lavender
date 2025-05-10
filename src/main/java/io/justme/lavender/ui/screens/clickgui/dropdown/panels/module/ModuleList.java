@@ -5,8 +5,8 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.impl.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.impl.ModuleGroupHeader;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
-import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
@@ -186,7 +186,8 @@ public class ModuleList extends AbstractModulePanel {
         if (state == 0){
             if (isDragging()) {
                 setDragging(false);
-            } else
+            }
+
             if (isScaling()){
                 setScaling(false);
             }
