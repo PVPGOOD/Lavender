@@ -20,12 +20,12 @@ public class RotationUtility {
         double pY = mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight();
         double pZ = mc.thePlayer.posZ;
         double eX = entity.posX;
-        double eY = entity.posY + (double) (entity.height / 2.0f);
+        double eY = entity.posY + (double) (entity.height * 0.75);
         double eZ = entity.posZ;
         double dX = pX - eX;
         double dY = pY - eY;
         double dZ = pZ - eZ;
-        double dH = Math.sqrt(Math.pow(dX, 2.0) + Math.pow(dZ, 2.0));
+        double dH = Math.sqrt(dX * dX + dZ * dZ);
         float yaw = (float) (Math.toDegrees(Math.atan2(dZ, dX)) + 90.0);
         float pitch = (float) Math.toDegrees(Math.atan2(dH, dY));
         return new float[]{yaw, (float) (90.0 - pitch)};
@@ -127,6 +127,22 @@ public class RotationUtility {
         }
 
         return normalRotations;
+    }
+
+    public static float getYawDifference(float currentYaw, double targetX, double targetY, double targetZ) {
+        double deltaX = targetX - mc.thePlayer.posX;
+        double deltaY = targetY - mc.thePlayer.posY;
+        double deltaZ = targetZ - mc.thePlayer.posZ;
+        double yawToEntity = 0;
+        double degrees = Math.toDegrees(Math.atan(deltaZ / deltaX));
+        if ((deltaZ < 0.0D) && (deltaX < 0.0D)) {
+            if (deltaX != 0) yawToEntity = 90.0D + degrees;
+        } else if ((deltaZ < 0.0D) && (deltaX > 0.0D)) {
+            if (deltaX != 0) yawToEntity = -90.0D + degrees;
+        } else {
+            if (deltaZ != 0) yawToEntity = Math.toDegrees(-Math.atan(deltaX / deltaZ));
+        }
+        return MathHelper.wrapAngleTo180_float(-(currentYaw - (float) yawToEntity));
     }
 
     @Getter
