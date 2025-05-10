@@ -4,6 +4,8 @@ import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.AbstractModulePanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.ModulePanelType;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.keybind.AbstractKeybind;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.keybind.ModuleKeybind;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleValuePanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 public class ModuleButton extends AbstractModulePanel {
 
     private Module module;
+    private ArrayList<AbstractKeybind> keybinds = new ArrayList<>();
     private ArrayList<ModuleValuePanel> valuePanels = new ArrayList<>();
     private boolean expanded;
 
@@ -34,6 +37,7 @@ public class ModuleButton extends AbstractModulePanel {
         this.module = module;
 
         getValuePanels().add(new ModuleValuePanel(module));
+        getKeybinds().add(new ModuleKeybind(module));
     }
 
 
@@ -59,9 +63,14 @@ public class ModuleButton extends AbstractModulePanel {
             valueResque = valuePanel.getRequestHeight() + 25;
         }
 
-
         RenderUtility.drawRoundRectWithCustomRounded(getX(), getY(), getWidth(), getHeight(), background_color,getExpandRoundedAnimation().getValue(),getExpandRoundedAnimation().getValue(),20,20);
         font.drawString(module.getName(),getX() + 8,getY() + getHeight() /2f - font.getHeight()/2f + 3,new Color(0,0,0,155).getRGB());
+
+        for (AbstractKeybind keybind : getKeybinds()) {
+            keybind.setX(getX() + getWidth() /2f - keybind.getWidth() /2f + getWidth() /2f - 15);
+            keybind.setY(getY() + getHeight() /2f - keybind.getHeight() /2f);
+            keybind.drawScreen(mouseX, mouseY, partialTicks);
+        }
 
         setWidth(110);
         setHeight(25);
@@ -76,12 +85,21 @@ public class ModuleButton extends AbstractModulePanel {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if (isExpanded()) {
 
+        for (AbstractKeybind keybind : getKeybinds()) {
+            if (keybind.mouseClicked(mouseX, mouseY, mouseButton)) {
+                if (keybind.isHover(mouseX, mouseY)) {
+                    getModule().setKey(0);
+                    keybind.setBinding(!keybind.isBinding());
+                }
+                return false;
+            }
+        }
+
+        if (isExpanded()) {
             for (ModuleValuePanel valuePanel : getValuePanels()) {
                 valuePanel.mouseClicked(mouseX, mouseY, mouseButton);
             }
-
             return MouseUtility.isHovering(getX(),getY(),getWidth(),25,mouseX,mouseY);
         } else {
             return isHover(mouseX, mouseY);
@@ -90,8 +108,14 @@ public class ModuleButton extends AbstractModulePanel {
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int state) {
-        if (isExpanded()) {
 
+        for (AbstractKeybind keybind : getKeybinds()) {
+            if (keybind.mouseReleased(mouseX, mouseY, state)) {
+                return false;
+            }
+        }
+
+        if (isExpanded()) {
             for (ModuleValuePanel valuePanel : getValuePanels()) {
                 valuePanel.mouseReleased(mouseX, mouseY, state);
             }
@@ -104,7 +128,9 @@ public class ModuleButton extends AbstractModulePanel {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-
+        for (AbstractKeybind keybind : getKeybinds()) {
+            keybind.keyTyped(typedChar,keyCode);
+        }
     }
 
     @Override

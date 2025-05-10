@@ -7,4 +7,5 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module;
 public enum ModulePanelType {
     MODULE_GROUP_HEADER,
     MODULE_BUTTON,
+    MODULE_KEYBIND
 }

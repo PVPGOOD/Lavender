@@ -73,7 +73,9 @@ public class ModulePanel extends AbstractPanelUI {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-
+        for (AbstractModulePanel element : getElements()) {
+            element.keyTyped(typedChar,keyCode);
+        }
     }
 
     @Override

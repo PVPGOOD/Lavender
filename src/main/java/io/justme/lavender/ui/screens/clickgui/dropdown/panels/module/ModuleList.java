@@ -46,7 +46,6 @@ public class ModuleList extends AbstractModulePanel {
 
         for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
             if (!module.getCategory().getName().equalsIgnoreCase(type.getName())) continue;
-
             getElements().add(new ModuleButton(type, ModulePanelType.MODULE_BUTTON, module));
         }
     }
@@ -92,14 +91,10 @@ public class ModuleList extends AbstractModulePanel {
             }
         });
 
-
-
         if (isDragging()) {
             setX(mouseX - getDraggingX());
             setY(mouseY - getDraggingY());
         }
-
-
 
         if (isScaling()) {
             getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 35,0.1f);
@@ -202,7 +197,9 @@ public class ModuleList extends AbstractModulePanel {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-
+        for (AbstractModulePanel element : elements) {
+            element.keyTyped(typedChar, keyCode);
+        }
     }
 
     @Override

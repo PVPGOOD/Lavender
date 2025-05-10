@@ -128,7 +128,6 @@ public class La {
         if (event.getKeyCode() == Keyboard.KEY_P) {
             Minecraft.getMinecraft().displayGuiScreen(configScreen);
         }
-
     }
 
     public static io.justme.lavender.La getINSTANCE() {

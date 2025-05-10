@@ -55,6 +55,11 @@ public class DropScreen extends GuiScreen {
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
+
+
+        for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            abstractPanelUI.keyTyped(typedChar, keyCode);
+        }
     }
 
     @Override
