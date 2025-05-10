@@ -16,6 +16,7 @@ import io.justme.lavender.module.impl.blatant.fight.AimAssist;
 import io.justme.lavender.module.impl.blatant.fight.AutoClicker;
 import io.justme.lavender.module.impl.blatant.fight.Reach;
 import io.justme.lavender.module.impl.blatant.player.ChestStealer;
+import io.justme.lavender.module.impl.blatant.world.AntiVoid;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
@@ -64,6 +65,9 @@ public class ModuleManager extends Manager<Module> {
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
 
+    //world
+    private final AntiVoid antiVoid = new AntiVoid();
+
     //blatant
     private final AutoClicker autoClicker = new AutoClicker();
     private final AimAssist aimAssist = new AimAssist();
@@ -108,6 +112,9 @@ public class ModuleManager extends Manager<Module> {
                 //misc
                 getAutoTool(),
                 getFireBallWarning(),
+
+                //world
+                getAntiVoid(),
 
                 //legit
                 getAutoClicker(),

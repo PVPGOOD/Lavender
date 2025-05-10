@@ -6,6 +6,7 @@ import de.florianmichael.viamcp.gui.AsyncVersionSlider;
 import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.fonts.FontManager;
+import io.justme.lavender.handler.BlinkComponent;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.setting.SettingManager;
@@ -64,6 +65,9 @@ public class La {
 
     private SettingManager settingManager;
 
+    //handler
+    private BlinkComponent blinkComponent;
+
     private final String skinLocation = "skins/9708a27eb2d4808120de9e5ea5bb542f7b8677c3809b69153e65110dbc51f3da";
 
     public void initialization() {
@@ -97,6 +101,9 @@ public class La {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> configsManager.save()));
 
         eventManager.register(this);
+
+        blinkComponent = new BlinkComponent();
+        eventManager.register(blinkComponent);
     }
 
     public void print(String message) {
