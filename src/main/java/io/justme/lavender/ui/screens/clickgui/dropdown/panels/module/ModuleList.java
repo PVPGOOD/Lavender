@@ -101,9 +101,9 @@ public class ModuleList extends AbstractModulePanel {
 //            setWidth(mouseX - getScalingWidth());
 //            setHeight(mouseY - getScalingHeight());
 
-            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 130), 180));
+            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 120), 180));
 
-            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 130), 650));
+            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 120), 650));
             getExpandedHeightAnimation().setToValue(getHeight());
             setLastHeight(getHeight());
         } else {

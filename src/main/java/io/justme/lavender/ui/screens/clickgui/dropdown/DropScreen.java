@@ -1,16 +1,11 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarPanel;
-import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.gl.shader.interfaces.Shader;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
-
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 

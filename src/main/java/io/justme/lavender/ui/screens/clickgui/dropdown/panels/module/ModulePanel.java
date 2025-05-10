@@ -32,6 +32,7 @@ public class ModulePanel extends AbstractPanelUI {
         getElements().add(new ModuleList(CategoryType.Exploit));
     }
 
+
     @Override
     public void initGui() {
         setX(0);
@@ -40,13 +41,25 @@ public class ModulePanel extends AbstractPanelUI {
         setHeight(10);
 
         var intervalX = 0;
+        int intervalY = 0;
+        int count = 0;
 
+        var initX = 250;
+        var initY = 30;
         for (AbstractModulePanel element : getElements()) {
+            if (count % 5 == 0 && count != 0) {
+                intervalX = 0;
+                intervalY += 320;
+            }
+
             element.initGui();
-            element.setX(140 + intervalX);
-            element.setY(120);
+            element.setX(initX + intervalX);
+            element.setY(initY + intervalY);
+
             intervalX += 180;
+            count++;
         }
+
     }
 
 

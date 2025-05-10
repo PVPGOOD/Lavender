@@ -84,7 +84,7 @@ public class ModuleValuePanel extends AbstractModuleValue {
                     }
 
                     case SLIDER -> {
-                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide + 5);
+                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide + 3);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY  + 15);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
