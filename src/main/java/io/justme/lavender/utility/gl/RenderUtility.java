@@ -139,6 +139,10 @@ public class RenderUtility {
         new ScaledResolution(Minecraft.getMinecraft());
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
         GL11.glDepthMask(false);
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         GL11.glColor4f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, (float) color.getAlpha() / 255);
@@ -146,6 +150,8 @@ public class RenderUtility {
         drawModalRectWithCustomSizedTexture(x, y, 0.0f, 0.0f, width, height, width, height);
         GL11.glDepthMask(true);
         GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glDisable(GL11.GL_POLYGON_SMOOTH);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
