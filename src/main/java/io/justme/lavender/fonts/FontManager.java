@@ -18,6 +18,7 @@ public final class FontManager {
 
     private final FontDrawer PingFang_Bold12;
     private final FontDrawer PingFang_Bold14;
+    private final FontDrawer PingFang_Bold16;
     private final FontDrawer PingFang_Bold18;
     private final FontDrawer PingFang_Bold22;
 
@@ -67,6 +68,7 @@ public final class FontManager {
 
             PingFang_Bold12 = createByResource("PingFang-Bold.ttf",12f,true);
             PingFang_Bold14 = createByResource("PingFang-Bold.ttf",14f,true);
+            PingFang_Bold16 = createByResource("PingFang-Bold.ttf",16f,true);
             PingFang_Bold18 = createByResource("PingFang-Bold.ttf",18f,true);
             PingFang_Bold22 = createByResource("PingFang-Bold.ttf",22f,true);
 

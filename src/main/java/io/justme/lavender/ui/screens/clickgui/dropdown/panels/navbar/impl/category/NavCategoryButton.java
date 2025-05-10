@@ -35,49 +35,23 @@ public class NavCategoryButton extends AbstractNavBar {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), 20, 8, new Color(0xE8DEF8));
+        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), 16, 8, new Color(0xE8DEF8));
 
-        var iconWidth = 16;
-        var iconHeight = 16;
+        var iconWidth = 12;
+        var iconHeight = 12;
         var iconX = getX() + getWidth() /2f - iconWidth /2f;
-        var iconY = getY() + getHeight() / 2 - iconHeight /2f - 4;
+        var iconY = getY() + getHeight() / 2 - iconHeight /2f - 6;
 
-        var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        var font = La.getINSTANCE().getFontManager().getPingFang_Bold16();
         var strX = getX();
-        var srtY = getY() + getHeight() / 2 + 7;
+        var srtY = getY() + getHeight() / 2 + 4;
         var strColor = new Color(0x8C000000, true);
-        switch (getCategoryType()) {
-            case FIGHT -> {
-                font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/Fight.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
-            case VISUAL -> {
-                font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/Visual.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
-            case MOVEMENTS -> {
-                font.drawString("Move",strX + getWidth() /2f - font.getStringWidth("Move") /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/Movements.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
-            case PLAYER -> {
 
-                font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/player.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
+        font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
 
-            case MISC -> {
-                font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/Misc.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
-            case World -> {
-                font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/world.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
-            case Exploit -> {
-                font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
-                RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/Exploit.png"), iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
-            }
-        }
+        RenderUtility.drawImage(
+                new ResourceLocation("la/clickgui/category/md/"+ getCategoryType().getName() + ".png"),
+                iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
 
         if (isHover(mouseX, mouseY)) {
             RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 8, new Color(0x8777676, true));

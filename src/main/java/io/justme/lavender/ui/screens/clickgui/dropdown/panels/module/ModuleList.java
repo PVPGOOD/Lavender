@@ -68,6 +68,7 @@ public class ModuleList extends AbstractModulePanel {
         for (AbstractModulePanel element : elements) {
             switch (element.getPanelType()) {
                 case MODULE_GROUP_HEADER -> {
+                    element.setExpanded(isExpanded());
                     element.setX(getX());
                     element.setY(getY());
                     element.setHeight(30);
