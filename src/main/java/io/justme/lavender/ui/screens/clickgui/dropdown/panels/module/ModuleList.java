@@ -5,7 +5,7 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.impl.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.impl.ModuleGroupHeader;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
-import io.justme.lavender.utility.ScissorHelper;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -77,7 +77,7 @@ public class ModuleList extends AbstractModulePanel {
             }
         }
 
-        ScissorHelper.scissor(getX(),getY() + initY - 10,getWidth(),getHeight() - initY - 3, () -> {
+        ScissorUtility.scissor(getX(),getY() + initY - 10,getWidth(),getHeight() - initY - 3, () -> {
             for (AbstractModulePanel element : elements) {
                 switch (element.getPanelType()) {
                     case MODULE_BUTTON -> {

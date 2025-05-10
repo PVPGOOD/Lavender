@@ -2,7 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components
 
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl.*;
-import io.justme.lavender.utility.ScissorHelper;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
@@ -57,7 +57,7 @@ public class ModuleValuePanel extends AbstractModuleValue {
         int leftSide = 3;
         int initY = 10;
 
-        ScissorHelper.scissor(getX(),getY(),getWidth(),getHeight(), () -> {
+        ScissorUtility.scissor(getX(),getY(),getWidth(),getHeight(), () -> {
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                 switch (abstractOptionComponent.getModuleComponentType()) {
                     case MODE -> {

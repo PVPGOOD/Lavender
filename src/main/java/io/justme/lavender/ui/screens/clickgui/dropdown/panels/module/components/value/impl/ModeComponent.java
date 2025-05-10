@@ -7,7 +7,7 @@ import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.
 
 
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl.chill.ModeChill;
-import io.justme.lavender.utility.ScissorHelper;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -62,7 +62,7 @@ public class ModeComponent extends AbstractOptionComponent {
         if (isExpanded()) {
             var posX = getX();
             var posY = getY() + getHeight() - 5;
-            ScissorHelper.scissor(posX,posY,getWidth(),getExpandingHeight().getValue(),() -> {
+            ScissorUtility.scissor(posX,posY,getWidth(),getExpandingHeight().getValue(),() -> {
                 //背景
                 RenderUtility.drawRoundRectWithOutline(
                         posX,
