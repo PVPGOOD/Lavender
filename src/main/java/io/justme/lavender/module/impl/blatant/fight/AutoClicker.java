@@ -10,8 +10,10 @@ import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.NumberRangeValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
+import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.BlockPos;
 import org.lwjglx.input.Mouse;
 
 /**
@@ -51,35 +53,38 @@ public class AutoClicker extends Module {
         if (mc.thePlayer == null || mc.theWorld == null) return;
         if (getDisplayingGuiCheck().getValue() && mc.currentScreen != null) return;
         if (mc.thePlayer.isBlocking() && getBlockingCheck().getValue()) return;
-
         if (mc.objectMouseOver == null) return;
 
-//        if (eventMotionUpdate.getType() == EnumEventType.PRE) {
-            var breakingBlock = false;
-            var blockpos = mc.objectMouseOver.getBlockPos();
-
-            if (blockpos != null) {
-                if (mc.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
-                    if (getBlockingCheck().getValue()) return;
-                }
+        var pos = mc.objectMouseOver.getBlockPos();
+        boolean finishedBreaking = false;
+        if (pos != null) {
+            float progress = mc.playerController.curBlockDamageMP;
+            if (progress >= 1.0f) {
+                finishedBreaking = true;
             }
+        }
 
-            if (Mouse.isButtonDown(0) && !breakingBlock) {
-                if (wasHoldingMouse && clickingTick) {
-                    Minecraft.getMinecraft().leftClickCounter = 0;
-                    Minecraft.getMinecraft().clickMouse();
-                    clickingTick = false;
-                }
-                wasHoldingMouse = true;
-            } else {
-                Minecraft.getMinecraft().leftClickCounter = 1;
-                wasHoldingMouse = false;
+        if (finishedBreaking) {
+            timerUtility.reset();
+            clickingTick = true;
+            wasHoldingMouse = true;
+        }
+
+        if (Mouse.isButtonDown(0)) {
+            if (wasHoldingMouse && clickingTick) {
+                Minecraft.getMinecraft().leftClickCounter = 0;
+                Minecraft.getMinecraft().clickMouse();
+                clickingTick = false;
             }
+            wasHoldingMouse = true;
+        } else {
+            Minecraft.getMinecraft().leftClickCounter = 1;
+            wasHoldingMouse = false;
+        }
 
         if (wasHoldingMouse) {
             long minDelay = (long) (1000.0 / delay.getUpperValue());
             long maxDelay = (long) (1000.0 / delay.getLowerValue());
-
             long delayValue = (long) MathUtility.getRandomDouble(minDelay, maxDelay);
 
             if (timerUtility.getTime() >= delayValue) {
@@ -87,6 +92,5 @@ public class AutoClicker extends Module {
                 clickingTick = true;
             }
         }
-//        }
     }
 }
