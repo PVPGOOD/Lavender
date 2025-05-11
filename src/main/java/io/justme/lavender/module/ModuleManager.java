@@ -2,9 +2,7 @@ package io.justme.lavender.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
-//import io.justme.lavender.module.impl.blatant.exploit.packetDebugger.PacketDebugger;
-import io.justme.lavender.module.impl.blatant.fight.KillAura;
-import io.justme.lavender.module.impl.blatant.fight.Velocity;
+import io.justme.lavender.module.impl.blatant.fight.*;
 import io.justme.lavender.module.impl.blatant.misc.AutoTool;
 import io.justme.lavender.module.impl.blatant.misc.FireBallWarning;
 import io.justme.lavender.module.impl.blatant.movements.*;
@@ -12,10 +10,6 @@ import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;
 import io.justme.lavender.module.impl.blatant.player.*;
 import io.justme.lavender.module.impl.blatant.visual.*;
-import io.justme.lavender.module.impl.blatant.fight.AimAssist;
-import io.justme.lavender.module.impl.blatant.fight.AutoClicker;
-import io.justme.lavender.module.impl.blatant.fight.Reach;
-import io.justme.lavender.module.impl.blatant.player.ChestStealer;
 import io.justme.lavender.module.impl.blatant.world.AntiVoid;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
@@ -41,6 +35,7 @@ public class ModuleManager extends Manager<Module> {
     private final ClickGui clickGui = new ClickGui();
     private final Rotations rotations = new Rotations();
     private final NameTag nameTag = new NameTag();
+    private final Chams chams = new Chams();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -89,6 +84,7 @@ public class ModuleManager extends Manager<Module> {
                 getNoCamClip(),
                 getClickGui(),
                 getNameTag(),
+                getChams(),
                 //movements
                 getNoslow(),
                 getSprint(),
