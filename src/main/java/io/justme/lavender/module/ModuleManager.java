@@ -38,6 +38,7 @@ public class ModuleManager extends Manager<Module> {
     private final NameTag nameTag = new NameTag();
     private final Chams chams = new Chams();
     private final FreeCam freeCam = new FreeCam();
+    private final ProjectilePrediction projectilePrediction = new ProjectilePrediction();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -88,6 +89,7 @@ public class ModuleManager extends Manager<Module> {
                 getNameTag(),
                 getChams(),
                 getFreeCam(),
+                getProjectilePrediction(),
                 //movements
                 getNoslow(),
                 getSprint(),
