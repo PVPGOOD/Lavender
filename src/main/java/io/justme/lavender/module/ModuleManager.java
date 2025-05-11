@@ -5,6 +5,7 @@ import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
 import io.justme.lavender.module.impl.blatant.fight.*;
 import io.justme.lavender.module.impl.blatant.misc.AutoTool;
 import io.justme.lavender.module.impl.blatant.misc.FireBallWarning;
+import io.justme.lavender.module.impl.blatant.misc.ProjectilePrediction;
 import io.justme.lavender.module.impl.blatant.movements.*;
 import io.justme.lavender.module.impl.blatant.movements.noslowdown.NoSlowDown;
 import io.justme.lavender.module.impl.blatant.movements.speed.Speed;

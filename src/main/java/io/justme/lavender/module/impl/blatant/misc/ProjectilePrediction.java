@@ -1,12 +1,18 @@
-package io.justme.lavender.module.impl.blatant.visual;
+package io.justme.lavender.module.impl.blatant.misc;
 
+import io.justme.lavender.La;
+import io.justme.lavender.events.player.EventPlayerRightClick;
 import io.justme.lavender.events.render.Event3DRender;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
+import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
+import io.justme.lavender.value.impl.BoolValue;
+import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemEnderPearl;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -15,16 +21,66 @@ import org.lwjgl.opengl.GL11;
 /**
  * 投射物轨迹预测模块
  */
+@Getter
 @ModuleInfo(name = "ProjectilePrediction", description = "Predicts the trajectory of projectiles.", category = Category.VISUAL)
 public class ProjectilePrediction extends Module {
 
     private final Minecraft mc = Minecraft.getMinecraft();
+    private final BoolValue voidCheck = new BoolValue("VoidCheck", true);
+
+    @EventTarget
+    public void onRightClick(EventPlayerRightClick eventPlayerRightClick) {
+        if (mc.thePlayer == null || mc.theWorld == null) return;
+        if (mc.thePlayer.getHeldItem() == null) return;
+        if (!(mc.thePlayer.getHeldItem().getItem() instanceof ItemEnderPearl)) return;
+
+        Vec3 startPos = mc.thePlayer.getPositionVector().addVector(0, mc.thePlayer.getEyeHeight(), 0);
+        Vec3 velocity = getInitialVelocity();
+
+        Vec3 landingPoint = simulateTrajectoryAndGetLandingPoint(startPos, velocity);
+        if (landingPoint == null) {
+            // 没有有效落点，取消事件
+            La.getINSTANCE().getNotificationsManager().push(
+                    "ProjectilePrediction (Validation)",
+                    "预测到这不是一个有效的落点",
+                    NotificationsEnum.WARNING,
+                    3000
+            );
+            eventPlayerRightClick.setCancelled(true);
+            return;
+        }
+
+        BlockPos belowBlockPos = new BlockPos(landingPoint.xCoord, landingPoint.yCoord - 1, landingPoint.zCoord);
+        boolean isVoid = true;
+
+        for (int i = 0; i < 255; i++) {
+            BlockPos currentPos = belowBlockPos.down(i);
+            if (mc.theWorld.getBlockState(currentPos).getBlock().getMaterial() != net.minecraft.block.material.Material.air) {
+                isVoid = false;
+                break;
+            }
+        }
+
+        if (landingPoint.yCoord <= 0 || isVoid) {
+            if (getVoidCheck().getValue()) {
+                La.getINSTANCE().getNotificationsManager().push(
+                        "ProjectilePrediction (VoidCheck)",
+                        "预测到这颗珍珠将会导致你掉落到虚空",
+                        NotificationsEnum.WARNING,
+                        3000
+                );
+                eventPlayerRightClick.setCancelled(true);
+            }
+        }
+    }
 
     @EventTarget
     public void on3D(Event3DRender event3DRender) {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
         if (mc.thePlayer.getHeldItem() == null) return;
+
+        if (!(mc.thePlayer.getHeldItem().getItem() instanceof ItemEnderPearl)) return;
 
         Vec3 startPos = mc.thePlayer.getPositionVector().addVector(0, mc.thePlayer.getEyeHeight(), 0);
         Vec3 velocity = getInitialVelocity();
@@ -40,7 +96,7 @@ public class ProjectilePrediction extends Module {
         float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
         float f2 = -MathHelper.cos(-pitch * 0.017453292F);
         float f3 = MathHelper.sin(-pitch * 0.017453292F);
-        
+
         float velocityMultiplier = mc.thePlayer.getHeldItem().getItem() instanceof ItemBow ? 3.0F : 1.5F;
 
         return new Vec3(f1 * f2 * velocityMultiplier, f3 * velocityMultiplier, f * f2 * velocityMultiplier);
@@ -160,5 +216,20 @@ public class ProjectilePrediction extends Module {
                 (velocity.yCoord - gravity) * airResistance,
                 velocity.zCoord * airResistance
         );
+    }
+
+    private Vec3 simulateTrajectoryAndGetLandingPoint(Vec3 startPos, Vec3 velocity) {
+        Vec3 currentPos = startPos;
+        Vec3 currentVelocity = velocity;
+
+        for (int i = 0; i < 300; i++) {
+            Vec3 nextPos = currentPos.addVector(currentVelocity.xCoord, currentVelocity.yCoord, currentVelocity.zCoord);
+            if (mc.theWorld.rayTraceBlocks(currentPos, nextPos) != null) {
+                return currentPos;
+            }
+            currentPos = nextPos;
+            currentVelocity = applyPhysics(currentVelocity);
+        }
+        return null;
     }
 }
