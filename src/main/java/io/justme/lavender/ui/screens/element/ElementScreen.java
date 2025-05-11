@@ -4,12 +4,9 @@ import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.elements.AbstractElements;
 import io.justme.lavender.ui.elements.quadrant.Quadrant;
-import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.*;
 import java.io.IOException;
@@ -33,8 +30,6 @@ public class ElementScreen extends GuiScreen {
         int centerX = (int) quadrant.getCenterX();
         int centerY = (int) quadrant.getCenterY();
 
-        RenderUtility.drawRect(0, centerY - 1, centerX * 2, .4f, Color.BLACK.getRGB());
-        RenderUtility.drawRect(centerX - 1, 0, .4f, centerY * 2, Color.BLACK.getRGB());
 
         for (AbstractElements element : La.getINSTANCE().getElementsManager().getElements()) {
             if (element.isDragging()) {

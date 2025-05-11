@@ -1,26 +1,21 @@
 package io.justme.lavender.ui.screens.configscreen.frame.impl.list;
 
 import io.justme.lavender.La;
+import io.justme.lavender.ui.screens.configscreen.AbstractConfigFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.components.ListComponents;
-import io.justme.lavender.ui.screens.configscreen.AbstractConfigFrame;
 import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
-import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.TimerUtility;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -86,7 +81,7 @@ public class ConfigListFrame extends AbstractConfigFrame {
                 La.getINSTANCE().getConfigScreen().setSelectConfig(components.getName());
                 La.getINSTANCE().getConfigsManager().save();
                 La.getINSTANCE().getConfigsManager().loadAnotherConfig(components.getName());
-                La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已加载 你的上一个配置已保存",components.getName()), NotificationsEnum.SUCCESS,5000);
+                La.getINSTANCE().getNotificationsManager().push("Config Manager",String.format("[%s] 已加载 你的上一个配置已保存",components.getName()), NotificationsEnum.SUCCESS,5000);
             }
         }
     }
