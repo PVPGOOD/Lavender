@@ -36,6 +36,7 @@ public class ModuleManager extends Manager<Module> {
     private final Rotations rotations = new Rotations();
     private final NameTag nameTag = new NameTag();
     private final Chams chams = new Chams();
+    private final FreeCam freeCam = new FreeCam();
     //movements
     private final Scaffold scaffold = new Scaffold();
     private final Sprint sprint = new Sprint();
@@ -85,6 +86,7 @@ public class ModuleManager extends Manager<Module> {
                 getClickGui(),
                 getNameTag(),
                 getChams(),
+                getFreeCam(),
                 //movements
                 getNoslow(),
                 getSprint(),
@@ -108,7 +110,6 @@ public class ModuleManager extends Manager<Module> {
                 //misc
                 getAutoTool(),
                 getFireBallWarning(),
-
                 //world
                 getAntiVoid(),
 
