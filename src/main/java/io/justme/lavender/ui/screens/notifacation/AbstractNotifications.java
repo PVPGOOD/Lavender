@@ -20,7 +20,8 @@ public abstract class AbstractNotifications {
     private float x,y,width,height;
 
     private final TimerUtility timer = new TimerUtility();
-    private final Animation animation = new Animation();
+    private final Animation animation = new Animation(1);
+    private Animation posYAnimation = new Animation();
 
     public abstract void draw();
 }
