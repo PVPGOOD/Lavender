@@ -30,6 +30,7 @@ public final class FontManager {
     private final FontDrawer PingFang_Medium12;
     private final FontDrawer PingFang_Medium14;
     private final FontDrawer PingFang_Medium18;
+    private final FontDrawer PingFang_Medium20;
     private final FontDrawer PingFang_Medium22;
 
     private final FontDrawer PingFang_Regular12;
@@ -56,6 +57,20 @@ public final class FontManager {
     private final FontDrawer CheckMark12;
     private final FontDrawer CheckMark14;
 
+    private final FontDrawer lavender12;
+    private final FontDrawer lavender13;
+    private final FontDrawer lavender14;
+    private final FontDrawer lavender16;
+    private final FontDrawer lavender18;
+    private final FontDrawer lavender20;
+    private final FontDrawer lavender22;
+    private final FontDrawer lavender24;
+    private final FontDrawer lavender26;
+    private final FontDrawer lavender28;
+    private final FontDrawer lavender30;
+    private final FontDrawer lavender32;
+
+
 
 
     public FontManager() {
@@ -80,6 +95,7 @@ public final class FontManager {
             PingFang_Medium12 = createByResource("PingFang-Medium.ttf",12f,true);
             PingFang_Medium14 = createByResource("PingFang-Medium.ttf",14f,true);
             PingFang_Medium18 = createByResource("PingFang-Medium.ttf",18f,true);
+            PingFang_Medium20 = createByResource("PingFang-Medium.ttf",20f,true);
             PingFang_Medium22 = createByResource("PingFang-Medium.ttf",22f,true);
 
             PingFang_Regular12 = createByResource("PingFang-Regular.ttf",12f,true);
@@ -105,6 +121,19 @@ public final class FontManager {
             CheckMark10 = createByResource("CheckMark.ttf",10f,true);
             CheckMark12 = createByResource("CheckMark.ttf",12f,true);
             CheckMark14 = createByResource("CheckMark.ttf",14f,true);
+
+            lavender12 = createByResource("lavender.ttf",12f,true);
+            lavender13 = createByResource("lavender.ttf",13f,true);
+            lavender14 = createByResource("lavender.ttf",14f,true);
+            lavender16 = createByResource("lavender.ttf",16f,true);
+            lavender18 = createByResource("lavender.ttf",18f,true);
+            lavender20 = createByResource("lavender.ttf",20f,true);
+            lavender22 = createByResource("lavender.ttf",22f,true);
+            lavender24 = createByResource("lavender.ttf",24f,true);
+            lavender26 = createByResource("lavender.ttf",26f,true);
+            lavender28 = createByResource("lavender.ttf",28f,true);
+            lavender30 = createByResource("lavender.ttf",30f,true);
+            lavender32 = createByResource("lavender.ttf",32f,true);
 
 
         } catch (Throwable throwable) {
