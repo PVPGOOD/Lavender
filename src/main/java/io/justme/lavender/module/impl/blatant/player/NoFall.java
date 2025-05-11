@@ -1,10 +1,11 @@
 package io.justme.lavender.module.impl.blatant.player;
 
+import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
+import io.justme.lavender.events.render.Event2DRender;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
-import io.justme.lavender.utility.player.MovementUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.value.impl.ModeValue;
 import io.justme.lavender.value.impl.NumberValue;
@@ -24,8 +25,15 @@ import net.minecraft.util.BlockPos;
 @ModuleInfo(name = "NoFall", description = "", category = Category.PLAYER)
 public class NoFall extends Module {
 
-    private final ModeValue ModeValue = new ModeValue("Mode", new String[]{"jump", "spoofGround","Watchdog"}, "jump");
+    private final ModeValue ModeValue = new ModeValue("Mode", new String[]{"jump", "spoofGround","Watchdog","Watchdog Blink"}, "jump");
     private final NumberValue distance = new NumberValue("minDistance", 3, 0, 8, 1);
+
+    private boolean jumped;
+    private boolean shouldJumped;
+    private boolean prevOnGround = false;
+    private double fallDistance = 0;
+    private boolean timed = false;
+    private boolean blinked;
 
     @Override
     public void onEnable() {
@@ -35,14 +43,12 @@ public class NoFall extends Module {
     @Override
     public void onDisable() {
         super.onDisable();
+
+        if (blinked) {
+            La.getINSTANCE().getBlinkComponent().dispatch();
+            blinked = false;
+        }
     }
-
-    private boolean jumped;
-    private boolean shouldJumped;
-    private boolean prevOnGround = false;
-    private double fallDistance = 0;
-    private boolean timed = false;
-
 
     @EventTarget
     public void onMotion(EventMotionUpdate event) {
@@ -58,6 +64,10 @@ public class NoFall extends Module {
         if (mc.thePlayer.capabilities.allowFlying) return;
 
         if (isVoid()) {
+            if (blinked) {
+                La.getINSTANCE().getBlinkComponent().dispatch();
+                blinked = false;
+            }
             return;
         }
 
@@ -99,7 +109,41 @@ public class NoFall extends Module {
                     timed = false;
                 }
             }
+            case "Watchdog Blink" -> {
+                if (La.getINSTANCE().getBlinkComponent().packets.size() > 20) {
+                    La.getINSTANCE().getBlinkComponent().dispatch();
+                }
+
+                if (mc.thePlayer.onGround) {
+                    if (blinked) {
+                        La.getINSTANCE().getBlinkComponent().dispatch();
+                        blinked = false;
+                    }
+
+                    this.prevOnGround = true;
+                } else if (this.prevOnGround) {
+
+                    if (shouldBlink()) {
+                        if (!La.getINSTANCE().getBlinkComponent().blinking)
+                            La.getINSTANCE().getBlinkComponent().blinking = true;
+                        blinked = true;
+                    }
+
+                    prevOnGround = false;
+                } else if (PlayerUtility.isBlockUnder() && La.getINSTANCE().getBlinkComponent().blinking && (this.fallDistance - mc.thePlayer.motionY) >= distance.getValue()) {
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+                    this.fallDistance = 0.0F;
+                    La.getINSTANCE().print("Spoof");
+                }
+            }
         }
+    }
+
+
+
+    @EventTarget
+    public void onRender2D(Event2DRender event) {
+
     }
 
     private double distanceFromGround() {
@@ -117,6 +161,10 @@ public class NoFall extends Module {
                 return false; // 找到非空气方块，说明不是虚空
             }
         }
-        return true; // 全是空气，说明是虚空
+        return true;
+    }
+
+    private boolean shouldBlink() {
+        return !mc.thePlayer.onGround && !PlayerUtility.isBlockUnder((int) Math.floor(distance.getValue().intValue())) && PlayerUtility.isBlockUnder() ;
     }
 }
