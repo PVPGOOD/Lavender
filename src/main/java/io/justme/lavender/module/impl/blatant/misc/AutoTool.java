@@ -7,6 +7,7 @@ import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.value.impl.BoolValue;
+import io.justme.lavender.value.impl.NumberValue;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.block.Block;
@@ -26,7 +27,11 @@ import java.util.Iterator;
 public class AutoTool extends Module {
 
     private final BoolValue
-            autoSword = new BoolValue("autoSword", false);
+            requireNearbyBed = new BoolValue("requireNearbyBed", true);
+    private final NumberValue checkRange = new NumberValue("Check Range", 8, 1, 15, 1);
+
+    private final BoolValue
+            autoSword = new BoolValue("Auto Sword", false);
 
     private final BoolValue
             switchBack = new BoolValue("Switch Back", false);
@@ -37,6 +42,10 @@ public class AutoTool extends Module {
 
     @EventTarget
     public void onMotionUpdate(EventMotionUpdate event) {
+        if (requireNearbyBed.getValue() && !isBedNearby()) {
+            return;
+        }
+
         if (event.getType() == EnumEventType.PRE) {
             if (switchBack.getValue() && switched && previousSlot != -1) {
                 mc.thePlayer.inventory.currentItem = previousSlot;
@@ -131,6 +140,23 @@ public class AutoTool extends Module {
         }
 
         return damage;
+    }
+
+    private boolean isBedNearby() {
+        BlockPos playerPos = mc.thePlayer.getPosition();
+        int range = checkRange.getValue().intValue();
+
+        for (int x = -range; x <= range; x++) {
+            for (int y = -range; y <= range; y++) {
+                for (int z = -range; z <= range; z++) {
+                    BlockPos pos = playerPos.add(x, y, z);
+                    if (mc.theWorld.getBlockState(pos).getBlock() instanceof net.minecraft.block.BlockBed) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @Override
