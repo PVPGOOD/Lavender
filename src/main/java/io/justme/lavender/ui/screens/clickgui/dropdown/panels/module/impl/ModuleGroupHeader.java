@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * @author JustMe.
@@ -35,7 +34,7 @@ public class ModuleGroupHeader extends AbstractModulePanel {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-        font.drawString(type.getName() , getX() + 30,getY() + getHeight() /2f - font.getHeight() /2f + 5, new Color(0,0,0, 166).getRGB());
+        font.drawString(type.getName() , getX() + 30,getY() + getHeight() /2f - font.getHeight() /2f + 3, new Color(0,0,0, 166).getRGB());
 
         if (isExpanded()) {
             Shader.roundGradientRect.drawGradientVertical(getX(), getY() + getHeight(), getWidth(), 3, 0, new Color(255, 200, 222, 255), new Color(0, 0, 0, 26));
@@ -44,7 +43,7 @@ public class ModuleGroupHeader extends AbstractModulePanel {
         var iconWidth = 12;
         var iconHeight = 12;
         RenderUtility.drawImage(new ResourceLocation("la/clickgui/category/md/" + type.getName() + ".png"),
-                getX() + iconWidth/2f + 3,getY() + getHeight() /2f - iconHeight/2f + 2,iconWidth,iconHeight,new Color(0,0,0,200));
+                getX() + iconWidth/2f + 3,getY() + getHeight() /2f - iconHeight/2f,iconWidth,iconHeight,new Color(0,0,0,200));
     }
 
     @Override

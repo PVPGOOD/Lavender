@@ -59,7 +59,7 @@ public class ModuleList extends AbstractModulePanel {
     private Animation scrollAnimation = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 18, new Color(0xF8F2FA));
+        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 15, new Color(0xF8F2FA));
 
         setScrollOffset(getScrollAnimation().getValue());
         AtomicInteger intervalY = new AtomicInteger();
@@ -108,7 +108,7 @@ public class ModuleList extends AbstractModulePanel {
             getExpandedHeightAnimation().setToValue(getHeight());
             setLastHeight(getHeight());
         } else {
-            getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 35,0.1f,Easings.QUART_OUT);
+            getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 30,0.1f,Easings.QUART_OUT);
             setHeight(getExpandedHeightAnimation().getValue());
         }
 
