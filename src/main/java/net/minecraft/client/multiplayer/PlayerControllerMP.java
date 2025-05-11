@@ -1,5 +1,7 @@
 package net.minecraft.client.multiplayer;
 
+import io.justme.lavender.La;
+import io.justme.lavender.events.player.EventPlayerRightClick;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -398,6 +400,13 @@ public class PlayerControllerMP
         }
         else
         {
+
+            var event = new EventPlayerRightClick();
+            La.getINSTANCE().getEventManager().call(event);
+            if (event.isCancelled()) {
+                return false;
+            }
+
             this.syncCurrentPlayItem();
             this.netClientHandler.addToSendQueue(new C08PacketPlayerBlockPlacement(playerIn.inventory.getCurrentItem()));
             int i = itemStackIn.stackSize;
