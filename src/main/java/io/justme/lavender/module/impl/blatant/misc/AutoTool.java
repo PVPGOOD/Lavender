@@ -143,6 +143,10 @@ public class AutoTool extends Module {
     }
 
     private boolean isBedNearby() {
+        if (mc.theWorld == null || mc.thePlayer == null) {
+            return false;
+        }
+
         BlockPos playerPos = mc.thePlayer.getPosition();
         int range = checkRange.getValue().intValue();
 
