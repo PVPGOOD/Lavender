@@ -5,7 +5,6 @@ import io.justme.lavender.events.render.Event2DRender;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
-import io.justme.lavender.ui.elements.AbstractElements;
 import io.justme.lavender.value.impl.ModeValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
@@ -47,7 +46,6 @@ public class HUD extends Module {
             elements.getCircleArrayList().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
         }
 
-        elements.getNotifications().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
         elements.getTargetList().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
     }
 

@@ -5,6 +5,7 @@ import de.florianmichael.viamcp.ViaMCP;
 import de.florianmichael.viamcp.gui.AsyncVersionSlider;
 import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.events.game.EventKey;
+import io.justme.lavender.events.render.Event2DRender;
 import io.justme.lavender.fonts.FontManager;
 import io.justme.lavender.handler.BlinkComponent;
 import io.justme.lavender.module.Module;
@@ -116,6 +117,13 @@ public class La {
 
         String str = String.format(EnumChatFormatting.DARK_RED + "[%s]" + EnumChatFormatting.GRAY+ ":" + EnumChatFormatting.WHITE +" %s", suffix,message);
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(str));
+    }
+
+    @EventTarget
+    public void on2D(Event2DRender event2DRender) {
+        if (getSettingManager().getNotification().getValue()) {
+            getElementsManager().getNotifications().draw(event2DRender.getPartialTicks(), getMouseX(),getMouseY());
+        }
     }
 
     @EventTarget

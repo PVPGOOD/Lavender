@@ -6,7 +6,10 @@ import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author JustMe.
@@ -25,6 +28,9 @@ public class SettingManager {
     //渲染
     private final BoolValue blurValue = new BoolValue("启用 模糊渲染", false);
     private final BoolValue shadowValue = new BoolValue("启用 阴影渲染", false);
+
+    private final BoolValue notification = new BoolValue("启用通知", true);
+    private final BoolValue pushNotificationOnFirstJoinServer = new BoolValue("首次加入服务器时推送通知", true);
 
     private final HashMap<SettingType, List<DefaultValue<?>>> settingTypeHashMap = new LinkedHashMap<>();
 
