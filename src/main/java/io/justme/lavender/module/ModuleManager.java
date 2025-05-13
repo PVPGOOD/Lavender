@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.module.impl.blatant.exploit.disabler.Disabler;
 import io.justme.lavender.module.impl.blatant.fight.*;
 import io.justme.lavender.module.impl.blatant.misc.AutoTool;
+import io.justme.lavender.module.impl.blatant.misc.BlockPrediction;
 import io.justme.lavender.module.impl.blatant.misc.FireBallPrediction;
 import io.justme.lavender.module.impl.blatant.misc.ProjectilePrediction;
 import io.justme.lavender.module.impl.blatant.movements.*;
@@ -60,6 +61,7 @@ public class ModuleManager extends Manager<Module> {
     //misc
     private final AutoTool autoTool = new AutoTool();
     private final FireBallPrediction fireBallPrediction = new FireBallPrediction();
+    private final BlockPrediction blockPrediction = new BlockPrediction();
     //exploit
     private final Disabler disabler = new Disabler();
 //    private final PacketDebugger packetDebugger = new PacketDebugger();
@@ -114,6 +116,7 @@ public class ModuleManager extends Manager<Module> {
                 //misc
                 getAutoTool(),
                 getFireBallPrediction(),
+                getBlockPrediction(),
                 //world
                 getAntiVoid(),
                 getFastMine(),
