@@ -96,7 +96,7 @@ public class La {
         notificationsManager = new NotificationsManager();
 
         configsManager = new ConfigsManager();
-        configsManager.load();
+//        configsManager.load();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> configsManager.save()));
 
