@@ -1,7 +1,7 @@
 package io.justme.lavender.module.impl.blatant.misc;
 
 import io.justme.lavender.La;
-import io.justme.lavender.events.player.EventPlayerRightClick;
+import io.justme.lavender.events.player.EventSendUseItem;
 import io.justme.lavender.events.render.Event3DRender;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
@@ -29,7 +29,7 @@ public class ProjectilePrediction extends Module {
     private final BoolValue voidCheck = new BoolValue("VoidCheck", true);
 
     @EventTarget
-    public void onRightClick(EventPlayerRightClick eventPlayerRightClick) {
+    public void onRightClick(EventSendUseItem eventSendUseItem) {
         if (mc.thePlayer == null || mc.theWorld == null) return;
         if (mc.thePlayer.getHeldItem() == null) return;
         if (!(mc.thePlayer.getHeldItem().getItem() instanceof ItemEnderPearl)) return;
@@ -46,7 +46,7 @@ public class ProjectilePrediction extends Module {
                     NotificationsEnum.WARNING,
                     3000
             );
-            eventPlayerRightClick.setCancelled(true);
+            eventSendUseItem.setCancelled(true);
             return;
         }
 
@@ -69,7 +69,7 @@ public class ProjectilePrediction extends Module {
                         NotificationsEnum.WARNING,
                         3000
                 );
-                eventPlayerRightClick.setCancelled(true);
+                eventSendUseItem.setCancelled(true);
             }
         }
     }
