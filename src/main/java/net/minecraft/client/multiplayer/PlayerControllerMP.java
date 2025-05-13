@@ -1,7 +1,8 @@
 package net.minecraft.client.multiplayer;
 
 import io.justme.lavender.La;
-import io.justme.lavender.events.player.EventPlayerRightClick;
+import io.justme.lavender.events.player.EventRightClick;
+import io.justme.lavender.events.player.EventSendUseItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -329,8 +330,21 @@ public class PlayerControllerMP
         }
     }
 
-    public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack heldStack, BlockPos hitPos, EnumFacing side, Vec3 hitVec)
+    public boolean onPlayerRightClick(EntityPlayerSP player, WorldClient worldIn, ItemStack originalHeldStack, BlockPos originalHitPos, EnumFacing originalSide, Vec3 originalHitVec)
     {
+
+        var event = new EventRightClick(player, worldIn, originalHeldStack, originalHitPos, originalSide, originalHitVec);
+        La.getINSTANCE().getEventManager().call(event);
+
+        if (event.isCancelled()) {
+            return false;
+        }
+
+        var heldStack = event.getHeldStack();
+        var hitPos = event.getHitPos();
+        var hitVec = event.getHitVec();
+        var side = event.getSide();
+
         this.syncCurrentPlayItem();
         float f = (float)(hitVec.xCoord - (double)hitPos.getX());
         float f1 = (float)(hitVec.yCoord - (double)hitPos.getY());
@@ -401,7 +415,7 @@ public class PlayerControllerMP
         else
         {
 
-            var event = new EventPlayerRightClick();
+            var event = new EventSendUseItem();
             La.getINSTANCE().getEventManager().call(event);
             if (event.isCancelled()) {
                 return false;
