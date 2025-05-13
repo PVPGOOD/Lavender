@@ -2,13 +2,14 @@ package net.minecraft.scoreboard;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 public class Scoreboard
 {
@@ -242,26 +243,19 @@ public class Scoreboard
 
     public ScorePlayerTeam createTeam(String name)
     {
-        if (name.length() > 16)
-        {
-            throw new IllegalArgumentException("The team name \'" + name + "\' is too long!");
+        if (name.length() > 16) {
+            throw new IllegalArgumentException("The team name '" + name + "' is too long!");
         }
-        else
-        {
-            ScorePlayerTeam scoreplayerteam = this.getTeam(name);
 
-            if (scoreplayerteam != null)
-            {
-                throw new IllegalArgumentException("A team with the name \'" + name + "\' already exists!");
-            }
-            else
-            {
-                scoreplayerteam = new ScorePlayerTeam(this, name);
-                this.teams.put(name, scoreplayerteam);
-                this.broadcastTeamCreated(scoreplayerteam);
-                return scoreplayerteam;
-            }
+        var existingTeam = this.getTeam(name);
+        if (existingTeam != null) {
+            return existingTeam;
         }
+
+        ScorePlayerTeam newTeam = new ScorePlayerTeam(this, name);
+        this.teams.put(name, newTeam);
+        this.broadcastTeamCreated(newTeam);
+        return newTeam;
     }
 
     public void removeTeam(ScorePlayerTeam p_96511_1_)
