@@ -89,7 +89,7 @@ public class NameTag extends Module {
 
         StringBuilder tagBuilder = new StringBuilder();
 
-        if (!ValidEntityUtility.isOnSameTeam(entity)) {
+        if (ValidEntityUtility.isOnSameTeam(entity)) {
             tagBuilder.append(EnumChatFormatting.AQUA).append("[").append("Team").append("] ").append(EnumChatFormatting.RESET);
         }
 
