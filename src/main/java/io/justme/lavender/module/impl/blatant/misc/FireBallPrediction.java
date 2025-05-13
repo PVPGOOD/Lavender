@@ -27,8 +27,8 @@ import java.util.Set;
  * @since 2025/5/10
  **/
 
-@ModuleInfo(name = "FireBallWarning", category = Category.MISC, description = "检测火球是否靠近并推送通知")
-public class FireBallWarning extends Module {
+@ModuleInfo(name = "FireBallPrediction", category = Category.MISC, description = "检测火球是否靠近并推送通知")
+public class FireBallPrediction extends Module {
 
     private final Minecraft mc = Minecraft.getMinecraft();
     private final Set<EntityFireball> notifiedFireballs = new HashSet<>();
