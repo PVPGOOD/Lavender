@@ -2,6 +2,7 @@ package io.justme.lavender.ui.elements;
 
 import io.justme.lavender.ui.elements.impl.Notifications;
 import io.justme.lavender.ui.elements.impl.TargetList;
+import io.justme.lavender.ui.elements.impl.Title;
 import io.justme.lavender.ui.elements.impl.arraylist.draw.CircleArrayList;
 import io.justme.lavender.ui.elements.impl.arraylist.draw.LegacyArrayList;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -26,6 +27,7 @@ public class ElementsManager extends Manager<AbstractElements> {
     private final CircleArrayList circleArrayList = new CircleArrayList();
     private final Notifications notifications = new Notifications();
     private final TargetList targetList = new TargetList();
+    private final Title title = new Title();
 
     public ElementsManager() {
 
@@ -33,7 +35,8 @@ public class ElementsManager extends Manager<AbstractElements> {
                 getLegacyArrayList(),
                 getCircleArrayList(),
                 getNotifications(),
-                getTargetList()
+                getTargetList(),
+                getTitle()
         ));
     }
 

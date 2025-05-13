@@ -101,4 +101,12 @@ public class MathUtility {
     public static double wrappedDifference(double number1, double number2) {
         return Math.min(Math.abs(number1 - number2), Math.min(Math.abs(number1 - 360) - Math.abs(number2 - 0), Math.abs(number2 - 360) - Math.abs(number1 - 0)));
     }
+
+    public float clamp(float i, float min, float max) {
+        if (i < min) {
+            return min;
+        } else {
+            return Math.min(i, max);
+        }
+    }
 }

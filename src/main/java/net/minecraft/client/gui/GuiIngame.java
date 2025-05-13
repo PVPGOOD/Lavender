@@ -3,9 +3,6 @@ package net.minecraft.client.gui;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
 import io.justme.lavender.La;
 import io.justme.lavender.events.render.Event2DRender;
 import net.minecraft.block.material.Material;
@@ -35,17 +32,14 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.src.Config;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.FoodStats;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
+import net.minecraft.util.*;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 import org.lwjglx.input.Mouse;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 public class GuiIngame extends Gui
 {
@@ -67,12 +61,15 @@ public class GuiIngame extends Gui
     private final GuiOverlayDebug overlayDebug;
     private final GuiSpectator spectatorGui;
     private final GuiPlayerTabOverlay overlayPlayerList;
-    private int titlesTimer;
-    private String displayedTitle = "";
-    private String displayedSubTitle = "";
-    private int titleFadeIn;
-    private int titleDisplayTime;
-    private int titleFadeOut;
+
+
+    public int titlesTimer;
+    public String displayedTitle = "";
+    public String displayedSubTitle = "";
+    public int titleFadeIn;
+    public int titleDisplayTime;
+    public int titleFadeOut;
+
     private int playerHealth = 0;
     private int lastPlayerHealth = 0;
     private long lastSystemTime = 0L;
@@ -255,47 +252,6 @@ public class GuiIngame extends Gui
                 }
 
                 this.getFontRenderer().drawString(this.recordPlaying, -this.getFontRenderer().getStringWidth(this.recordPlaying) / 2, -4, l + (l1 << 24 & -16777216));
-                GlStateManager.disableBlend();
-                GlStateManager.popMatrix();
-            }
-
-            this.mc.mcProfiler.endSection();
-        }
-
-        if (this.titlesTimer > 0)
-        {
-            this.mc.mcProfiler.startSection("titleAndSubtitle");
-            float f3 = (float)this.titlesTimer - partialTicks;
-            int i2 = 255;
-
-            if (this.titlesTimer > this.titleFadeOut + this.titleDisplayTime)
-            {
-                float f4 = (float)(this.titleFadeIn + this.titleDisplayTime + this.titleFadeOut) - f3;
-                i2 = (int)(f4 * 255.0F / (float)this.titleFadeIn);
-            }
-
-            if (this.titlesTimer <= this.titleFadeOut)
-            {
-                i2 = (int)(f3 * 255.0F / (float)this.titleFadeOut);
-            }
-
-            i2 = MathHelper.clamp_int(i2, 0, 255);
-
-            if (i2 > 8)
-            {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate((float)(i / 2), (float)(j / 2), 0.0F);
-                GlStateManager.enableBlend();
-                GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(4.0F, 4.0F, 4.0F);
-                int j2 = i2 << 24 & -16777216;
-                this.getFontRenderer().drawString(this.displayedTitle, (float)(-this.getFontRenderer().getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
-                GlStateManager.popMatrix();
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                this.getFontRenderer().drawString(this.displayedSubTitle, (float)(-this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
-                GlStateManager.popMatrix();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
             }

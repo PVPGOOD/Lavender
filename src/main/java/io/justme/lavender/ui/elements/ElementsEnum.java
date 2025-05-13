@@ -8,5 +8,6 @@ public enum ElementsEnum {
     LegacyArrayList,
     CircleArrayList,
     Notification,
-    TargetList
+    TargetList,
+    Title
 }

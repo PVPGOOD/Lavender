@@ -15,12 +15,25 @@ public final class FontManager {
     private final FontDrawer SFBold16;
     private final FontDrawer SFBold18;
     private final FontDrawer SFBold22;
+    private final FontDrawer SFBold32;
+    private final FontDrawer SFBold34;
+    private final FontDrawer SFBold36;
+    private final FontDrawer SFBold38;
+    private final FontDrawer SFBold40;
+    private final FontDrawer SFBold60;
+    private final FontDrawer SFBold80;
 
     private final FontDrawer PingFang_Bold12;
     private final FontDrawer PingFang_Bold14;
     private final FontDrawer PingFang_Bold16;
     private final FontDrawer PingFang_Bold18;
     private final FontDrawer PingFang_Bold22;
+    private final FontDrawer PingFang_Bold32;
+    private final FontDrawer PingFang_Bold34;
+    private final FontDrawer PingFang_Bold36;
+    private final FontDrawer PingFang_Bold38;
+    private final FontDrawer PingFang_Bold40;
+    private final FontDrawer PingFang_Bold80;
 
     private final FontDrawer PingFang_Light12;
     private final FontDrawer PingFang_Light14;
@@ -32,6 +45,12 @@ public final class FontManager {
     private final FontDrawer PingFang_Medium18;
     private final FontDrawer PingFang_Medium20;
     private final FontDrawer PingFang_Medium22;
+    private final FontDrawer PingFang_Medium32;
+    private final FontDrawer PingFang_Medium34;
+    private final FontDrawer PingFang_Medium36;
+    private final FontDrawer PingFang_Medium38;
+    private final FontDrawer PingFang_Medium40;
+    private final FontDrawer PingFang_Medium80;
 
     private final FontDrawer PingFang_Regular12;
     private final FontDrawer PingFang_Regular14;
@@ -80,12 +99,25 @@ public final class FontManager {
             SFBold16 = createByResource("SFBOLD.ttf",16f,true);
             SFBold18 = createByResource("SFBOLD.ttf",18f,true);
             SFBold22 = createByResource("SFBOLD.ttf",22f,true);
+            SFBold32 = createByResource("SFBOLD.ttf",32f,true);
+            SFBold34 = createByResource("SFBOLD.ttf",34f,true);
+            SFBold36 = createByResource("SFBOLD.ttf",36f,true);
+            SFBold38 = createByResource("SFBOLD.ttf",38f,true);
+            SFBold40 = createByResource("SFBOLD.ttf",40f,true);
+            SFBold60 = createByResource("SFBOLD.ttf",60f,true);
+            SFBold80 = createByResource("SFBOLD.ttf",80f,true);
 
             PingFang_Bold12 = createByResource("PingFang-Bold.ttf",12f,true);
             PingFang_Bold14 = createByResource("PingFang-Bold.ttf",14f,true);
             PingFang_Bold16 = createByResource("PingFang-Bold.ttf",16f,true);
             PingFang_Bold18 = createByResource("PingFang-Bold.ttf",18f,true);
             PingFang_Bold22 = createByResource("PingFang-Bold.ttf",22f,true);
+            PingFang_Bold32 = createByResource("PingFang-Bold.ttf",32f,true);
+            PingFang_Bold34 = createByResource("PingFang-Bold.ttf",34f,true);
+            PingFang_Bold36 = createByResource("PingFang-Bold.ttf",36f,true);
+            PingFang_Bold38 = createByResource("PingFang-Bold.ttf",38f,true);
+            PingFang_Bold40 = createByResource("PingFang-Bold.ttf",40f,true);
+            PingFang_Bold80 = createByResource("PingFang-Bold.ttf",80f,true);
 
             PingFang_Light12 = createByResource("PingFang-Light.ttf",12f,true);
             PingFang_Light14 = createByResource("PingFang-Light.ttf",14f,true);
@@ -97,6 +129,12 @@ public final class FontManager {
             PingFang_Medium18 = createByResource("PingFang-Medium.ttf",18f,true);
             PingFang_Medium20 = createByResource("PingFang-Medium.ttf",20f,true);
             PingFang_Medium22 = createByResource("PingFang-Medium.ttf",22f,true);
+            PingFang_Medium32 = createByResource("PingFang-Medium.ttf",32f,true);
+            PingFang_Medium34 = createByResource("PingFang-Medium.ttf",34f,true);
+            PingFang_Medium36 = createByResource("PingFang-Medium.ttf",36f,true);
+            PingFang_Medium38 = createByResource("PingFang-Medium.ttf",38f,true);
+            PingFang_Medium40 = createByResource("PingFang-Medium.ttf",40f,true);
+            PingFang_Medium80 = createByResource("PingFang-Medium.ttf",80f,true);
 
             PingFang_Regular12 = createByResource("PingFang-Regular.ttf",12f,true);
             PingFang_Regular14 = createByResource("PingFang-Regular.ttf",14f,true);
