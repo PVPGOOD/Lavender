@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.elements.impl.arraylist;
+package io.justme.lavender.ui.elements.impl.arraylist.draw;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;

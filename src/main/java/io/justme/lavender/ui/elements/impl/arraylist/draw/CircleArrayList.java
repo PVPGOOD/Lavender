@@ -1,24 +1,22 @@
-package io.justme.lavender.ui.elements.impl.arraylist;
+package io.justme.lavender.ui.elements.impl.arraylist.draw;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.elements.AbstractElements;
 import io.justme.lavender.ui.elements.ElementsEnum;
+import io.justme.lavender.ui.elements.impl.arraylist.AbstractArraylist;
+import io.justme.lavender.ui.elements.impl.arraylist.components.CircleComponent;
 import io.justme.lavender.ui.elements.quadrant.Quadrant;
 import io.justme.lavender.ui.elements.quadrant.QuadrantEnum;
-import io.justme.lavender.utility.gl.ColorUtility;
 import io.justme.lavender.utility.gl.OGLUtility;
-import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.Comparator;
+import java.util.ArrayList;
 
 /**
  * @author JustMe.
@@ -28,12 +26,17 @@ import java.util.Comparator;
 @Setter
 public class CircleArrayList extends AbstractElements {
 
+    private ArrayList<AbstractArraylist> components = new ArrayList<>();
     private ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
     private float x,y,arraylistWidth,arrayListHeight;
     private boolean dragging;
 
     public CircleArrayList() {
         super(ElementsEnum.CircleArrayList);
+
+        for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
+            getComponents().add(new CircleComponent(module));
+        }
     }
 
 
@@ -44,16 +47,17 @@ public class CircleArrayList extends AbstractElements {
         var quadrant = new Quadrant();
 
         //sort
-        var modules = La.getINSTANCE().getModuleManager().getElements()
+        var modules = getComponents()
                 .stream()
-                .sorted(Comparator.comparingInt(module -> {
-                    var name = module.getName();
-                    if (quadrant.getQuadrant(getX(), getY()) == QuadrantEnum.FIRST || quadrant.getQuadrant(getX(), getY()) == QuadrantEnum.SECOND) {
-                        return -fontRenderer.getStringWidth(name);
+                .filter(elements -> elements.module.isToggle())
+                .sorted((a, b) -> {
+                    var currentQuadrant = quadrant.getQuadrant(getPosX(), getPosY());
+                    if (currentQuadrant == QuadrantEnum.FIRST || currentQuadrant == QuadrantEnum.SECOND) {
+                        return Double.compare(b.getWidth(), a.getWidth());
                     } else {
-                        return fontRenderer.getStringWidth(name);
+                        return Double.compare(a.getWidth(), b.getWidth());
                     }
-                }))
+                })
                 .toList();
 
 
@@ -62,16 +66,19 @@ public class CircleArrayList extends AbstractElements {
         final int[] index = {0};
         int intervalWidth = 0;
 
-        for (Module module : modules) {
 
-            var animationInterval = module.getAnimationInterval();
+        for (AbstractArraylist elements : modules) {
 
-            if (module.getAnimation().isDone() && !module.isToggle()) continue;
+            var animationInterval = elements.module.getAnimationInterval();
 
-            var str = module.getName();
+            if (elements.module.getAnimation().isDone() && !elements.module.isToggle()) continue;
+
+            var str = elements.module.getName();
 
             float x = 0;
             float y = 0;
+
+
             switch (quadrant.getQuadrant(getPosX(),getPosY())) {
                 case FIRST -> {
                     x = getPosX() - animationInterval.getValue() - fontRenderer.getStringWidth(str) + getWidth();
@@ -100,8 +107,19 @@ public class CircleArrayList extends AbstractElements {
                 }
             }
 
-            module.getAnimation().update();
-            module.getAnimation().animate(module.isToggle() ? 1 : 0F, 0.5F, Easings.EXPO_OUT);
+            if (elements.isDragging()) {
+                elements.setDraggingX(mouseX - x);
+                elements.setDraggingY(mouseY - y);
+            }
+
+            if (elements.isDragging()) {
+                x += mouseX - elements.getDraggingX();
+                y += mouseY - elements.getDraggingY();
+            }
+
+
+            elements.module.getAnimation().update();
+            elements.module.getAnimation().animate(elements.module.isToggle() ? 1 : 0F, 0.5F, Easings.EXPO_OUT);
 
             animationInterval.animate(intervalX[0], 0.1f, Easings.LINEAR);
             animationInterval.update();
@@ -109,24 +127,25 @@ public class CircleArrayList extends AbstractElements {
             int finalIndex = index[0];
             float finalX = x;
             float finalY = y;
-            OGLUtility.scale(x + fontRenderer.getStringWidth(str) / 2f, y + fontRenderer.getHeight() / 2f, module.getAnimation().getValue(), () -> {
+            OGLUtility.scale(x + fontRenderer.getStringWidth(str) / 2f, y + fontRenderer.getHeight() / 2f, elements.module.getAnimation().getValue(), () -> {
 
-                RenderUtility.drawRoundRect(finalX - 3, finalY - 3,
-                        fontRenderer.getStringWidth(str) + 6 ,
-                        fontRenderer.getHeight(),
-                        7,
-                        new Color(0, 0, 0, 255));
-
-                fontRenderer.drawStringWithOutline(module.getName(), finalX, finalY, ColorUtility.fadeBetween(finalIndex, 10, new Color(255, 207, 0).getRGB(), new Color(63, 2, 2).getRGB()));
+                elements.setX(finalX - 3);
+                elements.setY(finalY - 3);
+                elements.setWidth(fontRenderer.getStringWidth(str) + 6);
+                elements.setHeight(fontRenderer.getHeight());
+                elements.setIndex(finalIndex);
+                elements.setFontDrawer(fontRenderer);
+                elements.draw(mouseX, mouseY);
             });
 
             intervalX[0] += fontRenderer.getStringWidth(str) + 10;
 
-            switch (quadrant.getQuadrant(getPosX(),getPosY())) {
-                case FIRST , SECOND -> {
+            switch (quadrant.getQuadrant(getPosX(), getPosY())) {
+                case FIRST, SECOND -> {
                     intervalWidth = modules.stream()
+                            .sorted((a, b) -> Float.compare(fontRenderer.getStringWidth(b.module.getName()), fontRenderer.getStringWidth(a.module.getName()))) // 按宽度降序排序
                             .limit(5)
-                            .mapToInt(module1 -> 15 + fontRenderer.getStringWidth(module1.getName()))
+                            .mapToInt(module1 -> 15 + fontRenderer.getStringWidth(module1.module.getName()))
                             .sum();
 
                     if ((index[0] + 1) % 5 == 0) {
@@ -138,12 +157,11 @@ public class CircleArrayList extends AbstractElements {
                     setHeight(intervalY[0] + fontRenderer.getHeight());
                 }
 
-                case THIRD, FOURTH ->  {
+                case THIRD, FOURTH -> {
                     intervalWidth = modules.stream()
                             .skip(Math.max(0, modules.size() - 5))
-                            .mapToInt(module1 -> 15 + fontRenderer.getStringWidth(module1.getName()))
+                            .mapToInt(module1 -> 15 + fontRenderer.getStringWidth(module1.module.getName()))
                             .sum();
-
 
                     if ((index[0]) % 5 == 0) {
                         intervalX[0] = 0;
@@ -157,6 +175,7 @@ public class CircleArrayList extends AbstractElements {
 
 
             index[0]++;
+
         }
 
 
@@ -166,14 +185,26 @@ public class CircleArrayList extends AbstractElements {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if (MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY)){
-            setDragging(!isDragging());
+        for (AbstractArraylist elements : getComponents()) {
+            if (elements.mouseClicked(mouseX, mouseY, mouseButton)) {
+                elements.setDraggingY(mouseX - elements.getX());
+                elements.setDraggingY(mouseY - elements.getY());
+                elements.setDragging(true);
+            }
         }
+
+//        if (MouseUtility.isHovering(getX(), getY(), getWidth(), getHeight(), mouseX, mouseY)) {
+//            setDragging(!isDragging());
+//        }
     }
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
         setDragging(false);
+        for (AbstractArraylist elements : getComponents()) {
+            elements.setDragging(false); // 停止拖拽
+            elements.mouseReleased(mouseX, mouseY, state);
+        }
     }
 
     @Override

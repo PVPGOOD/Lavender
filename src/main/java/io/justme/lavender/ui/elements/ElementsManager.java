@@ -1,9 +1,9 @@
 package io.justme.lavender.ui.elements;
 
-import io.justme.lavender.ui.elements.impl.arraylist.CircleArrayList;
-import io.justme.lavender.ui.elements.impl.arraylist.LegacyArrayList;
 import io.justme.lavender.ui.elements.impl.Notifications;
 import io.justme.lavender.ui.elements.impl.TargetList;
+import io.justme.lavender.ui.elements.impl.arraylist.draw.CircleArrayList;
+import io.justme.lavender.ui.elements.impl.arraylist.draw.LegacyArrayList;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 import lombok.Setter;
