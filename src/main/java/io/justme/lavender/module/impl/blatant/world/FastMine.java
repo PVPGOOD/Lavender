@@ -55,7 +55,7 @@ public class FastMine extends Module {
                     mc.playerController.blockHitDelay = 0;
                     if (digging && !mc.playerController.isInCreativeMode()) {
                         Block block = mc.theWorld.getBlockState(blockPos).getBlock();
-                        damage += block.getPlayerRelativeBlockHardness(mc.thePlayer, mc.theWorld, blockPos) * 1.4f;
+                        damage += block.getPlayerRelativeBlockHardness(mc.thePlayer, mc.theWorld, blockPos) * 1.5f;
                         if (damage >= 1.0f) {
                             mc.theWorld.setBlockState(blockPos, Blocks.air.getDefaultState(), 11);
                             mc.thePlayer.sendQueue.getNetworkManager().sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, blockPos, facing));
@@ -86,6 +86,18 @@ public class FastMine extends Module {
                             digging = false;
                             blockPos = null;
                             facing = null;
+                        }
+                    }
+                }
+
+                case "Legit" -> {
+                    if (p instanceof C07PacketPlayerDigging c07PacketPlayerDigging && !Minecraft.getMinecraft().playerController.isInCreativeMode())
+                    {
+                        if (c07PacketPlayerDigging.getStatus() == C07PacketPlayerDigging.Action.START_DESTROY_BLOCK) {
+                            digging = true;
+                            blockPos = c07PacketPlayerDigging.getPosition();
+                            facing = c07PacketPlayerDigging.getFacing();
+                            damage = 0.0f;
                         }
                     }
                 }
