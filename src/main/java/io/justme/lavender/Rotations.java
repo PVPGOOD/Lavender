@@ -1,14 +1,10 @@
-package io.justme.lavender.module.impl.blatant.visual;
+package io.justme.lavender;
 
 import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.render.RotationUpdateEvent;
-import io.justme.lavender.module.Category;
-import io.justme.lavender.module.Module;
-import io.justme.lavender.module.ModuleInfo;
-import lombok.Getter;
-import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
@@ -17,24 +13,16 @@ import net.minecraft.util.MathHelper;
  * @author JustMe.
  * @since 2024/12/15
  **/
-@Getter
-@Setter
-@ModuleInfo(name = "Rotations", description = "", category = Category.VISUAL)
-public class Rotations extends Module {
+public class Rotations {
 
     private float yaw;
-
     public float yawOffset;
-
     private float pitch;
-
     private float prevYaw;
-
     public float preYawOffset;
-
     private float prevPitch;
-
     private boolean isRotating;
+    private final Minecraft mc = Minecraft.getMinecraft();
 
     @EventTarget()
     public void onTick(EventTick event) {
