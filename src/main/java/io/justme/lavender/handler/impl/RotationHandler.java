@@ -1,8 +1,9 @@
-package io.justme.lavender;
+package io.justme.lavender.handler.impl;
 
 import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.render.RotationUpdateEvent;
+import io.justme.lavender.handler.AbstractHandler;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -13,7 +14,7 @@ import net.minecraft.util.MathHelper;
  * @author JustMe.
  * @since 2024/12/15
  **/
-public class Rotations {
+public class RotationHandler extends AbstractHandler {
 
     private float yaw;
     public float yawOffset;

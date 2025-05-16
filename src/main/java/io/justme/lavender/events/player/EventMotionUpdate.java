@@ -6,8 +6,6 @@ import lombok.Setter;
 import net.lenni0451.asmevents.event.IEvent;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.lenni0451.asmevents.event.types.ITypedEvent;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.MathHelper;
 
 /**
  * @author JustMe.
@@ -42,7 +40,7 @@ public class EventMotionUpdate implements IEvent, ITypedEvent {
     }
 
     public void setYaw(float yaw) {
-        La.getINSTANCE().getModuleManager().getRotations().renderYawOffset(yaw);
+        La.getINSTANCE().getHandlerManager().getRotationHandler().renderYawOffset(yaw);
         this.yaw = yaw;
         this.isRotate = true;
     }

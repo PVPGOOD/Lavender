@@ -45,7 +45,7 @@ public class NoFall extends Module {
         super.onDisable();
 
         if (blinked) {
-            La.getINSTANCE().getBlinkComponent().dispatch();
+            La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
             blinked = false;
         }
     }
@@ -65,7 +65,7 @@ public class NoFall extends Module {
 
         if (isVoid()) {
             if (blinked) {
-                La.getINSTANCE().getBlinkComponent().dispatch();
+                La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
                 blinked = false;
             }
             return;
@@ -110,13 +110,13 @@ public class NoFall extends Module {
                 }
             }
             case "Watchdog Blink" -> {
-                if (La.getINSTANCE().getBlinkComponent().packets.size() > 20) {
-                    La.getINSTANCE().getBlinkComponent().dispatch();
+                if (La.getINSTANCE().getHandlerManager().getBlinkHandler().packets.size() > 20) {
+                    La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
                 }
 
                 if (mc.thePlayer.onGround) {
                     if (blinked) {
-                        La.getINSTANCE().getBlinkComponent().dispatch();
+                        La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
                         blinked = false;
                     }
 
@@ -124,13 +124,13 @@ public class NoFall extends Module {
                 } else if (this.prevOnGround) {
 
                     if (shouldBlink()) {
-                        if (!La.getINSTANCE().getBlinkComponent().blinking)
-                            La.getINSTANCE().getBlinkComponent().blinking = true;
+                        if (!La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking)
+                            La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking = true;
                         blinked = true;
                     }
 
                     prevOnGround = false;
-                } else if (PlayerUtility.isBlockUnder() && La.getINSTANCE().getBlinkComponent().blinking && (this.fallDistance - mc.thePlayer.motionY) >= distance.getValue()) {
+                } else if (PlayerUtility.isBlockUnder() && La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking && (this.fallDistance - mc.thePlayer.motionY) >= distance.getValue()) {
                     mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
                     this.fallDistance = 0.0F;
                     La.getINSTANCE().print("Spoof");

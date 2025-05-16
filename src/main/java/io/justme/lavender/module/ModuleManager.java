@@ -36,7 +36,6 @@ public class ModuleManager extends Manager<Module> {
     private final NoCamClip noCamClip = new NoCamClip();
     private final NoHurtCam noHurtCam = new NoHurtCam();
     private final ClickGui clickGui = new ClickGui();
-    private final Rotations rotations = new Rotations();
     private final NameTag nameTag = new NameTag();
     private final Chams chams = new Chams();
     private final FreeCam freeCam = new FreeCam();
@@ -77,7 +76,6 @@ public class ModuleManager extends Manager<Module> {
     public void onInitialization(){
 
         getElements().addAll(Arrays.asList(
-                getRotations(),
                 //blatant
 
                 //fight

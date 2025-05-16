@@ -1,8 +1,9 @@
-package io.justme.lavender.handler;
+package io.justme.lavender.handler.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventWorldReload;
 import io.justme.lavender.events.network.EventPacket;
+import io.justme.lavender.handler.AbstractHandler;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.network.PacketUtility;
 import net.lenni0451.asmevents.event.EventTarget;
@@ -16,11 +17,12 @@ import net.minecraft.network.login.client.C01PacketEncryptionResponse;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.status.client.C00PacketServerQuery;
 import net.minecraft.network.status.client.C01PacketPing;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class BlinkComponent {
+public final class BlinkHandler extends AbstractHandler {
 
     public final ConcurrentLinkedQueue<Packet<?>> packets = new ConcurrentLinkedQueue<>();
     public boolean blinking;
@@ -93,6 +95,6 @@ public final class BlinkComponent {
     @EventTarget(priority = EnumEventPriority.HIGHEST)
     public void onWorld(EventWorldReload event) {
         packets.clear();
-        La.getINSTANCE().getBlinkComponent().blinking = false;
+        La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking = false;
     }
 }

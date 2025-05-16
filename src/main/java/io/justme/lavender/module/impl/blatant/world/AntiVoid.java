@@ -55,7 +55,7 @@ public class AntiVoid extends Module {
     public void onDisable() {
         super.onDisable();
         sent = false;
-        La.getINSTANCE().getBlinkComponent().dispatch();
+        La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
     }
 
     @EventTarget
@@ -86,7 +86,7 @@ public class AntiVoid extends Module {
                 backX = safeX;
                 backY = safeY - 1;
                 backZ = safeZ;
-                La.getINSTANCE().getBlinkComponent().blinking = true;
+                La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking = true;
                 La.getINSTANCE().print("已记录", "[AntiVoid]");
             }
         }
@@ -95,7 +95,7 @@ public class AntiVoid extends Module {
         // blink
         if (universalStarted) {
             if (mc.thePlayer.onGround || mc.thePlayer.motionY > -0.01) {
-                La.getINSTANCE().getBlinkComponent().dispatch();
+                La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
                 universalStarted = false;
                 universalFlag = false;
                 sent = false;
@@ -133,7 +133,7 @@ public class AntiVoid extends Module {
     public void onPacket(EventPacket event) {
         if (event.getPacket() instanceof S08PacketPlayerPosLook pkt) {
             if (pkt.getX() == backX && pkt.getY() == backY - 1 && pkt.getZ() == backZ) {
-                La.getINSTANCE().getBlinkComponent().blinking = false;
+                La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking = false;
                 mc.thePlayer.setPosition(backX, backY - 1, backZ);
                 universalFlag = false;
                 universalStarted = false;

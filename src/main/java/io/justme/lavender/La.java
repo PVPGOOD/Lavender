@@ -7,7 +7,7 @@ import io.justme.lavender.configs.ConfigsManager;
 import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.events.render.Event2DRender;
 import io.justme.lavender.fonts.FontManager;
-import io.justme.lavender.handler.BlinkComponent;
+import io.justme.lavender.handler.HandlerManager;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleManager;
 import io.justme.lavender.setting.SettingManager;
@@ -18,7 +18,6 @@ import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
 import io.justme.lavender.ui.screens.notifacation.NotificationsManager;
-import io.justme.lavender.ui.screens.victoryscreen.VictoryScreen;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.EventManager;
@@ -61,8 +60,6 @@ public class La {
     private ConfigButtonFrame configButtonFrame;
     private ConfigScreen configScreen;
 
-    private VictoryScreen victoryScreen;
-
     private NotificationsManager notificationsManager;
 
     private ConfigsManager configsManager;
@@ -70,14 +67,15 @@ public class La {
     private SettingManager settingManager;
 
     //handler
-    private BlinkComponent blinkComponent;
-    private Rotations rotations;
+    private HandlerManager handlerManager;
 
     private final String skinLocation = "skins/9708a27eb2d4808120de9e5ea5bb542f7b8677c3809b69153e65110dbc51f3da";
 
     public void initialization() {
         eventManager = new EventManager();
         fontManager = new FontManager();
+
+        handlerManager = new HandlerManager();
 
         moduleManager = new ModuleManager();
         moduleManager.onInitialization();
@@ -97,22 +95,17 @@ public class La {
         configScreen = new ConfigScreen();
         //dropScreen
         dropScreen = new DropScreen();
-        victoryScreen = new VictoryScreen();
 
         notificationsManager = new NotificationsManager();
 
         configsManager = new ConfigsManager();
-//        configsManager.load();
+
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> configsManager.save()));
 
         eventManager.register(this);
 
-        blinkComponent = new BlinkComponent();
-        eventManager.register(blinkComponent);
 
-        rotations = new Rotations();
-        eventManager.register(rotations);
     }
 
     public void print(String message) {
