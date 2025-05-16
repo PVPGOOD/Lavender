@@ -147,7 +147,10 @@ public class AutoTool extends Module {
             return false;
         }
 
-        BlockPos playerPos = mc.thePlayer.getPosition();
+        var playerPos = mc.thePlayer.getPosition();
+        if (playerPos == null) {
+            return false;
+        }
         int range = checkRange.getValue().intValue();
 
         for (int x = -range; x <= range; x++) {
