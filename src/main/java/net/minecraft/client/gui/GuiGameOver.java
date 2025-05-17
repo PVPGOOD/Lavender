@@ -1,12 +1,12 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
-
-import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screens.mainmenu.MainMenuScreen;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
+
+import java.io.IOException;
 
 public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
 {
@@ -61,7 +61,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
             case 1:
                 if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                 {
-                    this.mc.displayGuiScreen(new GuiMainMenu());
+                    this.mc.displayGuiScreen(new MainMenuScreen());
                 }
                 else
                 {
@@ -78,7 +78,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
         {
             this.mc.theWorld.sendQuittingDisconnectingPacket();
             this.mc.loadWorld((WorldClient)null);
-            this.mc.displayGuiScreen(new GuiMainMenu());
+            this.mc.displayGuiScreen(new MainMenuScreen());
         }
         else
         {

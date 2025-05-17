@@ -8,14 +8,17 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.events.render.Event3DRender;
 import io.justme.lavender.module.impl.blatant.fight.Reach;
-import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screens.mainmenu.MainMenuScreen;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiDownloadTerrain;
+import net.minecraft.client.gui.MapItemRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.culling.ClippingHelper;
@@ -2607,9 +2610,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
             }
         }
 
-        if (this.mc.currentScreen instanceof GuiMainMenu)
+        if (this.mc.currentScreen instanceof MainMenuScreen)
         {
-            this.updateMainMenu((GuiMainMenu)this.mc.currentScreen);
+            this.updateMainMenu((MainMenuScreen)this.mc.currentScreen);
         }
 
         if (this.updatedWorld != world)
@@ -2647,7 +2650,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
-    private void updateMainMenu(GuiMainMenu p_updateMainMenu_1_)
+    private void updateMainMenu(MainMenuScreen p_updateMainMenu_1_)
     {
         try
         {

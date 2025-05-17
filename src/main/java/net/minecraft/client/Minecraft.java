@@ -15,7 +15,7 @@ import de.florianmichael.viamcp.fixes.AttackOrder;
 import io.justme.lavender.La;
 import io.justme.lavender.events.game.EventKey;
 import io.justme.lavender.events.game.EventTick;
-import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screens.mainmenu.MainMenuScreen;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.block.Block;
@@ -77,8 +77,8 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Timer;
 import net.minecraft.util.*;
+import net.minecraft.util.Timer;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.WorldProviderHell;
@@ -417,7 +417,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.checkGLError("Post startup");
         this.ingameGUI = new GuiIngame(this);
 
-        this.displayGuiScreen(new GuiMainMenu());
+        this.displayGuiScreen(new MainMenuScreen());
 
         this.renderEngine.deleteTexture(this.mojangLogo);
         this.mojangLogo = null;
@@ -799,14 +799,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (guiScreenIn == null && this.theWorld == null)
         {
-            guiScreenIn = new GuiMainMenu();
+            guiScreenIn = new MainMenuScreen();
         }
         else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F)
         {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof GuiMainMenu)
+        if (guiScreenIn instanceof MainMenuScreen)
         {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();

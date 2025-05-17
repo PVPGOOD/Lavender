@@ -9,7 +9,7 @@ import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import io.justme.lavender.La;
 import io.justme.lavender.module.impl.blatant.fight.Velocity;
 import io.justme.lavender.ui.screens.disconnect.GuiDisconnected;
-import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screens.mainmenu.MainMenuScreen;
 import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
 import io.netty.buffer.Unpooled;
@@ -599,7 +599,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
         else
         {
-            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu()), "disconnect.lost", reason));
+            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new MainMenuScreen()), "disconnect.lost", reason));
         }
     }
 

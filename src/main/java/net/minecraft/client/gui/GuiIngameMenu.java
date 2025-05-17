@@ -1,14 +1,14 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
-
-import io.justme.lavender.ui.screens.mainmenu.GuiMainMenu;
+import io.justme.lavender.ui.screens.mainmenu.MainMenuScreen;
 import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.realms.RealmsBridge;
+
+import java.io.IOException;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -54,16 +54,16 @@ public class GuiIngameMenu extends GuiScreen
 
                 if (flag)
                 {
-                    this.mc.displayGuiScreen(new GuiMainMenu());
+                    this.mc.displayGuiScreen(new MainMenuScreen());
                 }
                 else if (flag1)
                 {
                     RealmsBridge realmsbridge = new RealmsBridge();
-                    realmsbridge.switchToRealms(new GuiMainMenu());
+                    realmsbridge.switchToRealms(new MainMenuScreen());
                 }
                 else
                 {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
+                    this.mc.displayGuiScreen(new GuiMultiplayer(new MainMenuScreen()));
                 }
 
             case 2:

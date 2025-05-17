@@ -2,10 +2,8 @@ package io.justme.lavender.ui.screens.mainmenu;
 
 import io.justme.lavender.ui.screens.microsoft.GuiMicrosoftLogin;
 import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
-import io.justme.lavender.utility.gl.RenderUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
 
@@ -13,10 +11,10 @@ import java.io.IOException;
  * @author JustMe.
  * @since 2024/4/10
  **/
-public class GuiMainMenu extends GuiScreen {
+public class MainMenuScreen extends GuiScreen {
 
 
-    public GuiMainMenu() {
+    public MainMenuScreen() {
 
     }
 
