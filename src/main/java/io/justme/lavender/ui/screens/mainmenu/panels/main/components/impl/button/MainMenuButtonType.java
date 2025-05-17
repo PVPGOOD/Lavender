@@ -9,12 +9,12 @@ import lombok.Getter;
 @Getter
 public enum MainMenuButtonType {
     SINGLE_PLAY("Single Play"),
-
     MULTIPLE_PLAY("Multiple Play"),
+    ALTS_LOGIN("Alts Login"),
     OPTIONS("Options"),
     EXIT("Exit");
 
-    private String name;
+    private final String name;
 
     MainMenuButtonType(String name){
         this.name = name;

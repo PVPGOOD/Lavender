@@ -5,6 +5,7 @@ import io.justme.lavender.ui.screens.mainmenu.MainMenuScreen;
 import io.justme.lavender.ui.screens.mainmenu.panels.main.components.AbstractComponent;
 import io.justme.lavender.ui.screens.mainmenu.panels.main.components.impl.button.MainMenuButton;
 import io.justme.lavender.ui.screens.mainmenu.panels.main.components.impl.button.MainMenuButtonType;
+import io.justme.lavender.ui.screens.microsoft.GuiMicrosoftLogin;
 import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.gl.shader.interfaces.Shader;
@@ -34,6 +35,7 @@ public class MainPanel extends AbstractMainMenuUI {
     public MainPanel() {
         getAbstractComponents().add(new MainMenuButton(MainMenuButtonType.SINGLE_PLAY));
         getAbstractComponents().add(new MainMenuButton(MainMenuButtonType.MULTIPLE_PLAY));
+        getAbstractComponents().add(new MainMenuButton(MainMenuButtonType.ALTS_LOGIN));
         getAbstractComponents().add(new MainMenuButton(MainMenuButtonType.OPTIONS));
         getAbstractComponents().add(new MainMenuButton(MainMenuButtonType.EXIT));
     }
@@ -56,8 +58,7 @@ public class MainPanel extends AbstractMainMenuUI {
         float initX = panelWidth * 0.1f;
         float initY = screenHeight * 0.05f;
         float buttonHeight = screenHeight * 0.04f;
-        float verticalSpacing = buttonHeight + screenHeight * 0.035f;
-        float bottomButtonOffset = screenHeight * 0.083f;
+        float verticalSpacing = buttonHeight + screenHeight * 0.02f;
 
         float intervalY = 0f;
         for (AbstractComponent component : getAbstractComponents()) {
@@ -66,6 +67,7 @@ public class MainPanel extends AbstractMainMenuUI {
                 intervalY += verticalSpacing;
             }
         }
+        float bottomButtonOffset = screenHeight * 0.15f;
 
         float panelHeight = intervalY + initY + bottomButtonOffset;
         float panelX = screenWidth / 2f - panelWidth / 2f;
@@ -83,7 +85,7 @@ public class MainPanel extends AbstractMainMenuUI {
 
         for (AbstractComponent abstractComponent : getAbstractComponents()) {
             switch (abstractComponent.getMainMenuButtonType()) {
-                case SINGLE_PLAY, MULTIPLE_PLAY -> {
+                case SINGLE_PLAY, MULTIPLE_PLAY,ALTS_LOGIN -> {
                     abstractComponent.setX(getX() + initX);
                     abstractComponent.setY(getY() + initY + intervalY);
                     abstractComponent.setWidth(getWidth() - initX * 2);
@@ -99,7 +101,7 @@ public class MainPanel extends AbstractMainMenuUI {
                     } else {
                         abstractComponent.setX(getX() + initX + intervalX);
                     }
-                    abstractComponent.setY(getY() + initY + intervalY + bottomButtonOffset / 8f);
+                    abstractComponent.setY(getY() + initY + intervalY  + bottomButtonOffset / 8f);
                     abstractComponent.setWidth(smallButtonWidth);
                     abstractComponent.setHeight((int) buttonHeight);
                     abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
@@ -117,6 +119,7 @@ public class MainPanel extends AbstractMainMenuUI {
                 switch (abstractComponent.getMainMenuButtonType()) {
                     case SINGLE_PLAY -> mc.displayGuiScreen(new GuiSelectWorld(new MainMenuScreen()));
                     case MULTIPLE_PLAY -> mc.displayGuiScreen(new GuiMultiplayer(new MainMenuScreen()));
+                    case ALTS_LOGIN -> mc.displayGuiScreen(new GuiMicrosoftLogin(new MainMenuScreen()));
                     case OPTIONS ->  mc.displayGuiScreen(new GuiOptions(new MainMenuScreen(), mc.gameSettings));
                     case EXIT -> Minecraft.getMinecraft().shutdown();
                 }
