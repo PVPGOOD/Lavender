@@ -1,73 +1,71 @@
 package io.justme.lavender.ui.screens.mainmenu;
 
-import io.justme.lavender.ui.screens.microsoft.GuiMicrosoftLogin;
-import io.justme.lavender.ui.screens.multiplayer.GuiMultiplayer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import io.justme.lavender.ui.screens.mainmenu.panels.main.MainPanel;
+import io.justme.lavender.utility.gl.shader.interfaces.Shader;
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.gui.GuiScreen;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @author JustMe.
  * @since 2024/4/10
  **/
+@Getter
+@Setter
 public class MainMenuScreen extends GuiScreen {
 
+    private ArrayList<AbstractMainMenuUI> elements = new ArrayList<>();
 
     public MainMenuScreen() {
-
+        getElements().add(new MainPanel());
     }
 
     @Override
     public void initGui()
     {
-        buttonList.clear();
-        buttonList.add(new GuiButton(0, 20,  20,80,20, "Select World"));
-        buttonList.add(new GuiButton(1, 20,  60,80,20, "Multi Player"));
-        buttonList.add(new GuiButton(2, 20,  80,80,20, "Microsoft"));
-        buttonList.add(new GuiButton(3, 20,  100,80,20, "Language"));
-        buttonList.add(new GuiButton(4, 20,  120,80,20, "Options"));
-        buttonList.add(new GuiButton(5, 20,  140,80,20, "ShutDown"));
+        for (AbstractMainMenuUI element : getElements()) {
+            element.initGui();
+        }
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
 
+//        RenderUtility.drawRoundRect(0,0,width,height,0,new Color(0x6257FF));
+        Shader.organicRect.drawOrganic( 0, 0,
+                width , height ,
+                3.0f, 0.1f,
+                4.0f, 0.1f,
+                3.5f, 0.08f,
+                0.21f,
+                partialTicks,
+                new Color(0x80FDE6EF, true),
+                new Color(0x80FDE6EF, true),
+                new Color(0x66FCD9F1, true),
+                new Color(0xFDF8FC));
 
-        drawDefaultBackground();
+
+        for (AbstractMainMenuUI element : getElements()) {
+            element.drawScreen(mouseX, mouseY, partialTicks);
+        }
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        for (AbstractMainMenuUI element : getElements()) {
+            element.mouseClicked(mouseX, mouseY, mouseButton);
+        }
     }
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-    }
-
-    protected void actionPerformed(GuiButton button) throws IOException {
-        if (button.id == 0) {
-            this.mc.displayGuiScreen(new GuiSelectWorld(this));
-        }
-
-        if (button.id == 1) {
-            this.mc.displayGuiScreen(new GuiMultiplayer(this));
-        }
-
-        if (button.id == 2) {
-            this.mc.displayGuiScreen(new GuiMicrosoftLogin(this));
-        }
-
-        if (button.id == 3) {
-            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager()));
-        }
-
-        if (button.id == 4) {
-            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-        }
-
-        if (button.id == 5) {
-            Minecraft.getMinecraft().shutdown();
-        }
     }
 
     @Override
