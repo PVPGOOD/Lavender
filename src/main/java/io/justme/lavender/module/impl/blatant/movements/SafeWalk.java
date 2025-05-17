@@ -5,6 +5,9 @@ import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import net.lenni0451.asmevents.event.EventTarget;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.MovingObjectPosition;
+import org.lwjglx.input.Mouse;
 
 /**
  * @author JustMe.
@@ -28,16 +31,19 @@ public class SafeWalk extends Module {
             return;
         }
 
-        float yaw = mc.thePlayer.rotationYaw;
-        float pitch = mc.thePlayer.rotationPitch;
+        boolean movingBackward = mc.thePlayer.moveForward < 0;
 
-        boolean isMovingBackward = mc.thePlayer.moveForward < 0;
+        boolean placingBlock = false;
+        var ray = mc.thePlayer.rayTrace(5.0D, 0.0F);
+        if (ray != null && ray.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            var held = mc.thePlayer.getHeldItem();
+            if (held != null && held.getItem() instanceof ItemBlock && Mouse.isButtonDown(1)) {
+                placingBlock = true;
+            }
+        }
 
-        boolean isFacing45Degrees = (yaw >= 45 && yaw <= 135) || (yaw >= -135 && yaw <= -45);
-
-        if (isMovingBackward || isFacing45Degrees) {
+        if (movingBackward || placingBlock) {
             walk.setCancel(true);
         }
     }
-
 }
