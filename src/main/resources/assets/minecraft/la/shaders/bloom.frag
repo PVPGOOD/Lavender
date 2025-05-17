@@ -1,28 +1,31 @@
 #version 120
 
 uniform sampler2D inTexture, textureToCheck;
-uniform sampler1D weightTex;
-
 uniform vec2 texelSize, direction;
-uniform float radius, r, g, b;
+uniform float radius,r,g,b;
+uniform float weights[256];
 
 #define offset texelSize * direction
 
 void main() {
-    float totalRadius = radius;
+
+    float totalRadius = float(radius);
     vec2 texCoord = gl_TexCoord[0].st;
 
-    if (!(direction.y <= 0 || texture2D(textureToCheck, texCoord).a == 0.0)) discard;
+    if (direction.y > 0 && texture2D(textureToCheck, texCoord).a < 0.00000000000000000000000000000000000001) {
+        discard;
+    }
+    float alpha = texture2D(inTexture, texCoord).a * weights[0];
 
-    float alpha = texture2D(inTexture, texCoord).a * texture1D(weightTex, 0.0).r;
+    for (int i = 1; i <= totalRadius; i++) {
+        float total = float(i);
 
-    for (int i = 1; i <= int(totalRadius); i++) {
-        float fIdx = float(i) / 255.0;
-        float weight = texture1D(weightTex, fIdx).r;
+        float weight = weights[i];
 
-        alpha += texture2D(inTexture, texCoord + float(i) * offset).a * weight;
-        alpha += texture2D(inTexture, texCoord - float(i) * offset).a * weight;
+        alpha += texture2D(inTexture, texCoord + total * offset).a * weight;
+        alpha += texture2D(inTexture, texCoord - total * offset).a * weight;
     }
 
-    gl_FragColor = vec4(r, g, b, alpha);
+    gl_FragColor = vec4(r,g,b, alpha);
+
 }
