@@ -48,47 +48,65 @@ public class MainPanel extends AbstractMainMenuUI {
     private Animation alpha = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        Shader.bloom.run(() -> RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),23,new Color(0xFEF7FF)),true);
+        ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
+        float screenWidth = scaledResolution.getScaledWidth();
+        float screenHeight = scaledResolution.getScaledHeight();
 
-        var intervalX = 0f;
-        var intervalY = 0f;
-        var initY = 20;
-        var initX = 30;
-        var topButtonToBottomButton = 60;
+        float panelWidth = screenWidth * 0.20f;
+        float initX = panelWidth * 0.1f;
+        float initY = screenHeight * 0.05f;
+        float buttonHeight = screenHeight * 0.04f;
+        float verticalSpacing = buttonHeight + screenHeight * 0.035f;
+        float bottomButtonOffset = screenHeight * 0.083f;
+
+        float intervalY = 0f;
+        for (AbstractComponent component : getAbstractComponents()) {
+            if (component.getMainMenuButtonType() == MainMenuButtonType.SINGLE_PLAY
+                    || component.getMainMenuButtonType() == MainMenuButtonType.MULTIPLE_PLAY) {
+                intervalY += verticalSpacing;
+            }
+        }
+
+        float panelHeight = intervalY + initY + bottomButtonOffset;
+        float panelX = screenWidth / 2f - panelWidth / 2f;
+        float panelY = screenHeight / 2f - panelHeight / 2f;
+
+        setX(panelX);
+        setY(panelY);
+        setWidth(panelWidth);
+        setHeight(panelHeight);
+
+        Shader.bloom.run(() -> RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 15, new Color(0xFEF7FF)), true);
+
+        float intervalX = 0f;
+        intervalY = 0f;
+
         for (AbstractComponent abstractComponent : getAbstractComponents()) {
             switch (abstractComponent.getMainMenuButtonType()) {
                 case SINGLE_PLAY, MULTIPLE_PLAY -> {
                     abstractComponent.setX(getX() + initX);
-                    abstractComponent.setY(getY() + intervalY + initY);
+                    abstractComponent.setY(getY() + initY + intervalY);
                     abstractComponent.setWidth(getWidth() - initX * 2);
-                    abstractComponent.setHeight(30);
-                    intervalY += 55;
+                    abstractComponent.setHeight((int) buttonHeight);
                     abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
+                    intervalY += verticalSpacing;
                 }
 
-                case OPTIONS,EXIT -> {
-                    int width = 80;
+                case OPTIONS, EXIT -> {
+                    float smallButtonWidth = panelWidth * 0.3f;
                     if (abstractComponent.getMainMenuButtonType() == MainMenuButtonType.EXIT) {
-                        abstractComponent.setX(getX() + getWidth() - initX - width);
+                        abstractComponent.setX(getX() + getWidth() - initX - smallButtonWidth);
                     } else {
                         abstractComponent.setX(getX() + initX + intervalX);
                     }
-                    abstractComponent.setY(getY() + intervalY + topButtonToBottomButton / 2f);
-                    abstractComponent.setWidth(width);
-                    abstractComponent.setHeight(30);
+                    abstractComponent.setY(getY() + initY + intervalY + bottomButtonOffset / 8f);
+                    abstractComponent.setWidth(smallButtonWidth);
+                    abstractComponent.setHeight((int) buttonHeight);
                     abstractComponent.drawScreen(mouseX, mouseY, partialTicks);
-                    intervalX += 100;
+                    intervalX += smallButtonWidth + screenWidth * 0.015f;
                 }
             }
         }
-
-        var scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
-        var width = 260;
-        setX(scaledResolution.getScaledWidth() / 2f - width /2f);
-        setWidth(width);
-        var height = intervalY + initY + topButtonToBottomButton;
-        setY(scaledResolution.getScaledHeight() /2f - height /2f);
-        setHeight(height);
     }
 
     @Override

@@ -27,17 +27,24 @@ public class MainMenuButton extends AbstractComponent {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(0xE9DEF8));
+        float cornerRadius = getHeight() * 0.5f;
+        Color baseColor = new Color(0xE9DEF8);
+        Color hoverColor = new Color(0xE1D1FF);
 
-        if (isHover(mouseX, mouseY)) {
-            RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(0xE1D1FF));
-        }
+        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), cornerRadius,
+                isHover(mouseX, mouseY) ? hoverColor : baseColor);
 
-        var font = La.getINSTANCE().getFontManager().getPingFang_Bold22();
-        font.drawString(getMainMenuButtonType().getName(),
-                        getX() + getWidth() / 2 - font.getStringWidth(getMainMenuButtonType().getName()) / 2f,
-                        getY() + getHeight() / 2 - font.getHeight() / 3f,
-                        new Color(0xD9220F46, true).getRGB());
+        var fontManager = La.getINSTANCE().getFontManager();
+        var font = getHeight() < 21 ? fontManager.getPingFang_Bold18() : fontManager.getPingFang_Bold22();
+
+        var text = getMainMenuButtonType().getName();
+        float textWidth = font.getStringWidth(text);
+        float textHeight = font.getHeight();
+
+        float textX = getX() + getWidth() / 2f - textWidth / 2f;
+        float textY = getY() + getHeight() / 2f - textHeight / 2f + 4;
+
+        font.drawString(text, textX, textY, new Color(0xD9220F46, true).getRGB());
     }
 
     @Override
