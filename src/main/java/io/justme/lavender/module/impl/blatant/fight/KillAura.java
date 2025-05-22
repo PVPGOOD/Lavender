@@ -153,12 +153,15 @@ public class KillAura extends Module implements IMinecraft {
                 1000 / getCps().getValue() - MathUtility.getRandomDouble(3,5));
 
         getTargetsInWorld();
+
         if (!getTargets().isEmpty()) {
             getTargets().removeIf(
                     target -> mc.thePlayer.getDistanceToEntity(target) > ((double) lockedRange.getValue()));
         }
 
         if (!getTargets().isEmpty()) {
+            blockTicks++;
+
             switch (getSwitchMode().getValue()) {
                 case "Switch" -> {
                     if (getTargets().size() > 1) {
@@ -180,14 +183,18 @@ public class KillAura extends Module implements IMinecraft {
                 }
             }
         } else {
+            if (shouldUnBlock()) {
+                doUnblock();
+            }
             setTarget(null);
         }
 
         if (getTarget() != null) {
-
-            if (preTickBlock()) return;
-
             executeAttack(cpsMs);
+        } else {
+            if (shouldUnBlock()) {
+                doUnblock();
+            }
         }
 
         //结尾工作
@@ -205,53 +212,16 @@ public class KillAura extends Module implements IMinecraft {
         }
 
         onRotations(eventMotionUpdate,getTarget());
+        mc.thePlayer.itemInUseCount = isBlocking() ? 1 : 0;
     }
 
     @EventTarget
     public void onAttack(EventAttack eventAttack) {
-        mc.thePlayer.itemInUseCount = shouldBlock() ? 1 : (isBlocking() && shouldUnBlock() ? 0 : mc.thePlayer.itemInUseCount);
-
-        switch (eventAttack.getTypes()) {
-            case PRE -> {
-                if (shouldBlock()) {
-                    doBlock();
-                }
-            }
-
-            case POST -> {
-                if (getBlockTimingModeValue().getValue().equalsIgnoreCase("AfterAttack")) {
-                    if (shouldBlock()) {
-                        doBlock();
-                    }
-                }
+        if (getBlockTimingModeValue().getValue().equalsIgnoreCase(eventAttack.getTypes().name())) {
+            if (shouldBlock()) {
+                executeBlockOrUnblock();
             }
         }
-    }
-
-    private boolean preTickBlock() {
-        switch (autoblockModeValue.getValue()) {
-            case "Watchdog":
-                if (blinkTicks >= 3) {
-                    blinkTicks = 0;
-                }
-                blinkTicks++;
-                switch (blinkTicks) {
-                    case 0:
-                        return true;
-                    case 1:
-                        if(isBlocking()) {
-
-                            La.getINSTANCE().getHandlerManager().getBlinkHandler().blinking = true;
-                            doUnblock();
-                            blinked = true;
-                            return true;
-                        }
-                    case 2:
-                        return false;
-                }
-                break;
-        }
-        return false;
     }
 
     private void executeAttack(double cpsMs) {
@@ -332,7 +302,7 @@ public class KillAura extends Module implements IMinecraft {
                     doBlock();
                 }
 
-                if (getBlockTicks() % 4 != 0 && isBlocking()) {
+                if (getBlockTicks() % 3 != 0 && isBlocking()) {
                     doUnblock();
                 }
             }
@@ -354,7 +324,6 @@ public class KillAura extends Module implements IMinecraft {
                     if (La.getINSTANCE().getUserConnection() == null) {
                         La.getINSTANCE().print("UserConnection is null");
                     } else {
-
                         getPacketUtility().sendPacketFromLa(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                         PacketWrapper useItem = PacketWrapper.create(29, null, Via.getManager().getConnectionManager().getConnections().iterator().next());
                         useItem.write(Type.VAR_INT, 1);
@@ -362,7 +331,6 @@ public class KillAura extends Module implements IMinecraft {
                     }
                 }
 
-                La.getINSTANCE().getHandlerManager().getBlinkHandler().dispatch();
             }
 
             case "Key" -> mc.gameSettings.keyBindUseItem.pressed = true;
@@ -372,7 +340,7 @@ public class KillAura extends Module implements IMinecraft {
 
 
     private void doUnblock(){
-
+        La.getINSTANCE().print("unBlock","AutoBlock");
         setBlocking(false);
 
         switch (getAutoblockModeValue().getValue()) {
