@@ -1,18 +1,15 @@
 package io.justme.lavender.module.impl.blatant.player;
 
+import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
 import io.justme.lavender.utility.math.TimerUtility;
-import io.justme.lavender.value.impl.ModeValue;
-import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
-import net.minecraft.client.Minecraft;
-
-import java.util.Objects;
+import net.minecraft.item.ItemBlock;
 
 /**
  * @author JustMe.
@@ -24,12 +21,6 @@ import java.util.Objects;
 @ModuleInfo(name = "FastPlace", description = "fast place.", category = Category.PLAYER)
 public class FastPlace extends Module {
 
-    private final ModeValue
-            clickEnumModeValue = new ModeValue("Mode", new String[]{"Normal", "delay"}, "delay");
-
-    private final NumberValue
-            delayMs = new NumberValue("Click Delay", 0, 0, 500, 5, () -> Objects.equals(getClickEnumModeValue().getValue(), "Delay"));
-
     @Override
     public void onEnable() {
         super.onEnable();
@@ -37,20 +28,29 @@ public class FastPlace extends Module {
 
     @Override
     public void onDisable() {
-        Minecraft.getMinecraft().setRightClickDelayTimer(4);
         super.onDisable();
+
+        mc.setRightClickDelayTimer(4);
     }
 
     private TimerUtility timerUtility = new TimerUtility();
     @EventTarget
     public void onUpdate(EventUpdate eventUpdate) {
+        if (mc.thePlayer == null) {
+            return;
+        }
 
-        switch (getClickEnumModeValue().getValue()) {
-            case "Normal" -> Minecraft.getMinecraft().setRightClickDelayTimer(0);
+        var heldItem = mc.thePlayer.getHeldItem();
 
-            case "delay" -> {
-                // no things here...
+        var blockPrediction = La.getINSTANCE().getModuleManager().getModuleByName("BlockPrediction").isToggle();
+        if (blockPrediction) {
+            if (heldItem == null) {
+                mc.setRightClickDelayTimer(0);
             }
+        }
+
+        if (heldItem != null && heldItem.getItem() instanceof ItemBlock) {
+            mc.setRightClickDelayTimer(0);
         }
     }
 }
