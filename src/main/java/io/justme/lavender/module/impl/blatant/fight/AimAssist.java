@@ -123,6 +123,7 @@ public class AimAssist extends Module {
             if (entity instanceof EntityPlayer && entity != mc.thePlayer && entity.isEntityAlive()) {
                 if (ValidEntityUtility.isOnSameTeam((EntityLivingBase) entity)) continue;
                 if (notInFov(entity)) continue;
+                if (!ValidEntityUtility.getTablist().contains(entity.getName())) continue;
                 double distance = mc.thePlayer.getDistanceToEntity(entity);
                 if (distance < closestDistance) {
                     closestDistance = distance;

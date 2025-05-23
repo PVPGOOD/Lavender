@@ -22,6 +22,7 @@ import io.justme.lavender.utility.network.PacketUtility;
 import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.utility.player.RaycastUtility;
 import io.justme.lavender.utility.player.RotationUtility;
+import io.justme.lavender.utility.player.ValidEntityUtility;
 import io.justme.lavender.utility.world.WorldUtility;
 import io.justme.lavender.value.impl.BoolValue;
 import io.justme.lavender.value.impl.ModeValue;
@@ -91,7 +92,7 @@ public class KillAura extends Module implements IMinecraft {
     private final ModeValue
             rotationMode = new ModeValue("Rotation Mode", new String[]{"Normal", "Adaptive"}, "Normal");
 
-    private final ModeValue autoblockModeValue = new ModeValue("AutoBlock Mode", new String[]{"Watchdog", "BlocksMC","Key","Visual"}, "Key");
+    private final ModeValue autoblockModeValue = new ModeValue("AutoBlock Mode", new String[]{"Watchdog", "BlocksMC","Legit","Visual"}, "Legit");
     private final ModeValue blockTimingModeValue = new ModeValue("AutoBlock Timing", new String[]{"Post", "Pre"}, "Pre");
 
     private final ModeValue
@@ -333,7 +334,7 @@ public class KillAura extends Module implements IMinecraft {
 
             }
 
-            case "Key" -> mc.gameSettings.keyBindUseItem.pressed = true;
+            case "Legit" -> mc.gameSettings.keyBindUseItem.pressed = true;
             case "Visual" ->  mc.thePlayer.itemInUseCount = 1;
         }
     }
@@ -353,7 +354,7 @@ public class KillAura extends Module implements IMinecraft {
                     }
                 }
             }
-            case "Key" -> mc.gameSettings.keyBindUseItem.pressed = false;
+            case "Legit" -> mc.gameSettings.keyBindUseItem.pressed = false;
         }
     }
 
@@ -423,6 +424,14 @@ public class KillAura extends Module implements IMinecraft {
                 || entity instanceof EntityArmorStand || entity == mc.thePlayer) {
             return false;
         }
+
+
+        if (ValidEntityUtility.isOnSameTeam(entity)) return false;
+
+        if (!ValidEntityUtility.getTablist().contains(entity.getName())) {
+            return false;
+        }
+
         if (entity instanceof EntityPlayer player) {
             if (!getTargetSelections().find("players").getValue()) return false;
             if (player.isPlayerSleeping()) return false;
@@ -445,7 +454,7 @@ public class KillAura extends Module implements IMinecraft {
 
         for (Entity entity : mc.theWorld.getLoadedEntityList()) {
             if (entity == target) {
-                int color = new Color(255,0,0, 32).getRGB();
+                int color = new Color(255,0,0, 64).getRGB();
 
                 drawBox(entity, color);
             }

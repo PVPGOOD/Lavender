@@ -1,8 +1,13 @@
 package io.justme.lavender.utility.player;
 
+import com.mojang.authlib.GameProfile;
 import io.justme.lavender.utility.interfaces.IMinecraft;
 import lombok.experimental.UtilityClass;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.EntityLivingBase;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author JustMe.
@@ -19,6 +24,14 @@ public class ValidEntityUtility implements IMinecraft {
         } else {
             return false;
         }
+    }
+
+    public List<String> getTablist() {
+        return mc.getNetHandler().getPlayerInfoMap().stream()
+                .map(NetworkPlayerInfo::getGameProfile)
+                .filter(profile -> profile.getId() != mc.thePlayer.getUniqueID())
+                .map(GameProfile::getName)
+                .collect(Collectors.toList());
     }
 
 
