@@ -95,14 +95,31 @@ public final class MicrosoftLogin implements Closeable {
         browse(URL);
     }
 
-    private void browse(String url) throws Exception {
+    private String getChromePathFromRegistry() throws Exception {
+        var process = Runtime.getRuntime().exec(
+                "reg query \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe\" /ve");
+        var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.contains("REG_SZ")) {
+                return line.split("REG_SZ")[1].trim();
+            }
+        }
+        process.waitFor();
+        return null;
+    }
+
+    public void browse(String url) throws Exception {
         String osName = System.getProperty("os.name", "");
         if (osName.startsWith("Mac OS")) {
             Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
             Method openURL = fileMgr.getDeclaredMethod("openURL", String.class);
             openURL.invoke(null, url);
         } else if (osName.startsWith("Windows")) {
-            String chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+            String chromePath = getChromePathFromRegistry();
+            if (chromePath == null) {
+                chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"; // fallback
+            }
             Runtime.getRuntime().exec(new String[] { chromePath, "--incognito", url });
         } else {
             Runtime.getRuntime().exec(new String[] { "google-chrome", "--incognito", url });
