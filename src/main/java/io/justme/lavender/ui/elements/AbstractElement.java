@@ -4,8 +4,6 @@ import io.justme.lavender.ui.elements.quadrant.Quadrant;
 import io.justme.lavender.ui.elements.quadrant.QuadrantEnum;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 
 import java.io.IOException;
 
@@ -16,16 +14,16 @@ import java.io.IOException;
 
 @Getter
 @Setter
-public abstract class AbstractElements {
+public abstract class AbstractElement {
 
     private float posX, posY,width,height, draggingX, draggingY;
 
-    private ElementsEnum elementsEnum;
+    private String elementName;
 
     private boolean dragging;
 
-    public AbstractElements(ElementsEnum elementsEnum) {
-        setElementsEnum(elementsEnum);
+    public AbstractElement(String elementName) {
+        setElementName(elementName);
     }
 
     public void onDrag(int mouseX, int mouseY){

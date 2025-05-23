@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.elements.impl.arraylist;
+package io.justme.lavender.ui.elements.impl.arraylist.circle;
 
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Module;

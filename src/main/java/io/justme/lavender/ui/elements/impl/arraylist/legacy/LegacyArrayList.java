@@ -1,9 +1,8 @@
-package io.justme.lavender.ui.elements.impl.arraylist.draw;
+package io.justme.lavender.ui.elements.impl.arraylist.legacy;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.elements.AbstractElements;
-import io.justme.lavender.ui.elements.ElementsEnum;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.utility.gl.ColorUtility;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -24,7 +23,7 @@ import java.util.Comparator;
  **/
 @Getter
 @Setter
-public class LegacyArrayList extends AbstractElements {
+public class LegacyArrayList extends AbstractElement {
 
     private ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
     private float x,y,width,height;
@@ -34,7 +33,7 @@ public class LegacyArrayList extends AbstractElements {
     private Animation scalingAnimations = new Animation();
 
     public LegacyArrayList() {
-        super(ElementsEnum.LegacyArrayList);
+        super("LegacyArrayList Element");
     }
 
     @Override

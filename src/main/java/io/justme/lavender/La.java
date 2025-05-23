@@ -123,10 +123,10 @@ public class La {
     @EventTarget
     public void on2D(Event2DRender event2DRender) {
         if (getSettingManager().getNotification().getValue()) {
-            getElementsManager().getNotifications().draw(event2DRender.getPartialTicks(), getMouseX(),getMouseY());
+            getElementsManager().getNotificationElement().draw(event2DRender.getPartialTicks(), getMouseX(),getMouseY());
         }
 
-        getElementsManager().getTitle().draw(event2DRender.getPartialTicks(), getMouseX(),getMouseY());
+        getElementsManager().getTitleElement().draw(event2DRender.getPartialTicks(), getMouseX(),getMouseY());
     }
 
     @EventTarget

@@ -1,7 +1,7 @@
-package io.justme.lavender.ui.elements.impl.arraylist.components;
+package io.justme.lavender.ui.elements.impl.arraylist.circle.components;
 
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.elements.impl.arraylist.AbstractArraylist;
+import io.justme.lavender.ui.elements.impl.arraylist.circle.AbstractArraylist;
 import io.justme.lavender.utility.gl.ColorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 

@@ -2,7 +2,7 @@ package io.justme.lavender.ui.screens.element;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.elements.AbstractElements;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.ui.elements.quadrant.Quadrant;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class ElementScreen extends GuiScreen {
 
     //elements
-    private AbstractElements elements;
+    private AbstractElement elements;
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
@@ -31,7 +31,7 @@ public class ElementScreen extends GuiScreen {
         int centerY = (int) quadrant.getCenterY();
 
 
-        for (AbstractElements element : La.getINSTANCE().getElementsManager().getElements()) {
+        for (AbstractElement element : La.getINSTANCE().getElementsManager().getElements()) {
             if (element.isDragging()) {
                 elements = element;
             }
@@ -55,14 +55,14 @@ public class ElementScreen extends GuiScreen {
 
     public void onGuiClosed()
     {
-        for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements()) {
+        for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements()) {
             elements.reset();
        }
     }
 
     public void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements())
+        for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements())
             elements.keyTyped(typedChar,keyCode);
     }
 
@@ -70,14 +70,14 @@ public class ElementScreen extends GuiScreen {
     {
         if (mouseButton == 0)
         {
-            for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements())
+            for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements())
                 elements.mouseClicked(mouseX,mouseY,mouseButton);
         }
     }
 
     public void mouseReleased(int mouseX, int mouseY, int state) {
 
-        for (AbstractElements elements : La.getINSTANCE().getElementsManager().getElements())
+        for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements())
             elements.mouseReleased(mouseX,mouseY,state);
 
         super.mouseReleased(mouseX,mouseY,state);

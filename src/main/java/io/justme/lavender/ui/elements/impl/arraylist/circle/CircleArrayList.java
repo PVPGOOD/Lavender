@@ -1,11 +1,9 @@
-package io.justme.lavender.ui.elements.impl.arraylist.draw;
+package io.justme.lavender.ui.elements.impl.arraylist.circle;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.elements.AbstractElements;
-import io.justme.lavender.ui.elements.ElementsEnum;
-import io.justme.lavender.ui.elements.impl.arraylist.AbstractArraylist;
-import io.justme.lavender.ui.elements.impl.arraylist.components.CircleComponent;
+import io.justme.lavender.ui.elements.AbstractElement;
+import io.justme.lavender.ui.elements.impl.arraylist.circle.components.CircleComponent;
 import io.justme.lavender.ui.elements.quadrant.Quadrant;
 import io.justme.lavender.ui.elements.quadrant.QuadrantEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
@@ -24,7 +22,7 @@ import java.util.ArrayList;
  **/
 @Getter
 @Setter
-public class CircleArrayList extends AbstractElements {
+public class CircleArrayList extends AbstractElement {
 
     private ArrayList<AbstractArraylist> components = new ArrayList<>();
     private ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
@@ -32,7 +30,7 @@ public class CircleArrayList extends AbstractElements {
     private boolean dragging;
 
     public CircleArrayList() {
-        super(ElementsEnum.CircleArrayList);
+        super("Circle ArrayList");
 
         for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
             getComponents().add(new CircleComponent(module));

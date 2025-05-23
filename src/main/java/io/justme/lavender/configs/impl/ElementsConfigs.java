@@ -6,12 +6,11 @@ import com.google.gson.JsonObject;
 import io.justme.lavender.La;
 import io.justme.lavender.configs.AbstractConfigs;
 import io.justme.lavender.configs.ConfigsEnum;
-import io.justme.lavender.ui.elements.AbstractElements;
+import io.justme.lavender.ui.elements.AbstractElement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
-import javax.lang.model.util.Elements;
 import java.nio.file.Files;
 
 /**
@@ -31,9 +30,9 @@ public class ElementsConfigs extends AbstractConfigs {
     public void load() {
         var jsonObject = new Gson().fromJson(Files.readString(getFilesPath()), JsonObject.class);
 
-        for (AbstractElements drag : La.getINSTANCE().getElementsManager().getElements()){
-            if (jsonObject.has(drag.getElementsEnum().toString())){
-                var moduleJsonObject =  jsonObject.get(drag.getElementsEnum().toString()).getAsJsonObject();
+        for (AbstractElement drag : La.getINSTANCE().getElementsManager().getElements()){
+            if (jsonObject.has(drag.getElementName().toString())){
+                var moduleJsonObject =  jsonObject.get(drag.getElementName().toString()).getAsJsonObject();
 
                 if (moduleJsonObject.has("X")) {
                     drag.setPosX(moduleJsonObject.get("X").getAsInt());
@@ -60,7 +59,7 @@ public class ElementsConfigs extends AbstractConfigs {
     @Override
     public void save() {
         var jsonObject = new JsonObject();
-        for (AbstractElements drag : La.getINSTANCE().getElementsManager().getElements()){
+        for (AbstractElement drag : La.getINSTANCE().getElementsManager().getElements()){
             var dragJsonObject = new JsonObject();
 
             dragJsonObject.addProperty("X",drag.getPosX());
@@ -68,7 +67,7 @@ public class ElementsConfigs extends AbstractConfigs {
             dragJsonObject.addProperty("DragX",drag.getDraggingX());
             dragJsonObject.addProperty("DragY",drag.getDraggingY());
 
-            jsonObject.add(drag.getElementsEnum().name(),dragJsonObject);
+            jsonObject.add(drag.getElementName().name(),dragJsonObject);
         }
         Files.writeString(getFilesPath(), new GsonBuilder().setPrettyPrinting().create().toJson(jsonObject));
     }

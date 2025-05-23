@@ -2,8 +2,7 @@ package io.justme.lavender.ui.elements.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.impl.blatant.fight.KillAura;
-import io.justme.lavender.ui.elements.AbstractElements;
-import io.justme.lavender.ui.elements.ElementsEnum;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
@@ -19,14 +18,14 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class TargetList extends AbstractElements {
+public class TargetListElement extends AbstractElement {
 
     private float x,y,width,height;
     private boolean dragging;
 
 
-    public TargetList() {
-        super(ElementsEnum.TargetList);
+    public TargetListElement() {
+        super("TargetList Element");
     }
 
     @Override

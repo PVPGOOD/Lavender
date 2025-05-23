@@ -1,8 +1,7 @@
 package io.justme.lavender.ui.elements.impl;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.elements.AbstractElements;
-import io.justme.lavender.ui.elements.ElementsEnum;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -24,13 +23,13 @@ import java.io.IOException;
 
 @Getter
 @Setter
-public class Notifications extends AbstractElements {
+public class NotificationElement extends AbstractElement {
 
     private float x,y,width,height;
     private boolean dragging;
 
-    public Notifications() {
-        super(ElementsEnum.Notification);
+    public NotificationElement() {
+        super("Notification Element");
     }
 
     private final TimerUtility timerUtility = new TimerUtility();

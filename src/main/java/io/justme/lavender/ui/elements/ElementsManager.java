@@ -1,10 +1,10 @@
 package io.justme.lavender.ui.elements;
 
-import io.justme.lavender.ui.elements.impl.Notifications;
-import io.justme.lavender.ui.elements.impl.TargetList;
-import io.justme.lavender.ui.elements.impl.Title;
-import io.justme.lavender.ui.elements.impl.arraylist.draw.CircleArrayList;
-import io.justme.lavender.ui.elements.impl.arraylist.draw.LegacyArrayList;
+import io.justme.lavender.ui.elements.impl.NotificationElement;
+import io.justme.lavender.ui.elements.impl.TargetListElement;
+import io.justme.lavender.ui.elements.impl.TitleElement;
+import io.justme.lavender.ui.elements.impl.arraylist.circle.CircleArrayList;
+import io.justme.lavender.ui.elements.impl.arraylist.legacy.LegacyArrayList;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,34 +21,34 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class ElementsManager extends Manager<AbstractElements> {
+public class ElementsManager extends Manager<AbstractElement> {
 
     private final LegacyArrayList legacyArrayList = new LegacyArrayList();
     private final CircleArrayList circleArrayList = new CircleArrayList();
-    private final Notifications notifications = new Notifications();
-    private final TargetList targetList = new TargetList();
-    private final Title title = new Title();
+    private final NotificationElement notificationElement = new NotificationElement();
+    private final TargetListElement targetListElement = new TargetListElement();
+    private final TitleElement titleElement = new TitleElement();
 
     public ElementsManager() {
 
         getElements().addAll(Arrays.asList(
                 getLegacyArrayList(),
                 getCircleArrayList(),
-                getNotifications(),
-                getTargetList(),
-                getTitle()
+                getNotificationElement(),
+                getTargetListElement(),
+                getTitleElement()
         ));
     }
 
-    public List<AbstractElements> getVisibleElements() {
+    public List<AbstractElement> getVisibleElements() {
         return elements.stream()
                 .filter(element -> !Minecraft.getMinecraft().gameSettings.showDebugInfo && element.isVisible())
                 .collect(Collectors.toList());
     }
 
-    public AbstractElements find(String name) {
+    public AbstractElement find(String name) {
         return elements.stream()
-                .filter(element -> element.getElementsEnum().name().equalsIgnoreCase(name))
+                .filter(element -> element.getElementName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
     }

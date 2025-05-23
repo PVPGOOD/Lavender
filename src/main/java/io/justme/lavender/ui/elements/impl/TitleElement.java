@@ -1,8 +1,7 @@
 package io.justme.lavender.ui.elements.impl;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.elements.AbstractElements;
-import io.justme.lavender.ui.elements.ElementsEnum;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MathUtility;
@@ -22,13 +21,13 @@ import java.io.IOException;
  **/
 @Setter
 @Getter
-public class Title extends AbstractElements {
+public class TitleElement extends AbstractElement {
 
     private float x,y,width,height;
     private boolean dragging;
 
-    public Title() {
-        super(ElementsEnum.Title);
+    public TitleElement() {
+        super("Title Element");
     }
 
     private Animation animation = new Animation();
