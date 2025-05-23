@@ -1,9 +1,7 @@
-package io.justme.lavender.ui.elements.impl.arraylist.circle;
+package io.justme.lavender.ui.elements;
 
 import io.justme.lavender.La;
-import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.elements.AbstractElement;
-import io.justme.lavender.ui.elements.impl.arraylist.circle.components.CircleComponent;
+import io.justme.lavender.ui.elements.impl.arraylist.circle.components.AbstractComponent;
 import io.justme.lavender.ui.elements.quadrant.Quadrant;
 import io.justme.lavender.ui.elements.quadrant.QuadrantEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
@@ -22,19 +20,17 @@ import java.util.ArrayList;
  **/
 @Getter
 @Setter
-public class CircleArrayList extends AbstractElement {
+public class CircleArrayListElement extends AbstractElement {
 
-    private ArrayList<AbstractArraylist> components = new ArrayList<>();
+    private ArrayList<AbstractComponent> components = new ArrayList<>();
     private ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
     private float x,y,arraylistWidth,arrayListHeight;
     private boolean dragging;
 
-    public CircleArrayList() {
+    public CircleArrayListElement() {
         super("Circle ArrayList");
 
-        for (Module module : La.getINSTANCE().getModuleManager().getElements()) {
-            getComponents().add(new CircleComponent(module));
-        }
+
     }
 
 
@@ -65,7 +61,7 @@ public class CircleArrayList extends AbstractElement {
         int intervalWidth = 0;
 
 
-        for (AbstractArraylist elements : modules) {
+        for (AbstractComponent elements : modules) {
 
             var animationInterval = elements.module.getAnimationInterval();
 
@@ -105,15 +101,15 @@ public class CircleArrayList extends AbstractElement {
                 }
             }
 
-            if (elements.isDragging()) {
-                elements.setDraggingX(mouseX - x);
-                elements.setDraggingY(mouseY - y);
-            }
-
-            if (elements.isDragging()) {
-                x += mouseX - elements.getDraggingX();
-                y += mouseY - elements.getDraggingY();
-            }
+//            if (elements.isDragging()) {
+//                elements.setDraggingX(mouseX - x);
+//                elements.setDraggingY(mouseY - y);
+//            }
+//
+//            if (elements.isDragging()) {
+//                x += mouseX - elements.getDraggingX();
+//                y += mouseY - elements.getDraggingY();
+//            }
 
 
             elements.module.getAnimation().update();
@@ -132,7 +128,6 @@ public class CircleArrayList extends AbstractElement {
                 elements.setWidth(fontRenderer.getStringWidth(str) + 6);
                 elements.setHeight(fontRenderer.getHeight());
                 elements.setIndex(finalIndex);
-                elements.setFontDrawer(fontRenderer);
                 elements.draw(mouseX, mouseY);
             });
 
@@ -183,10 +178,10 @@ public class CircleArrayList extends AbstractElement {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (AbstractArraylist elements : getComponents()) {
+        for (AbstractComponent elements : getComponents()) {
             if (elements.mouseClicked(mouseX, mouseY, mouseButton)) {
-                elements.setDraggingY(mouseX - elements.getX());
-                elements.setDraggingY(mouseY - elements.getY());
+//                elements.setDraggingY(mouseX - elements.getX());
+//                elements.setDraggingY(mouseY - elements.getY());
                 elements.setDragging(true);
             }
         }
@@ -199,7 +194,7 @@ public class CircleArrayList extends AbstractElement {
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
         setDragging(false);
-        for (AbstractArraylist elements : getComponents()) {
+        for (AbstractComponent elements : getComponents()) {
             elements.setDragging(false); // 停止拖拽
             elements.mouseReleased(mouseX, mouseY, state);
         }

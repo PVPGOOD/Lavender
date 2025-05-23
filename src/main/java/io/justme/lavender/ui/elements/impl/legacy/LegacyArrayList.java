@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.elements.impl.arraylist.legacy;
+package io.justme.lavender.ui.elements.impl.legacy;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;

@@ -1,28 +1,33 @@
 package io.justme.lavender.ui.elements.impl.arraylist.circle;
 
 import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.module.Module;
+import io.justme.lavender.ui.elements.impl.arraylist.circle.components.impl.CircleComponent;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
- * @since 2025/5/13
+ * @since 2025/5/24
  **/
 @Getter
+
 @Setter
-public abstract class AbstractArraylist {
-    private FontDrawer fontDrawer;
+public abstract class AbstractGroup {
+
+    private String label;
+    //module
+    private CopyOnWriteArrayList<CircleComponent> circleComponents = new CopyOnWriteArrayList<>();
     private float x,y,width,height;
     private boolean dragging;
     private float draggingX, draggingY;
     private float index;
-    public Module module;
+    private FontDrawer fontDrawer;
 
-    public AbstractArraylist(Module module) {
-        this.module = module;
+    public AbstractGroup(String label) {
+        this.label = label;
     }
 
     public boolean isHover(int mouseX, int mouseY) {
@@ -31,6 +36,6 @@ public abstract class AbstractArraylist {
 
     public abstract void draw(int mouseX, int mouseY);
     public abstract boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException;
-    public abstract void mouseReleased(int mouseX, int mouseY, int state);
+    public abstract boolean mouseReleased(int mouseX, int mouseY, int state);
     public abstract void keyTyped(char typedChar, int keyCode) throws IOException;
 }

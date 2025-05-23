@@ -31,7 +31,7 @@ public class ElementsConfigs extends AbstractConfigs {
         var jsonObject = new Gson().fromJson(Files.readString(getFilesPath()), JsonObject.class);
 
         for (AbstractElement drag : La.getINSTANCE().getElementsManager().getElements()){
-            if (jsonObject.has(drag.getElementName().toString())){
+            if (jsonObject.has(drag.getElementName())){
                 var moduleJsonObject =  jsonObject.get(drag.getElementName().toString()).getAsJsonObject();
 
                 if (moduleJsonObject.has("X")) {
@@ -67,7 +67,7 @@ public class ElementsConfigs extends AbstractConfigs {
             dragJsonObject.addProperty("DragX",drag.getDraggingX());
             dragJsonObject.addProperty("DragY",drag.getDraggingY());
 
-            jsonObject.add(drag.getElementName().name(),dragJsonObject);
+            jsonObject.add(drag.getElementName(),dragJsonObject);
         }
         Files.writeString(getFilesPath(), new GsonBuilder().setPrettyPrinting().create().toJson(jsonObject));
     }

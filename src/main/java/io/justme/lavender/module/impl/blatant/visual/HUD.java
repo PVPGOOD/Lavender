@@ -43,7 +43,7 @@ public class HUD extends Module {
         }
 
         if (getArrayListMode().getValue().equals("Circle")) {
-            elements.getCircleArrayList().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
+//            elements.getCircleArrayListElement().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
         }
 
         elements.getTargetList().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());

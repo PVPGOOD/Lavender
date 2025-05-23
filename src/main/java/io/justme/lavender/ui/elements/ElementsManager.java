@@ -3,8 +3,8 @@ package io.justme.lavender.ui.elements;
 import io.justme.lavender.ui.elements.impl.NotificationElement;
 import io.justme.lavender.ui.elements.impl.TargetListElement;
 import io.justme.lavender.ui.elements.impl.TitleElement;
-import io.justme.lavender.ui.elements.impl.arraylist.circle.CircleArrayList;
-import io.justme.lavender.ui.elements.impl.arraylist.legacy.LegacyArrayList;
+import io.justme.lavender.ui.elements.impl.arraylist.GroupCircleArrayListElement;
+import io.justme.lavender.ui.elements.impl.legacy.LegacyArrayList;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +24,8 @@ import java.util.stream.Collectors;
 public class ElementsManager extends Manager<AbstractElement> {
 
     private final LegacyArrayList legacyArrayList = new LegacyArrayList();
-    private final CircleArrayList circleArrayList = new CircleArrayList();
+    private final CircleArrayListElement circleArrayListElement = new CircleArrayListElement();
+    private final GroupCircleArrayListElement groupCircleArrayListElement = new GroupCircleArrayListElement();
     private final NotificationElement notificationElement = new NotificationElement();
     private final TargetListElement targetListElement = new TargetListElement();
     private final TitleElement titleElement = new TitleElement();
@@ -33,11 +34,20 @@ public class ElementsManager extends Manager<AbstractElement> {
 
         getElements().addAll(Arrays.asList(
                 getLegacyArrayList(),
-                getCircleArrayList(),
+                getCircleArrayListElement(),
+                getGroupCircleArrayListElement(),
                 getNotificationElement(),
                 getTargetListElement(),
                 getTitleElement()
         ));
+    }
+
+    public void addElement(AbstractElement element) {
+        if (getElements().contains(element)) {
+            return;
+        }
+
+        getElements().add(element);
     }
 
     public List<AbstractElement> getVisibleElements() {
