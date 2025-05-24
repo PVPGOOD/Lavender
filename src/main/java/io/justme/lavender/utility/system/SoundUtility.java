@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.FloatControl;
+import java.io.BufferedInputStream;
 import java.util.Objects;
 
 /**
@@ -18,7 +19,8 @@ public class SoundUtility {
             try {
                 var clip = AudioSystem.getClip();
                 var inputStream = AudioSystem.getAudioInputStream(
-                        Objects.requireNonNull(SoundUtility.class.getResourceAsStream("/assets/minecraft/la/sound/" + url)));
+                        new BufferedInputStream(Objects.requireNonNull(SoundUtility.class.getResourceAsStream("/assets/minecraft/la/sound/" + url)))
+                );
 
                 clip.open(inputStream);
                 var gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
