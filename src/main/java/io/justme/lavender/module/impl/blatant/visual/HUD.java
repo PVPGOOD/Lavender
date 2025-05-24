@@ -53,6 +53,8 @@ public class HUD extends Module {
                 element.draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
             }
         }
+
+        elements.getTargetListElement().draw(event2DRender.getPartialTicks(), La.getINSTANCE().getMouseX(), La.getINSTANCE().getMouseY());
     }
 
 }
