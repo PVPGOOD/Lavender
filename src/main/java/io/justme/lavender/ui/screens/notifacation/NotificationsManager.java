@@ -1,8 +1,10 @@
 package io.justme.lavender.ui.screens.notifacation;
 
 import io.justme.lavender.ui.screens.notifacation.impl.RectangleNotifications;
+import io.justme.lavender.utility.system.SoundUtility;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,9 @@ public class NotificationsManager {
         roundedNotifications.setDuration(duration);
 
         getNotifications().add(roundedNotifications);
+        if (Minecraft.getMinecraft().thePlayer != null) {
+            SoundUtility.playSound("notification.wav",-20);
+        }
     }
 
 }

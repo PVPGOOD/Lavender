@@ -34,6 +34,7 @@ public class ElementsManager extends Manager<AbstractElement> {
         getElements().addAll(Arrays.asList(
                 getLegacyArrayList(),
                 getTargetListElement(),
+                getNotificationElement(),
                 getTitleElement()
         ));
 
