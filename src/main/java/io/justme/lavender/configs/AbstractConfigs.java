@@ -1,10 +1,15 @@
 package io.justme.lavender.configs;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import io.justme.lavender.La;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -32,4 +37,26 @@ public abstract class AbstractConfigs {
 
     public abstract void save();
 
+
+    public boolean has(String elementName) {
+        try {
+            var jsonObject = new Gson().fromJson(Files.readString(getFilesPath()), JsonObject.class);
+            return jsonObject != null && jsonObject.has(elementName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void remove(String elementName) {
+        try {
+            var jsonObject = new Gson().fromJson(Files.readString(getFilesPath()), JsonObject.class);
+            if (jsonObject != null && jsonObject.has(elementName)) {
+                jsonObject.remove(elementName);
+                Files.writeString(getFilesPath(), new GsonBuilder().setPrettyPrinting().create().toJson(jsonObject));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

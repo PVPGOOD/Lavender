@@ -1,15 +1,13 @@
 package io.justme.lavender.ui.screens.configscreen.frame.impl.button;
 
 import io.justme.lavender.La;
+import io.justme.lavender.ui.screens.configscreen.AbstractConfigFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.impl.CheckBoxComponents;
-import io.justme.lavender.ui.screens.configscreen.AbstractConfigFrame;
 import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
-import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -68,11 +66,11 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
                 switch (components.getName()) {
 
                     case "重载" -> {
-                        La.getINSTANCE().getConfigsManager().load();
-                        La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已重新加载",La.getINSTANCE().getConfigsManager().getPageName()), NotificationsEnum.SUCCESS,5000);
+                        La.getINSTANCE().getConfigsManager().load();La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已重新加载",La.getINSTANCE().getConfigsManager().getPageName()), NotificationsEnum.SUCCESS,5000);
                     }
 
                     case "刷新" -> {
+                        La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().onInitialization();
                         configListFrame.getComponentsArrayList().clear();
                         configListFrame.FileReader();
                         La.getINSTANCE().getNotificationsManager().push("成功","当前配置列表已刷新", NotificationsEnum.SUCCESS,5000);

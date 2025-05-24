@@ -1,11 +1,13 @@
 package io.justme.lavender.ui.elements;
 
+import io.justme.lavender.ui.elements.impl.arraylist.circle.components.impl.CircleComponent;
 import io.justme.lavender.ui.elements.quadrant.Quadrant;
 import io.justme.lavender.ui.elements.quadrant.QuadrantEnum;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -16,10 +18,12 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractElement {
 
+    //arraylist
+    private String label;
+    private CopyOnWriteArrayList<CircleComponent> circleComponents = new CopyOnWriteArrayList<>();
+
     private float posX, posY,width,height, draggingX, draggingY;
-
     private String elementName;
-
     private boolean dragging;
 
     public AbstractElement(String elementName) {
@@ -53,5 +57,9 @@ public abstract class AbstractElement {
     public QuadrantEnum getQuadrant() {
         Quadrant quadrant = new Quadrant();
         return quadrant.getQuadrant(posX, posY);
+    }
+
+    public boolean isHover(int mouseX, int mouseY) {
+        return mouseX >= getPosX() && mouseX <= getPosX() + getWidth() && mouseY >= getPosY() && mouseY <= getPosY() + getHeight();
     }
 }

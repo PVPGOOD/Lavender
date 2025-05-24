@@ -3,7 +3,7 @@ package io.justme.lavender.ui.elements;
 import io.justme.lavender.ui.elements.impl.NotificationElement;
 import io.justme.lavender.ui.elements.impl.TargetListElement;
 import io.justme.lavender.ui.elements.impl.TitleElement;
-import io.justme.lavender.ui.elements.impl.arraylist.GroupCircleArrayListElement;
+import io.justme.lavender.ui.elements.impl.arraylist.GroupCircleArrayListManager;
 import io.justme.lavender.ui.elements.impl.legacy.LegacyArrayList;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class ElementsManager extends Manager<AbstractElement> {
 
     private final LegacyArrayList legacyArrayList = new LegacyArrayList();
     private final CircleArrayListElement circleArrayListElement = new CircleArrayListElement();
-    private final GroupCircleArrayListElement groupCircleArrayListElement = new GroupCircleArrayListElement();
+    private GroupCircleArrayListManager groupCircleArrayListManager;
     private final NotificationElement notificationElement = new NotificationElement();
     private final TargetListElement targetListElement = new TargetListElement();
     private final TitleElement titleElement = new TitleElement();
@@ -35,11 +35,13 @@ public class ElementsManager extends Manager<AbstractElement> {
         getElements().addAll(Arrays.asList(
                 getLegacyArrayList(),
                 getCircleArrayListElement(),
-                getGroupCircleArrayListElement(),
-                getNotificationElement(),
                 getTargetListElement(),
                 getTitleElement()
         ));
+
+    }
+    public void onInitialization() {
+        groupCircleArrayListManager = new GroupCircleArrayListManager();
     }
 
     public void addElement(AbstractElement element) {

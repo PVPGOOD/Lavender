@@ -2,7 +2,7 @@ package io.justme.lavender.ui.elements.impl.arraylist.circle.components;
 
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.elements.impl.arraylist.circle.AbstractGroup;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.utility.math.TimerUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
@@ -29,9 +29,9 @@ public abstract class AbstractComponent {
     private FontDrawer fontDrawer;
 
     //属于哪个组
-    public AbstractGroup abstractGroup;
+    public AbstractElement abstractGroup;
 
-    public AbstractComponent(AbstractGroup abstractGroup, Module module) {
+    public AbstractComponent(AbstractElement abstractGroup, Module module) {
         this.abstractGroup = abstractGroup;
         this.module = module;
     }

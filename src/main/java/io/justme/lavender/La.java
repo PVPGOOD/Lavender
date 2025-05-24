@@ -81,6 +81,7 @@ public class La {
         moduleManager.onInitialization();
 
         elementsManager = new ElementsManager();
+        elementsManager.onInitialization();
 
         viaMCP = new ViaMCP();
         asyncVersionSlider = new AsyncVersionSlider(1337, 20, 5, 110,20);
@@ -100,6 +101,7 @@ public class La {
 
         configsManager = new ConfigsManager();
 
+        getElementsManager().getGroupCircleArrayListManager().onInitialization();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> configsManager.save()));
 

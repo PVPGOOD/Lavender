@@ -1,7 +1,7 @@
 package io.justme.lavender.ui.elements.impl.arraylist.circle.components.impl;
 
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.elements.impl.arraylist.circle.AbstractGroup;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.ui.elements.impl.arraylist.circle.components.AbstractComponent;
 import io.justme.lavender.utility.gl.ColorUtility;
 import io.justme.lavender.utility.gl.OGLUtility;
@@ -15,7 +15,7 @@ import java.io.IOException;
  * @since 2025/5/13
  **/
 public class CircleComponent extends AbstractComponent {
-    public CircleComponent(AbstractGroup abstractGroup, Module module) {
+    public CircleComponent(AbstractElement abstractGroup, Module module) {
         super(abstractGroup,module);
     }
 

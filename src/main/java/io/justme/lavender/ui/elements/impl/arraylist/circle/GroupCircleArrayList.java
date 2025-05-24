@@ -1,10 +1,12 @@
 package io.justme.lavender.ui.elements.impl.arraylist.circle;
 
 import io.justme.lavender.La;
+import io.justme.lavender.ui.elements.AbstractElement;
 import io.justme.lavender.ui.elements.impl.arraylist.circle.components.impl.CircleComponent;
 import io.justme.lavender.ui.elements.impl.arraylist.circle.popup.AbstractPopUp;
 import io.justme.lavender.ui.elements.impl.arraylist.circle.popup.impl.CirclePopUp;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,15 +19,17 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
-public class GroupCircleArrayList extends AbstractGroup {
-    
-    public GroupCircleArrayList() {
-        super("");
-        this.setLabel("" + hashCode());
+public class GroupCircleArrayList extends AbstractElement {
+
+    private float x,y,width,height;
+
+    public GroupCircleArrayList(String label) {
+        super(label);
     }
 
     @Override
-    public void draw(int mouseX, int mouseY) {
+    public void draw(float partialTicks, int mouseX, int mouseY) {
+
         var interval = 0;
 
         RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(), 0.1f,new Color(0,0,0,32));
@@ -44,7 +48,7 @@ public class GroupCircleArrayList extends AbstractGroup {
             interval += 25;
         }
 
-        for (AbstractPopUp popUp : La.getINSTANCE().getElementsManager().getGroupCircleArrayListElement().getPopUps()) {
+        for (AbstractPopUp popUp : La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().getPopUps()) {
 
             if (popUp.isDragging()) {
                 popUp.setX(mouseX - popUp.getWidth() / 2);
@@ -57,43 +61,67 @@ public class GroupCircleArrayList extends AbstractGroup {
             popUp.draw(mouseX, mouseY);
         }
 
+
+        setX(getPosX());
+        setY(getPosY());
         setHeight(interval);
         setWidth(100);
     }
 
+
     @Override
-    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        boolean componentClicked = false;
+
         for (CircleComponent circleComponent : getCircleComponents()) {
-            if (circleComponent.mouseClicked(mouseX, mouseY, mouseButton)) {
-                if (mouseButton == 0) {
-                    if (circleComponent.isHover(mouseX, mouseY)) {
-                        circleComponent.setDragging(true);
+            if (!circleComponent.mouseClicked(mouseX, mouseY, mouseButton)) continue;
 
-                        var circlePopUp = getCirclePopUp(circleComponent);
+            componentClicked = true;
 
-                        La.getINSTANCE().getElementsManager().getGroupCircleArrayListElement().getPopUps().add(circlePopUp);
-                        circleComponent.getAbstractGroup().getCircleComponents().remove(circleComponent);
-                    }
-                }
+            circleComponent.getClickedTimerUtility().reset();
+            circleComponent.setDragging(false);
 
-                circleComponent.getClickedTimerUtility().reset();
-                circleComponent.setDragging(false);
+            if (mouseButton != 0 || !circleComponent.isHover(mouseX, mouseY)) continue;
+
+            circleComponent.setDragging(true);
+
+            var circlePopUp = getCirclePopUp(circleComponent);
+            La.getINSTANCE().getElementsManager()
+                    .getGroupCircleArrayListManager()
+                    .getPopUps()
+                    .add(circlePopUp);
+
+            circleComponent.getAbstractGroup()
+                    .getCircleComponents()
+                    .remove(circleComponent);
+        }
+
+        if (!componentClicked && MouseUtility.isHovering(getPosX(), getPosY(), getWidth(), 20, mouseX, mouseY)) {
+            setDragging(true);
+        }
+
+        if (getCircleComponents().isEmpty()) {
+            La.getINSTANCE().getElementsManager().getElements().remove(this);
+
+            var elementsConfigs = La.getINSTANCE().getConfigsManager().getElementsConfigs();
+            if (elementsConfigs.has(getElementName())) {
+                elementsConfigs.remove(getElementName());
+                elementsConfigs.save();
             }
         }
-        return false;
 
     }
 
+
     @Override
-    public boolean mouseReleased(int mouseX, int mouseY, int state) {
-        return isHover(mouseX, mouseY);
+    public void mouseReleased(int mouseX, int mouseY, int state) {
+        setDragging(false);
     }
 
     private CirclePopUp getCirclePopUp(CircleComponent circleComponent) {
         var circlePopUp = new CirclePopUp(circleComponent.getModule());
         circlePopUp.setX(getX());
         circlePopUp.setY(getY());
-        circlePopUp.setFontDrawer(getFontDrawer());
         circlePopUp.setDragging(true);
         return circlePopUp;
     }

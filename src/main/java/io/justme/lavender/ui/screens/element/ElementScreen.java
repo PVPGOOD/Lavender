@@ -23,6 +23,12 @@ public class ElementScreen extends GuiScreen {
     //elements
     private AbstractElement elements;
 
+
+    public ElementScreen() {
+
+    }
+
+
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold18();
@@ -55,6 +61,7 @@ public class ElementScreen extends GuiScreen {
 
     public void onGuiClosed()
     {
+
         for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements()) {
             elements.reset();
        }
@@ -68,6 +75,9 @@ public class ElementScreen extends GuiScreen {
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
+
+        La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().mouseClicked(mouseX, mouseY, mouseButton);
+
         if (mouseButton == 0)
         {
             for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements())
@@ -76,6 +86,8 @@ public class ElementScreen extends GuiScreen {
     }
 
     public void mouseReleased(int mouseX, int mouseY, int state) {
+
+        La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().mouseReleased(mouseX, mouseY, state);
 
         for (AbstractElement elements : La.getINSTANCE().getElementsManager().getElements())
             elements.mouseReleased(mouseX,mouseY,state);
