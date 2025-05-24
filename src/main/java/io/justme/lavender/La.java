@@ -101,7 +101,7 @@ public class La {
 
         configsManager = new ConfigsManager();
 
-        getElementsManager().getGroupCircleArrayListManager().onInitialization();
+        getElementsManager().getGroupCircleArrayListManager().checkRebuild();
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> configsManager.save()));
 

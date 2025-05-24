@@ -28,7 +28,7 @@ public class GroupCircleArrayListManager  {
 
     }
 
-    public void onInitialization() {
+    public void checkRebuild() {
         int totalSize = 0;
         for (AbstractElement element : La.getINSTANCE().getElementsManager().getElements()) {
             if (element instanceof GroupCircleArrayList groupCircleArrayList) {

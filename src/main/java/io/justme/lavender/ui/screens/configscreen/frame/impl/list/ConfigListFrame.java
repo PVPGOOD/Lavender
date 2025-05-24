@@ -78,6 +78,7 @@ public class ConfigListFrame extends AbstractConfigFrame {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractComponents components : getComponentsArrayList()) {
             if (components.mouseClicked(mouseX, mouseY, mouseButton)) {
+                La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().checkRebuild();
                 La.getINSTANCE().getConfigScreen().setSelectConfig(components.getName());
                 La.getINSTANCE().getConfigsManager().save();
                 La.getINSTANCE().getConfigsManager().loadAnotherConfig(components.getName());

@@ -66,11 +66,12 @@ public class ConfigButtonFrame extends AbstractConfigFrame {
                 switch (components.getName()) {
 
                     case "重载" -> {
+                        La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().checkRebuild();
                         La.getINSTANCE().getConfigsManager().load();La.getINSTANCE().getNotificationsManager().push("成功",String.format("[%s] 已重新加载",La.getINSTANCE().getConfigsManager().getPageName()), NotificationsEnum.SUCCESS,5000);
                     }
 
                     case "刷新" -> {
-                        La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().onInitialization();
+                        La.getINSTANCE().getElementsManager().getGroupCircleArrayListManager().checkRebuild();
                         configListFrame.getComponentsArrayList().clear();
                         configListFrame.FileReader();
                         La.getINSTANCE().getNotificationsManager().push("成功","当前配置列表已刷新", NotificationsEnum.SUCCESS,5000);

@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class ElementsManager extends Manager<AbstractElement> {
 
     private final LegacyArrayList legacyArrayList = new LegacyArrayList();
-    private final CircleArrayListElement circleArrayListElement = new CircleArrayListElement();
     private GroupCircleArrayListManager groupCircleArrayListManager;
     private final NotificationElement notificationElement = new NotificationElement();
     private final TargetListElement targetListElement = new TargetListElement();
@@ -34,7 +33,6 @@ public class ElementsManager extends Manager<AbstractElement> {
 
         getElements().addAll(Arrays.asList(
                 getLegacyArrayList(),
-                getCircleArrayListElement(),
                 getTargetListElement(),
                 getTitleElement()
         ));
