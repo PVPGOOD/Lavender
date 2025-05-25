@@ -1,10 +1,7 @@
 package net.minecraft.client.entity;
 
 import io.justme.lavender.La;
-import io.justme.lavender.events.player.EventMotionUpdate;
-import io.justme.lavender.events.player.EventMove;
-import io.justme.lavender.events.player.EventSlowDown;
-import io.justme.lavender.events.player.EventUpdate;
+import io.justme.lavender.events.player.*;
 import net.lenni0451.asmevents.event.enums.EnumEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -109,7 +106,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void onUpdateWalkingPlayer()
     {
-        boolean flag = this.isSprinting();
+
+        var actionEvent = new EventEntityAction(this.isSprinting(), this.isSneaking());
+        La.getINSTANCE().getEventManager().call(actionEvent);
+
+
+        boolean flag = actionEvent.isSprinting();
+
 
         if (flag != this.serverSprintState)
         {
@@ -125,7 +128,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.serverSprintState = flag;
         }
 
-        boolean flag1 = this.isSneaking();
+        boolean flag1 = actionEvent.isSneaking();
 
         if (flag1 != this.serverSneakState)
         {
