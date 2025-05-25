@@ -331,6 +331,8 @@ public class Scaffold extends Module {
     public void on3D(Event3DRender event) {
         if (data == null || data.blockPos == null) return;
 
+        RenderUtility.drawZeroDayMark();
+
         var player = mc.thePlayer;
         Vec3 eyePos = new Vec3(
                 player.prevPosX + (player.posX - player.prevPosX) * event.getPartialTicks(),
@@ -341,10 +343,19 @@ public class Scaffold extends Module {
         float yaw = getYaw();
         float pitch = getPitch();
 
-        var lookVec = getVectorForRotation(pitch, yaw);
-        var targetVec = eyePos.addVector(lookVec.xCoord * 3, lookVec.yCoord * 3, lookVec.zCoord * 3); // 向前 3 格
+        double maxDistance = 3.0;
 
-        RenderUtility.drawLine(eyePos, targetVec, 1.0f, 0.0f, 0.0f, 1.0f); // 红色线
+        if (mc.gameSettings.thirdPersonView != 0) {
+            Vec3 lookVec = getVectorForRotation(pitch, yaw);
+            Vec3 targetVec = eyePos.addVector(lookVec.xCoord * maxDistance, lookVec.yCoord * maxDistance, lookVec.zCoord * maxDistance);
+            var rayTraceResult = mc.theWorld.rayTraceBlocks(eyePos, targetVec, false, false, false);
+
+            if (rayTraceResult != null && rayTraceResult.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                targetVec = rayTraceResult.hitVec;
+            }
+
+            RenderUtility.drawLine(eyePos, targetVec, 1.0f, 0.0f, 0.0f, 1.0f); // 红色线
+        }
 
         var pos = data.blockPos;
         var block = mc.theWorld.getBlockState(pos).getBlock();

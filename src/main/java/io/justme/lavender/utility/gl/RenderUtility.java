@@ -179,37 +179,37 @@ public class RenderUtility {
 
     public void drawLine(Vec3 from, Vec3 to, float red, float green, float blue, float alpha) {
         GlStateManager.pushMatrix();
+
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.disableDepth();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+
+        GlStateManager.enableDepth();
+        GlStateManager.depthMask(true);
 
         GlStateManager.color(red, green, blue, alpha);
         GL11.glLineWidth(2.0f);
-        GL11.glBegin(GL11.GL_LINES);
 
         Vec3 renderPos = getRenderPos();
-
         double fx = from.xCoord - renderPos.xCoord;
         double fy = from.yCoord - renderPos.yCoord;
         double fz = from.zCoord - renderPos.zCoord;
-
         double tx = to.xCoord - renderPos.xCoord;
         double ty = to.yCoord - renderPos.yCoord;
         double tz = to.zCoord - renderPos.zCoord;
 
+        GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3d(fx, fy, fz);
         GL11.glVertex3d(tx, ty, tz);
-
         GL11.glEnd();
 
         drawPoint(to, red, green, blue, alpha);
 
-        GlStateManager.enableDepth();
         GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();
         GlStateManager.popMatrix();
     }
+
 
 
     public void drawBox(AxisAlignedBB box, float r, float g, float b, float a) {
@@ -270,7 +270,6 @@ public class RenderUtility {
         GlStateManager.popMatrix();
     }
 
-
     public void drawPoint(Vec3 vec, float r, float g, float b, float a) {
         GlStateManager.pushMatrix();
         GlStateManager.disableTexture2D();
@@ -296,6 +295,94 @@ public class RenderUtility {
         GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();
         GlStateManager.popMatrix();
+    }
+
+    public void drawZeroDayMark() {
+        Minecraft mc = Minecraft.getMinecraft();
+
+        double partialTicks = mc.timer.renderPartialTicks;
+        double interpX = mc.thePlayer.lastTickPosX + (mc.thePlayer.posX - mc.thePlayer.lastTickPosX) * partialTicks;
+        double interpY = mc.thePlayer.lastTickPosY + (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) * partialTicks;
+        double interpZ = mc.thePlayer.lastTickPosZ + (mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ) * partialTicks;
+
+        double renderX = interpX - mc.getRenderManager().viewerPosX;
+        double renderY = interpY - mc.getRenderManager().viewerPosY;
+        double renderZ = interpZ - mc.getRenderManager().viewerPosZ;
+
+        double eyeHeight = mc.thePlayer.getEyeHeight() + 0.45 - (mc.thePlayer.isSneaking() ? 0.25 : 0.0);
+        double baseY = renderY + eyeHeight;
+
+        var black = new Color(0, 0, 0, 255);
+        var orange = new Color(255, 165, 0, 255);
+
+        double x1 = renderX - 0.65;
+        double z1 = renderZ - 0.65;
+
+        double x2 = renderX - 0.5;
+        double z2 = renderZ - 0.5;
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthMask(true);
+
+        GL11.glLineWidth(2.0f);
+
+        GL11.glColor4f(black.getRed() / 255.0f,
+                black.getGreen() / 255.0f,
+                black.getBlue() / 255.0f,
+                black.getAlpha() / 255.0f);
+        drawOutlinedBoundingBox(new AxisAlignedBB(x1, baseY - 2, z1, x1 + 1.3, baseY - 2, z1 + 1.3));
+        drawOutlinedBoundingBox(new AxisAlignedBB(x2, baseY - 2, z2, x2 + 1, baseY - 2, z2 + 1));
+
+        if (mc.gameSettings.keyBindJump.isKeyDown() || mc.thePlayer.moveForward != 0) {
+            GL11.glColor4f(orange.getRed() / 255.0f,
+                    orange.getGreen() / 255.0f,
+                    orange.getBlue() / 255.0f,
+                    orange.getAlpha() / 255.0f);
+
+            drawOutlinedBoundingBox(new AxisAlignedBB(x1, baseY - 2, z1, x1 + 1.3, baseY - 2, z1 + 1.3));
+        }
+
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
+    }
+
+
+    public void drawOutlinedBoundingBox(final AxisAlignedBB aa) {
+        final Tessellator tessellator = Tessellator.getInstance();
+        final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.begin(3, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(3, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        tessellator.draw();
+        worldRenderer.begin(1, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(aa.minX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.minZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.maxX, aa.maxY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.minY, aa.maxZ).endVertex();
+        worldRenderer.pos(aa.minX, aa.maxY, aa.maxZ).endVertex();
+        tessellator.draw();
     }
 
 
