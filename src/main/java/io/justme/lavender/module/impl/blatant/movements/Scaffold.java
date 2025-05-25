@@ -69,7 +69,7 @@ public class Scaffold extends Module {
     private final BoolValue
             towerValue = new BoolValue("Tower",false),
             towerMoveValue = new BoolValue("Tower move",false),
-            positionValue = new BoolValue("Position",false),
+            hypixelLowJump = new BoolValue("Hypixel Low Jump", false),
             safeWalkValue = new BoolValue("SafeWalk",false),
             sprintValue = new BoolValue("Sprint",false),
             swingValue = new BoolValue("Swing",false),
@@ -78,6 +78,7 @@ public class Scaffold extends Module {
             swing = new BoolValue("Swing",false);
 
     private BlockPos targetBlock;
+    private Vec3 cacheHitVec = null;
     public ScaffoldUtility.PlaceData data;
     private boolean placing;
     private boolean canPlace = true;
@@ -101,6 +102,10 @@ public class Scaffold extends Module {
         if (Minecraft.getMinecraft().thePlayer == null) return;
         startedLowhop = false;
         realInUsingSlot = -1;
+
+        setYaw(Minecraft.getMinecraft().thePlayer.rotationYaw);
+        setPitch(Minecraft.getMinecraft().thePlayer.rotationPitch);
+
         setPosY(mc.thePlayer.posY);
     }
 
@@ -109,31 +114,26 @@ public class Scaffold extends Module {
         super.onDisable();
         La.getINSTANCE().getHandlerManager().getRotationHandler().setRotating(false);
         if (Minecraft.getMinecraft().thePlayer == null) return;
-
         Minecraft.getMinecraft().playerController.syncCurrentPlayItem();
+
+
+        setYaw(Minecraft.getMinecraft().thePlayer.rotationYaw);
+        setPitch(Minecraft.getMinecraft().thePlayer.rotationPitch);
+        getLastThreeFaces().clear();
     }
 
 
     private boolean shouldPlaceBlock = false;
+    private boolean pitchReady = false;
     @EventTarget
     public void onTick(EventTick event) {
+        if (mc.thePlayer == null || mc.theWorld == null) return;
 
-        if (placeTimer.hasTimeElapsed(getPlaceDelay().getValue().longValue() + (long) ScaffoldUtility.randomNumber(10, 25), true)) {
-            if (getData() != null && getInUsingItem() != null) {
-                place(data.blockPos, data.facing, ScaffoldUtility.getVec3(data));
-                shouldPlaceBlock = false;
-            }
-        }
-    }
-
-    @EventTarget
-    public void onUpdate(EventUpdate eventUpdate) {
         var posX = mc.thePlayer.posX;
         var posZ = mc.thePlayer.posZ;
         var posY = getPosY();
 
-        targetBlock = new BlockPos(posX, posY, posZ).offset(EnumFacing.DOWN);
-
+        targetBlock = new BlockPos(posX - 0.2f, posY, posZ - 0.2f).offset(EnumFacing.DOWN) ;
         setData(ScaffoldUtility.getPlaceData(targetBlock));
 
         if (getData() == null || getData().blockPos == null) {
@@ -141,10 +141,29 @@ public class Scaffold extends Module {
             return;
         }
 
+        setCacheHitVec(ScaffoldUtility.getVec3(getData()));
+
+        if (getCacheHitVec() == null) {
+            return;
+        }
+
+        if (placeTimer.hasTimeElapsed(getPlaceDelay().getValue().longValue() + (long) ScaffoldUtility.randomNumber(10, 25), true)) {
+            if (getData() != null && getInUsingItem() != null && shouldPlaceBlock && pitchReady) {
+                onPlace(data.blockPos, data.facing, getCacheHitVec());
+                shouldPlaceBlock = false;
+            }
+        }
+
+    }
+
+    @EventTarget
+    public void onUpdate(EventUpdate eventUpdate) {
+        if (getData() == null) return;
+
         validSlots.clear();
         for (int i = 0; i < 9; i++) {
             ItemStack hotbarItem = mc.thePlayer.inventory.mainInventory[i];
-            if (hotbarItem != null && hotbarItem.stackSize > 2 && hotbarItem.getItem() instanceof ItemBlock) {
+            if (hotbarItem != null && hotbarItem.stackSize > 4 && hotbarItem.getItem() instanceof ItemBlock) {
                 validSlots.add(i);
             }
         }
@@ -152,17 +171,17 @@ public class Scaffold extends Module {
         if (!validSlots.isEmpty()) {
             var slotShouldUseTo = validSlots.getFirst();
 
-            if (realInUsingSlot != slotShouldUseTo) {
-                realInUsingSlot = slotShouldUseTo;
-                ItemStack hotbarItem = mc.thePlayer.inventory.mainInventory[slotShouldUseTo];
-                setInUsingItem(hotbarItem);
-                La.getINSTANCE().print("silent switch to " + slotShouldUseTo);
-                packetUtility.sendFinalPacket(new C09PacketHeldItemChange(slotShouldUseTo));
-                switchingBlock = true;
-            }
+//            if (realInUsingSlot != slotShouldUseTo) {
+            realInUsingSlot = slotShouldUseTo;
+            ItemStack hotbarItem = mc.thePlayer.inventory.mainInventory[slotShouldUseTo];
+            setInUsingItem(hotbarItem);
+//                La.getINSTANCE().print("silent switch to " + slotShouldUseTo);
+            mc.thePlayer.inventory.currentItem = slotShouldUseTo;
+            switchingBlock = true;
+//            }
         }
 
-        if (getData() != null && getInUsingItem() != null) {
+        if (getData() != null && getInUsingItem() != null && raytrace() && (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().stackSize > 4)) {
             shouldPlaceBlock = true;
         }
     }
@@ -170,7 +189,7 @@ public class Scaffold extends Module {
     @EventTarget
     public void onMotionUpdate(EventMotionUpdate event) {
         if (getData() != null) {
-            rotation(event);
+            onRotation(event);
             La.getINSTANCE().getHandlerManager().getRotationHandler().setRotating(true);
         } else {
             La.getINSTANCE().getHandlerManager().getRotationHandler().setRotating(false);
@@ -184,18 +203,14 @@ public class Scaffold extends Module {
                 switch (getKeepYModeValue().getValue()) {
                     case "None":
                         setPosY(mc.thePlayer.posY);
-                       break;
-                    case "Normal":
+                        break;
+                    case "Always":
                         if (getPosY() > mc.thePlayer.posY || mc.thePlayer.fallDistance > 1.5) {
                             setPosY(mc.thePlayer.posY);
                         }
 
-                        if (PlayerUtility.isOnGround(1.15) &&
-                                !PlayerUtility.moving() &&
-                                !PlayerUtility.isOnGround(-2) &&
-                                mc.gameSettings.keyBindJump.pressed &&
-                                getTowerMoveValue().getValue()) {
-
+                        if (PlayerUtility.isOnGround(1.15) && !PlayerUtility.moving() &&
+                                !PlayerUtility.isOnGround(-2) && mc.gameSettings.keyBindJump.pressed && getTowerMoveValue().getValue()) {
                             setPosY(mc.thePlayer.posY);
                         }
                         break;
@@ -228,7 +243,7 @@ public class Scaffold extends Module {
                                 mc.thePlayer.motionY = 0;
                         }
 
-                       setTowerTick(0);
+                        setTowerTick(0);
                     } else {
                         if (PlayerUtility.isAirUnder(mc.thePlayer)) {
 
@@ -244,19 +259,54 @@ public class Scaffold extends Module {
 //                                }
 
                             } else {
-                              setTowerTick(0);
+                                setTowerTick(0);
                             }
                         }
                     }
                 } else {
-                   setTowerTick(0);
+                    setTowerTick(0);
                 }
             }
         }
     }
 
     private float yaw,pitch;
-    private void rotation(EventMotionUpdate event) {
+    private final LinkedList<EnumFacing> lastThreeFaces = new LinkedList<>();
+
+    private void updateFaceHistory(EnumFacing newFace) {
+        if (newFace == null) return;
+
+        lastThreeFaces.addLast(newFace);
+        if (lastThreeFaces.size() > 3) {
+            lastThreeFaces.removeFirst();
+        }
+    }
+
+
+    private boolean isFaceChangedFrequently() {
+        if (lastThreeFaces.size() < 3) {
+            return false;
+        }
+        EnumFacing first = lastThreeFaces.get(0);
+        EnumFacing third = lastThreeFaces.get(2);
+        return !first.equals(third);
+    }
+
+    private boolean isDirections() {
+        if (lastThreeFaces.size() < 3) {
+            return false;
+        }
+        EnumFacing first = lastThreeFaces.get(0);
+        EnumFacing third = lastThreeFaces.get(2);
+        return first.equals(third);
+    }
+
+
+    private boolean isDiagonal = false;
+
+    private float lastYaw = 0f;
+    private float lastPitch = 0f;
+    private void onRotation(EventMotionUpdate event) {
         switch (getRotationModeValue().getValue()) {
             case "Normal": {
                 BlockPos underPos = new BlockPos(
@@ -269,24 +319,48 @@ public class Scaffold extends Module {
 
                 if (under == Blocks.air || !under.isFullBlock()) {
 
+                    Vec3 hitVec = null;
 
-                    var hitVec = ScaffoldUtility.getVec3(data);
+                    if (getLastHitVec() != getCacheHitVec()) {
+                        hitVec = getCacheHitVec();
+                    }
+                    if (hitVec == null) {
+                        return;
+                    }
 
                     if (lastHitVec == null || !lastHitVec.equals(hitVec)) {
-                        hasSentPlacePacket = false;  // hitVec变了，允许重新发送放置包
+                        hasSentPlacePacket = false;
                         lastHitVec = hitVec;
                     }
 
+                    updateFaceHistory(data.facing);
 
-                    float[] rotations = RotationUtility.getRotationsToPosition(hitVec.xCoord, hitVec.yCoord, hitVec.zCoord);
+                    float yaw, pitch;
 
-                    float yaw = rotations[0];
-                    float pitch = rotations[1];
+                    if (isFaceChangedFrequently()) {
+                        isDiagonal = true;
+                        yaw = lastYaw;
+                        pitch = lastPitch;
+                    } else {
+                        float[] rotations = RotationUtility.getRotationsToPosition(hitVec.xCoord, hitVec.yCoord, hitVec.zCoord);
+                        isDiagonal = false;
+                        yaw = rotations[0];
+                        pitch = rotations[1];
+                    }
+                    pitch = Math.max(0, Math.min(90, pitch));
 
-                    pitch = Math.max(70, Math.min(90, pitch));
+                    pitchReady = pitch < 85;
 
-                    setYaw(yaw);
-                    setPitch(pitch);
+                    // 更新全局记录
+                    float smoothFactor = 1; // 你可以调整这个值（0.1f ~ 0.5f 之间），越大越快
+                    float smoothYaw = lerp(lastYaw, yaw, smoothFactor);
+                    float smoothPitch = lerp(lastPitch, pitch, smoothFactor);
+
+                    lastYaw = smoothYaw;
+                    lastPitch = smoothPitch;
+
+                    setYaw(smoothYaw);
+                    setPitch(smoothPitch);
                 }
 
                 event.setYaw(getYaw());
@@ -297,6 +371,10 @@ public class Scaffold extends Module {
         }
     }
 
+    private float lerp(float from, float to, float factor) {
+        return from + (to - from) * factor;
+    }
+
     @EventTarget
     public void onEntityAction(EventEntityAction event) {
         event.setSprinting(false);
@@ -304,34 +382,39 @@ public class Scaffold extends Module {
     private boolean startedLowhop;
     @EventTarget
     public void onMove(EventMove event) {
-        if(!PlayerUtility.moving()) {
-            startedLowhop = false;
-        }
+        if (hypixelLowJump.getValue()) {
+            if(!PlayerUtility.moving()) {
+                startedLowhop = false;
+            }
 
-        if(mc.thePlayer.onGround) {
-            if(PlayerUtility.moving()) {
-                if(startedLowhop && !mc.gameSettings.keyBindJump.isKeyDown()) {
-                    if(!PlayerUtility.isAirOrLiquid(new BlockPos(mc.thePlayer.posX + event.getX(), mc.thePlayer.posY - 1, mc.thePlayer.posZ + event.getZ()))) {
-                        event.setY(mc.thePlayer.motionY = 0.0005);
+            if(mc.thePlayer.onGround) {
+                if(PlayerUtility.moving()) {
+                    if(startedLowhop && !mc.gameSettings.keyBindJump.isKeyDown()) {
+                        if(!PlayerUtility.isAirOrLiquid(new BlockPos(mc.thePlayer.posX + event.getX(), mc.thePlayer.posY - 1, mc.thePlayer.posZ + event.getZ()))) {
+//                            event.setY(mc.thePlayer.motionY = 0.0001);
+                        }
+                    } else {
+                        PlayerUtility.jump(event);
                     }
-                } else {
-                    PlayerUtility.jump(event);
+                }
+            } else {
+                if(event.getY() > 0.3) {
+                    startedLowhop = true;
                 }
             }
-        } else {
-            if(event.getY() > 0.3) {
-                startedLowhop = true;
-                }
-            }
+        }
     }
 
     private final Deque<Vec3> hitVecHistory = new LinkedList<>();
 
     @EventTarget
     public void on3D(Event3DRender event) {
-        if (data == null || data.blockPos == null) return;
+        if (data == null || cacheHitVec == null) return;
 
-        RenderUtility.drawZeroDayMark();
+
+        if (getMarkMode().getValue().equals("Zeroday")) {
+            RenderUtility.drawZeroDayMark();
+        }
 
         var player = mc.thePlayer;
         Vec3 eyePos = new Vec3(
@@ -345,17 +428,14 @@ public class Scaffold extends Module {
 
         double maxDistance = 3.0;
 
-        if (mc.gameSettings.thirdPersonView != 0) {
-            Vec3 lookVec = getVectorForRotation(pitch, yaw);
-            Vec3 targetVec = eyePos.addVector(lookVec.xCoord * maxDistance, lookVec.yCoord * maxDistance, lookVec.zCoord * maxDistance);
-            var rayTraceResult = mc.theWorld.rayTraceBlocks(eyePos, targetVec, false, false, false);
-
-            if (rayTraceResult != null && rayTraceResult.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                targetVec = rayTraceResult.hitVec;
-            }
-
-            RenderUtility.drawLine(eyePos, targetVec, 1.0f, 0.0f, 0.0f, 1.0f); // 红色线
+        Vec3 lookVec = getVectorForRotation(pitch, yaw);
+        Vec3 targetVec = eyePos.addVector(lookVec.xCoord * maxDistance, lookVec.yCoord * maxDistance, lookVec.zCoord * maxDistance);
+        var rayTraceResult = mc.theWorld.rayTraceBlocks(eyePos, targetVec, false, false, false);
+        if (rayTraceResult != null && rayTraceResult.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            targetVec = rayTraceResult.hitVec;
         }
+        RenderUtility.drawLine(eyePos, targetVec, 1.0f, 0.0f, 0.0f, 1.0f);
+
 
         var pos = data.blockPos;
         var block = mc.theWorld.getBlockState(pos).getBlock();
@@ -363,7 +443,7 @@ public class Scaffold extends Module {
 
         RenderUtility.drawBox(box, 0.3f, 0.3f, 1f, 0.4f);
 
-        var hitVec = ScaffoldUtility.getVec3(data);
+        var hitVec = getCacheHitVec();
         RenderUtility.drawPoint(hitVec, 0.0f, 1.0f, 0.0f, 1.0f);
 
         float alphaStep = 0.15f;
@@ -376,22 +456,38 @@ public class Scaffold extends Module {
     }
 
     private boolean tryingToPlace = false;
-
+    private EnumFacing lastFacing = null;
     @EventTarget
     public void on2D(Event2DRender event) {
-        if (getMarkMode().getValue().equals("Zeroday")) {
-            if (data != null && data.blockPos != null) {
 
-                var scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
-                var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-                float x = scaledResolution.getScaledWidth() / 2f + 10;
-                float y = scaledResolution.getScaledHeight() / 2f + 10;
-                font.drawString("Facing: " + data.facing.name(), x, y, 0xFFFFFF);
-                //trying
-                font.drawString("Trying to place: " + (tryingToPlace ? "Yes" : "No"), x, y + 20, 0xFFFFFF);
+        var scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
+        var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        float x = scaledResolution.getScaledWidth() / 2f + 10;
+        float y = scaledResolution.getScaledHeight() / 2f + 10;
 
-            }
+        if (data != null) {
+            lastFacing = data.facing;
         }
+
+        var s = "Facing: " + (data != null ? data.facing.name() : "lasted " + lastFacing);
+        font.drawString(s, x, y, 0xFFFFFF);
+        //trying
+        font.drawString("Trying to place: " + (tryingToPlace ? "Yes" : "No"), x, y + 20, 0xFFFFFF);
+        //yaw pitch
+        font.drawString("Yaw: " + getYaw() + ", Pitch: " + getPitch(), x, y + 40, 0xFFFFFF);
+        //startedLowhop
+        font.drawString("Started Lowhop: " + (startedLowhop ? "Yes" : "No"), x, y + 30, 0xFFFFFF);
+        //placing
+        font.drawString("pitch ready: " + pitchReady, x, y + 50, 0xFFFFFF);
+        //blocks placed
+        //isDiagonalFace
+        font.drawString("Diagonal Face: " + (isFaceChangedFrequently() ? "Yes" : "No"), x, y + 60, 0xFFFFFF);
+        //ray
+        font.drawString("Ray: " + (raytrace() ? "Yes" : "No"), x, y + 70, 0xFFFFFF);
+        //isDirections
+
+
+
     }
 
 
@@ -418,7 +514,7 @@ public class Scaffold extends Module {
     private Vec3 lastHitVec = null;
     private boolean hasSentPlacePacket = false;
 
-    private void place(BlockPos pos, EnumFacing facing, Vec3 hitVec) {
+    private void onPlace(BlockPos pos, EnumFacing facing, Vec3 hitVec) {
         // 判断 hitVec 是否变化
         if (lastHitVec == null || !lastHitVec.equals(hitVec)) {
             hasSentPlacePacket = false; // hitVec 改变，重置标志
@@ -432,7 +528,7 @@ public class Scaffold extends Module {
             blocksPlaced++;
 
             hitVecHistory.addLast(hitVec);
-            if (hitVecHistory.size() > 5) {
+            if (hitVecHistory.size() > 50) {
                 hitVecHistory.removeFirst();
             }
 
@@ -494,6 +590,7 @@ public class Scaffold extends Module {
             }
 
             if (!hasSentPlacePacket) {
+                La.getINSTANCE().print("sending place packet");
                 Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(hitPos, side.getIndex(), player.inventory.getCurrentItem(), f, f1, f2));
                 hasSentPlacePacket = true;
                 tryingToPlace = true;
@@ -605,16 +702,27 @@ public class Scaffold extends Module {
     }
 
     private boolean raytrace() {
-//        var movingObjectPosition = WorldUtility.raytrace(getYaw(),getPitch());
-//
-//        //合法的hitVec
-//        if(movingObjectPosition != null && movingObjectPosition.sideHit == getBlockData().getFacing() && movingObjectPosition.getBlockPos().equals(getBlockData().getPos())) {
-//           getBlockData().setVec3(movingObjectPosition.hitVec);
-//            return true;
-//        }
+        var player = mc.thePlayer;
+        if (player == null || mc.theWorld == null || cacheHitVec == null) return false;
+
+        Vec3 eyePos = new Vec3(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+
+        float yaw = getYaw(); // 确保这些方法返回玩家当前视角的 yaw 和 pitch
+        float pitch = getPitch();
+
+        double maxDistance = 3.0;
+
+        Vec3 lookVec = getVectorForRotation(pitch, yaw);
+        Vec3 targetVec = eyePos.addVector(lookVec.xCoord * maxDistance, lookVec.yCoord * maxDistance, lookVec.zCoord * maxDistance);
+
+        MovingObjectPosition rayTraceResult = mc.theWorld.rayTraceBlocks(eyePos, targetVec, false, false, false);
+        if (rayTraceResult != null && rayTraceResult.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            return rayTraceResult.hitVec.distanceTo(cacheHitVec) < 0.1; // 判断是否命中 cacheHitVec，允许一定误差
+        }
 
         return false;
     }
+
 
     @EventTarget
     public void onSafeWalk(EventSafeWalk eventSafeWalk) {

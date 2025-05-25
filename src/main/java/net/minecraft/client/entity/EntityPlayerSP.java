@@ -195,7 +195,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     public void moveEntity(double x, double y, double z) {
         final EventMove event = new EventMove(x, y, z);
         La.getINSTANCE().getEventManager().call(event);
-        super.moveEntity(x, y, z);
+        super.moveEntity(event.getX(), event.getY(), event.getZ());
     }
 
     public EntityItem dropOneItem(boolean dropAll)

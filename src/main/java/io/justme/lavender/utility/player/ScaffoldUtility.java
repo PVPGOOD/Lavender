@@ -1,5 +1,6 @@
 package io.justme.lavender.utility.player;
 
+import io.justme.lavender.La;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -147,9 +148,14 @@ public class ScaffoldUtility {
         // 2 Block extension & diagonal
         for (EnumFacing facing : facings) {
             final BlockPos blockPos = pos.add(facing.getOpposite().getDirectionVec());
-            for (EnumFacing facing1 : facings) {
+
+            EnumFacing[] reorderedFacings = reorderFacings(facings, facing);
+
+            for (EnumFacing facing1 : reorderedFacings) {
                 final BlockPos blockPos1 = blockPos.add(facing1.getOpposite().getDirectionVec());
                 if (canBePlacedOn(blockPos1)) {
+                    La.getINSTANCE().print("extension");
+                    System.out.println(facing1);
                     return new PlaceData(blockPos1, facing1);
                 }
             }
@@ -157,12 +163,17 @@ public class ScaffoldUtility {
         return null;
     }
 
-    public static boolean canBePlacedOn(final BlockPos blockPos) {
-        final Material material = mc.theWorld.getBlockState(blockPos).getBlock().getMaterial();
-
-        return (material.blocksMovement() && material.isSolid() && !(mc.theWorld.getBlockState(blockPos).getBlock() instanceof BlockAir));
+    private EnumFacing[] reorderFacings(EnumFacing[] facings, EnumFacing priority) {
+        EnumFacing[] result = new EnumFacing[facings.length];
+        result[0] = priority;
+        int index = 1;
+        for (EnumFacing f : facings) {
+            if (f != priority) {
+                result[index++] = f;
+            }
+        }
+        return result;
     }
-
 
     public Vec3 getVec3(PlaceData data) {
         var pos = data.blockPos;
@@ -176,12 +187,31 @@ public class ScaffoldUtility {
         y += face.getFrontOffsetY() / 2.0D;
         z += face.getFrontOffsetZ() / 2.0D;
 
-        double offsetRange = 0.04D;
-        x += (Math.random() - 0.5) * 2 * offsetRange;
-        y += (Math.random() - 0.5) * 2 * offsetRange;
-        z += (Math.random() - 0.5) * 2 * offsetRange;
+        double offsetRange = 0;
+
+        switch (face.getAxis()) {
+            case X -> {
+                y += (Math.random() - 0.5) * 2 * offsetRange;
+                z += (Math.random() - 0.5) * 2 * offsetRange;
+            }
+            case Y -> {
+                x += (Math.random() - 0.5) * 2 * offsetRange;
+                z += (Math.random() - 0.5) * 2 * offsetRange;
+            }
+            case Z -> {
+                x += (Math.random() - 0.5) * 2 * offsetRange;
+                y += (Math.random() - 0.5) * 2 * offsetRange;
+            }
+        }
 
         return new Vec3(x, y, z);
+    }
+
+
+    public static boolean canBePlacedOn(final BlockPos blockPos) {
+        final Material material = mc.theWorld.getBlockState(blockPos).getBlock().getMaterial();
+
+        return (material.blocksMovement() && material.isSolid() && !(mc.theWorld.getBlockState(blockPos).getBlock() instanceof BlockAir));
     }
 
 
