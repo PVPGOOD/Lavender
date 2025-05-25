@@ -321,8 +321,11 @@ public class PlayerControllerMP
 
     public void syncCurrentPlayItem()
     {
-        int i = this.mc.thePlayer.inventory.currentItem;
 
+        var scaffold = La.getINSTANCE().getModuleManager().getScaffold();
+        if (scaffold.isToggle()) return;
+
+        int i = this.mc.thePlayer.inventory.currentItem;
         if (i != this.currentPlayerItem)
         {
             this.currentPlayerItem = i;

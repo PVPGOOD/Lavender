@@ -165,17 +165,25 @@ public class ScaffoldUtility {
 
 
     public Vec3 getVec3(PlaceData data) {
-        BlockPos pos = data.blockPos;
-        EnumFacing face = data.facing;
+        var pos = data.blockPos;
+        var face = data.facing;
+
         double x = pos.getX() + 0.5D;
         double y = pos.getY() + 0.5D;
         double z = pos.getZ() + 0.5D;
+
         x += face.getFrontOffsetX() / 2.0D;
-        z += face.getFrontOffsetZ() / 2.0D;
         y += face.getFrontOffsetY() / 2.0D;
+        z += face.getFrontOffsetZ() / 2.0D;
+
+        double offsetRange = 0.04D;
+        x += (Math.random() - 0.5) * 2 * offsetRange;
+        y += (Math.random() - 0.5) * 2 * offsetRange;
+        z += (Math.random() - 0.5) * 2 * offsetRange;
 
         return new Vec3(x, y, z);
     }
+
 
     @AllArgsConstructor
     public static class PlaceData {

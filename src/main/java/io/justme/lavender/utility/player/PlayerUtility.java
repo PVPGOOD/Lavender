@@ -1,8 +1,10 @@
 package io.justme.lavender.utility.player;
 
+import io.justme.lavender.events.player.EventMove;
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -50,6 +52,16 @@ public class PlayerUtility  {
 
     public void jump() {
         Minecraft.getMinecraft().thePlayer.jump();
+    }
+
+    public static void jump(EventMove event) {
+        double jumpY = mc.thePlayer.getJumpUpwardsMotion();
+
+        if(mc.thePlayer.isPotionActive(Potion.jump)) {
+            jumpY += ((float)(mc.thePlayer.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+        }
+
+        event.setY(mc.thePlayer.motionY = jumpY);
     }
 
     public double baseSpeed() {
@@ -275,5 +287,11 @@ public class PlayerUtility  {
         }
 
         return false;
+    }
+
+    public static boolean isAirOrLiquid(BlockPos pos) {
+        Block block = mc.theWorld.getBlockState(pos).getBlock();
+
+        return block instanceof BlockAir || block instanceof BlockLiquid;
     }
 }

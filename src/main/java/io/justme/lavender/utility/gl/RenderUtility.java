@@ -9,7 +9,9 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -172,6 +174,134 @@ public class RenderUtility {
                 .tex((double) ((u + (float) width) * f), (double) (v * f1)).endVertex();
         worldrenderer.pos((double) x, (double) y, 0.0D).tex((double) (u * f), (double) (v * f1)).endVertex();
         tessellator.draw();
+    }
+
+
+    public void drawLine(Vec3 from, Vec3 to, float red, float green, float blue, float alpha) {
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.disableDepth();
+
+        GlStateManager.color(red, green, blue, alpha);
+        GL11.glLineWidth(2.0f);
+        GL11.glBegin(GL11.GL_LINES);
+
+        Vec3 renderPos = getRenderPos();
+
+        double fx = from.xCoord - renderPos.xCoord;
+        double fy = from.yCoord - renderPos.yCoord;
+        double fz = from.zCoord - renderPos.zCoord;
+
+        double tx = to.xCoord - renderPos.xCoord;
+        double ty = to.yCoord - renderPos.yCoord;
+        double tz = to.zCoord - renderPos.zCoord;
+
+        GL11.glVertex3d(fx, fy, fz);
+        GL11.glVertex3d(tx, ty, tz);
+
+        GL11.glEnd();
+
+        drawPoint(to, red, green, blue, alpha);
+
+        GlStateManager.enableDepth();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
+    }
+
+
+    public void drawBox(AxisAlignedBB box, float r, float g, float b, float a) {
+        var mc = Minecraft.getMinecraft();
+
+        var renderManager = mc.getRenderManager();
+
+        double renderX = renderManager.viewerPosX;
+        double renderY = renderManager.viewerPosY;
+        double renderZ = renderManager.viewerPosZ;
+
+        Vec3 renderPos = new Vec3(renderX, renderY, renderZ);
+
+        double minX = box.minX - renderPos.xCoord;
+        double minY = box.minY - renderPos.yCoord;
+        double minZ = box.minZ - renderPos.zCoord;
+        double maxX = box.maxX - renderPos.xCoord;
+        double maxY = box.maxY - renderPos.yCoord;
+        double maxZ = box.maxZ - renderPos.zCoord;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+        GL11.glLineWidth(2.0F);
+        GlStateManager.color(r, g, b, a);
+
+        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glVertex3d(minX, minY, minZ);
+        GL11.glVertex3d(maxX, minY, minZ);
+        GL11.glVertex3d(maxX, minY, maxZ);
+        GL11.glVertex3d(minX, minY, maxZ);
+        GL11.glEnd();
+
+        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glVertex3d(minX, maxY, minZ);
+        GL11.glVertex3d(maxX, maxY, minZ);
+        GL11.glVertex3d(maxX, maxY, maxZ);
+        GL11.glVertex3d(minX, maxY, maxZ);
+        GL11.glEnd();
+
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3d(minX, minY, minZ);
+        GL11.glVertex3d(minX, maxY, minZ);
+
+        GL11.glVertex3d(maxX, minY, minZ);
+        GL11.glVertex3d(maxX, maxY, minZ);
+
+        GL11.glVertex3d(maxX, minY, maxZ);
+        GL11.glVertex3d(maxX, maxY, maxZ);
+
+        GL11.glVertex3d(minX, minY, maxZ);
+        GL11.glVertex3d(minX, maxY, maxZ);
+        GL11.glEnd();
+
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
+    }
+
+
+    public void drawPoint(Vec3 vec, float r, float g, float b, float a) {
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableDepth();
+        GlStateManager.color(r, g, b, a);
+        GL11.glPointSize(6f);
+
+        GL11.glBegin(GL11.GL_POINTS);
+        Minecraft mc = Minecraft.getMinecraft();
+        var renderManager = mc.getRenderManager();
+
+        double renderX = renderManager.viewerPosX;
+        double renderY = renderManager.viewerPosY;
+        double renderZ = renderManager.viewerPosZ;
+
+        Vec3 renderPos = new Vec3(renderX, renderY, renderZ);
+
+        GL11.glVertex3d(vec.xCoord - renderPos.xCoord, vec.yCoord - renderPos.yCoord, vec.zCoord - renderPos.zCoord);
+        GL11.glEnd();
+
+        GlStateManager.enableDepth();
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
+    }
+
+
+
+    private Vec3 getRenderPos() {
+        return new Vec3(Minecraft.getMinecraft().getRenderManager().viewerPosX, Minecraft.getMinecraft().getRenderManager().viewerPosY, Minecraft.getMinecraft().getRenderManager().viewerPosZ);
     }
 
 }
