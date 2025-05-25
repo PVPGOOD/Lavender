@@ -14,6 +14,7 @@ import io.justme.lavender.module.impl.blatant.player.*;
 import io.justme.lavender.module.impl.blatant.visual.*;
 import io.justme.lavender.module.impl.blatant.world.AntiVoid;
 import io.justme.lavender.module.impl.blatant.world.FastMine;
+import io.justme.lavender.module.impl.blatant.world.Timer;
 import io.justme.lavender.utility.interfaces.Manager;
 import lombok.Getter;
 
@@ -68,6 +69,7 @@ public class ModuleManager extends Manager<Module> {
     //world
     private final AntiVoid antiVoid = new AntiVoid();
     private final FastMine fastMine = new FastMine();
+    private final Timer timer = new Timer();
     //blatant
     private final AutoClicker autoClicker = new AutoClicker();
     private final AimAssist aimAssist = new AimAssist();
@@ -118,6 +120,7 @@ public class ModuleManager extends Manager<Module> {
                 //world
                 getAntiVoid(),
                 getFastMine(),
+                getTimer(),
 
                 //legit
                 getAutoClicker(),
