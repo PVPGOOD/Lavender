@@ -210,9 +210,12 @@ public class KillAura extends Module implements IMinecraft {
     public void onMotion(EventMotionUpdate eventMotionUpdate) {
         if (mc.thePlayer == null || getTarget() == null)  {
             return;
+        } else {
+            La.getINSTANCE().getHandlerManager().getRotationHandler().setRotating(false);
         }
 
         onRotations(eventMotionUpdate,getTarget());
+        La.getINSTANCE().getHandlerManager().getRotationHandler().setRotating(true);
         mc.thePlayer.itemInUseCount = isBlocking() ? 1 : 0;
     }
 

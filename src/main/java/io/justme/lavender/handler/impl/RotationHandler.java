@@ -4,16 +4,20 @@ import io.justme.lavender.events.game.EventTick;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.events.render.RotationUpdateEvent;
 import io.justme.lavender.handler.AbstractHandler;
+import lombok.Getter;
+import lombok.Setter;
 import net.lenni0451.asmevents.event.EventTarget;
+import net.lenni0451.asmevents.event.enums.EnumEventPriority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 /**
  * @author JustMe.
  * @since 2024/12/15
  **/
+@Getter
+@Setter
 public class RotationHandler extends AbstractHandler {
 
     private float yaw;
@@ -25,26 +29,23 @@ public class RotationHandler extends AbstractHandler {
     private boolean isRotating;
     private final Minecraft mc = Minecraft.getMinecraft();
 
-    @EventTarget()
+    @EventTarget(priority = EnumEventPriority.HIGHEST)
     public void onTick(EventTick event) {
-        if ( mc.currentScreen != null) return;
         this.prevYaw = this.yaw;
         this.preYawOffset = this.yawOffset;
         this.prevPitch = this.pitch;
     }
 
 
-    @EventTarget()
+    @EventTarget(priority = EnumEventPriority.HIGHEST)
     public void onMotionUpdate(EventMotionUpdate event) {
-        if ( mc.currentScreen != null) return;
-        this.yaw = event.getYaw();
-        this.pitch = event.getPitch();
-        this.isRotating = event.isRotate();
+
+
     }
 
 
 
-    @EventTarget()
+    @EventTarget(priority = EnumEventPriority.HIGHEST)
     public void onRotationUpdate(RotationUpdateEvent event) {
         if ( mc.currentScreen != null) return;
         Entity entity = event.getEntity();
