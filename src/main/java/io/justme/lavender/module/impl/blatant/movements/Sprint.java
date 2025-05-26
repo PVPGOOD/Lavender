@@ -1,15 +1,14 @@
 package io.justme.lavender.module.impl.blatant.movements;
 
+import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.module.ModuleInfo;
-import io.justme.lavender.utility.player.PlayerUtility;
 import io.justme.lavender.value.impl.BoolValue;
 import lombok.Getter;
 import net.lenni0451.asmevents.event.EventTarget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.potion.Potion;
 
 @Getter
 @ModuleInfo(name = "Sprint", description = "Auto sprint.", category = Category.MOVEMENTS)
@@ -31,6 +30,13 @@ public class Sprint extends Module {
 
     @EventTarget
     public void onUpdate(EventUpdate event) {
-        mc.gameSettings.keyBindSprint.pressed = true;
+        var scaffold = ((Scaffold) La.getINSTANCE().getModuleManager().getModuleByName("Scaffold"));
+
+        if (scaffold.isToggle()) {
+            mc.gameSettings.keyBindSprint.pressed = scaffold.getSprintValue().getValue();
+        } else {
+            mc.gameSettings.keyBindSprint.pressed = true;
+        }
+
     }
 }
