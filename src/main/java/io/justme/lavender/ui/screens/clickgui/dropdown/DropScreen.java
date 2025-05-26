@@ -3,11 +3,13 @@ package io.justme.lavender.ui.screens.clickgui.dropdown;
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarPanel;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.SettingPanel;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
+
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author JustMe.
@@ -17,22 +19,27 @@ import java.util.ArrayList;
 @Setter
 public class DropScreen extends GuiScreen {
 
-    private ArrayList<AbstractPanelUI> abstractPanelUIS = new ArrayList<>();
+    private CopyOnWriteArrayList<AbstractPanelUI> abstractPanelUIS = new CopyOnWriteArrayList<>();
+    private SettingPanel settingPanel = new SettingPanel();
+    private NavBarPanel navBarPanel = new NavBarPanel();
+    private ModulePanel modulePanel = new ModulePanel();
+
 
     public DropScreen() {
-        getAbstractPanelUIS().add(new NavBarPanel());
-        getAbstractPanelUIS().add(new ModulePanel());
+        getAbstractPanelUIS().add(getNavBarPanel());
+        getAbstractPanelUIS().add(getModulePanel());
     }
 
     @Override
     public void initGui() {
-        super.initGui();
-
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
             abstractPanelUI.initGui();
         }
 
         La.getINSTANCE().getConfigScreen().initGui();
+
+        super.initGui();
+
     }
 
     @Override

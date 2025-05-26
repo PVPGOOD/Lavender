@@ -1,5 +1,6 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar;
 
+import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.category.NavCategoryButton;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.hamburger.NavHamburgerButton;
@@ -98,8 +99,16 @@ public class NavBarPanel extends AbstractPanelUI {
         for (AbstractNavBar element : getElements()) {
             if (element.isHover(mouseX, mouseY)) {
                 switch (element.getType()) {
-                    case HAMBURGER -> {
-                        setExpanded(!isExpanded());
+                    case HAMBURGER -> setExpanded(!isExpanded());
+
+                    case SETTING -> {
+                        var dropScreen = La.getINSTANCE().getDropScreen();
+
+                        if (dropScreen.getAbstractPanelUIS().contains(dropScreen.getSettingPanel())) {
+                            dropScreen.getAbstractPanelUIS().remove(dropScreen.getSettingPanel());
+                        } else {
+                            dropScreen.getAbstractPanelUIS().add(dropScreen.getSettingPanel());
+                        }
                     }
                 }
             }
@@ -123,7 +132,4 @@ public class NavBarPanel extends AbstractPanelUI {
 
     }
 
-    public ScaledResolution getScaledResolution() {
-        return scaledResolution;
-    }
 }
