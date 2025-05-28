@@ -17,6 +17,7 @@ import java.io.IOException;
 //hamburger setting category
 public abstract class AbstractNavBar {
 
+    public boolean selecting = true;
     public float x,y,width,height;
     public NavBarType type;
     public int requestHeight = 0;

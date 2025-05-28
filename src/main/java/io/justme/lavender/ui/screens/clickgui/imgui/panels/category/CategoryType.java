@@ -13,7 +13,7 @@ public enum CategoryType {
 
     FIGHT("Fight"),
     VISUAL("Visual"),
-    MOVEMENTS("Movements"),
+    MOVEMENTS("Move"),
     PLAYER("Player"),
     MISC("Misc"),
     World("World"),

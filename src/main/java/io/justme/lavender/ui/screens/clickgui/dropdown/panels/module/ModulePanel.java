@@ -1,10 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module;
 
 import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.AbstractNavBar;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
-import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -47,6 +44,7 @@ public class ModulePanel extends AbstractPanelUI {
         var initX = 250;
         var initY = 30;
         for (AbstractModulePanel element : getElements()) {
+            if (!element.isSelecting()) continue;
             if (count % 5 == 0 && count != 0) {
                 intervalX = 0;
                 intervalY += 320;
@@ -66,28 +64,36 @@ public class ModulePanel extends AbstractPanelUI {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         for (AbstractModulePanel element : getElements()) {
-            element.drawScreen(mouseX, mouseY, partialTicks);
+            if (element.isSelecting()) {
+                element.drawScreen(mouseX, mouseY, partialTicks);
+            }
         }
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractModulePanel element : getElements()) {
-            element.mouseClicked(mouseX, mouseY, mouseButton);
+            if (element.isSelecting()) {
+                element.mouseClicked(mouseX, mouseY, mouseButton);
+            }
         }
     }
 
     @Override
     public void mouseReleased(int mouseX, int mouseY, int state) {
         for (AbstractModulePanel element : getElements()) {
-            element.mouseReleased(mouseX, mouseY, state);
+            if (element.isSelecting()) {
+                element.mouseReleased(mouseX, mouseY, state);
+            }
         }
     }
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
         for (AbstractModulePanel element : getElements()) {
-            element.keyTyped(typedChar,keyCode);
+            if (element.isSelecting()) {
+                element.keyTyped(typedChar, keyCode);
+            }
         }
     }
 

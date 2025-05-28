@@ -2,6 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar;
 
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.AbstractModulePanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.category.NavCategoryButton;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.hamburger.NavHamburgerButton;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.impl.setting.NavSettingButton;
@@ -120,6 +121,23 @@ public class NavBarPanel extends AbstractPanelUI {
 
                 switch (element.getType()) {
                     case HAMBURGER -> setExpanded(!isExpanded());
+
+                    case CATEGORY -> {
+                        if (element instanceof NavCategoryButton navCategoryButton) {
+                            var dropScreen = La.getINSTANCE().getDropScreen();
+                            var modulePanel = dropScreen.getModulePanel();
+                            for (AbstractModulePanel modulePanelElement : modulePanel.getElements()) {
+
+                                if (navCategoryButton.getCategoryType() == modulePanelElement.getType()) {
+                                    if (modulePanel.getElements().contains(modulePanelElement)) {
+                                        modulePanelElement.setSelecting(!modulePanelElement.isSelecting());
+                                        navCategoryButton.setSelecting(modulePanelElement.isSelecting());
+                                        modulePanel.initGui();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

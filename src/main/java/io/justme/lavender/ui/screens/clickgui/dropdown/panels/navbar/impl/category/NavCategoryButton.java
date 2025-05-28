@@ -35,7 +35,10 @@ public class NavCategoryButton extends AbstractNavBar {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), 16, 8, new Color(0xE8DEF8));
+        if (isSelecting()) {
+            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), 16, 8, new Color(0xE8DEF8));
+
+        }
 
         var iconWidth = 12;
         var iconHeight = 12;
@@ -45,16 +48,16 @@ public class NavCategoryButton extends AbstractNavBar {
         var font = La.getINSTANCE().getFontManager().getPingFang_Bold16();
         var strX = getX();
         var srtY = getY() + getHeight() / 2 + 4;
-        var strColor = new Color(0x8C000000, true);
-
-        font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
+        var strColor = new Color(0xA34A4459);
 
         RenderUtility.drawImage(
                 new ResourceLocation("la/clickgui/category/md/"+ getCategoryType().getName() + ".png"),
                 iconX, iconY, iconWidth, iconHeight, new Color(0x4A4459));
 
+        font.drawString(getCategoryType().getName(),strX + getWidth() /2f - font.getStringWidth(getCategoryType().getName()) /2f,srtY,strColor.getRGB());
+
         if (isHover(mouseX, mouseY)) {
-            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 8, new Color(0x8777676, true));
+            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 8, new Color(0,0,0,24));
         }
 
         setHeight(28);

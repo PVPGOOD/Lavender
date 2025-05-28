@@ -10,7 +10,7 @@ import lombok.Getter;
 public enum Category {
     FIGHT("Fight"),
     VISUAL("Visual"),
-    MOVEMENTS("Movements"),
+    MOVEMENTS("Move"),
     PLAYER("Player"),
     MISC("Misc"),
     World("World"),

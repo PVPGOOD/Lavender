@@ -1,6 +1,5 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module;
 
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarType;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
@@ -16,6 +15,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractModulePanel {
 
+    private boolean selecting = true;
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean expanded,dragging,scaling;
     private Animation expandedHeightAnimation = new Animation();
