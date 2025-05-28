@@ -26,15 +26,7 @@ public class SettingPanel extends AbstractPanelUI {
 
 
     public SettingPanel() {
-        setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
-
         getSettings().add(new CategoryPanel(SettingType.CATEGORY_PANEL));
-
-        setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
-        setWidth(700);
-        setHeight(500);
-        setX(getScaledResolution().getScaledWidth() /2f - getWidth() /2f);
-        setY(getScaledResolution().getScaledHeight() / 2f - getHeight() / 2f);
     }
 
     @Override
@@ -44,12 +36,16 @@ public class SettingPanel extends AbstractPanelUI {
         for (AbstractSetting setting : getSettings()) {
             setting.initGui();
         }
+
+        initializeDimensions();
+    }
+
+    public void initializeDimensions() {
         setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
         setWidth(700);
         setHeight(500);
-        setX(getScaledResolution().getScaledWidth() /2f - getWidth() /2f);
+        setX(getScaledResolution().getScaledWidth() / 2f - getWidth() / 2f);
         setY(getScaledResolution().getScaledHeight() / 2f - getHeight() / 2f);
-
     }
 
     @Override

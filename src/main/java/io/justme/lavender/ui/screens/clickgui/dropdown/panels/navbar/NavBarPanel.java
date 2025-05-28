@@ -104,10 +104,12 @@ public class NavBarPanel extends AbstractPanelUI {
                     case SETTING -> {
                         var dropScreen = La.getINSTANCE().getDropScreen();
 
-                        if (dropScreen.getAbstractPanelUIS().contains(dropScreen.getSettingPanel())) {
-                            dropScreen.getAbstractPanelUIS().remove(dropScreen.getSettingPanel());
+                        var settingPanel = dropScreen.getSettingPanel();
+                        if (dropScreen.getAbstractPanelUIS().contains(settingPanel)) {
+                            dropScreen.getAbstractPanelUIS().remove(settingPanel);
                         } else {
-                            dropScreen.getAbstractPanelUIS().add(dropScreen.getSettingPanel());
+                            dropScreen.getAbstractPanelUIS().add(settingPanel);
+                            settingPanel.initializeDimensions();
                         }
                     }
                 }
