@@ -98,20 +98,28 @@ public class NavBarPanel extends AbstractPanelUI {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractNavBar element : getElements()) {
             if (element.isHover(mouseX, mouseY)) {
-                switch (element.getType()) {
-                    case HAMBURGER -> setExpanded(!isExpanded());
 
-                    case SETTING -> {
-                        var dropScreen = La.getINSTANCE().getDropScreen();
+                if (element instanceof NavSettingButton navSettingButton) {
+                    if (navSettingButton.mouseClicked(mouseX, mouseY, mouseButton)) {
+                        switch (navSettingButton.getNavSettingButtonType()) {
+                            case SETTING_BUTTON -> {
+                                var dropScreen = La.getINSTANCE().getDropScreen();
 
-                        var settingPanel = dropScreen.getSettingPanel();
-                        if (dropScreen.getAbstractPanelUIS().contains(settingPanel)) {
-                            dropScreen.getAbstractPanelUIS().remove(settingPanel);
-                        } else {
-                            dropScreen.getAbstractPanelUIS().add(settingPanel);
-                            settingPanel.initializeDimensions();
+                                var settingPanel = dropScreen.getSettingPanel();
+                                if (dropScreen.getAbstractPanelUIS().contains(settingPanel)) {
+                                    dropScreen.getAbstractPanelUIS().remove(settingPanel);
+                                } else {
+                                    dropScreen.getAbstractPanelUIS().add(settingPanel);
+                                    settingPanel.initializeDimensions();
+                                }
+                            }
+
                         }
                     }
+                }
+
+                switch (element.getType()) {
+                    case HAMBURGER -> setExpanded(!isExpanded());
                 }
             }
         }
