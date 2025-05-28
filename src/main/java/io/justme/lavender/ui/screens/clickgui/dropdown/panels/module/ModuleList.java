@@ -124,25 +124,30 @@ public class ModuleList extends AbstractModulePanel {
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 
-        if (mouseButton == 0) {
-            if (MouseUtility.isHovering(getX(), getY(), getWidth() , 20, mouseX, mouseY)) {
-                setDraggingX(mouseX - getX());
-                setDraggingY(mouseY - getY());
-                setDragging(true);
-            } else if (MouseUtility.isHovering(getX() + getWidth() - 20, getY() + getHeight() - 20, 20, 20, mouseX, mouseY)) {
-                setScalingWidth(mouseX - getWidth());
-                setScalingHeight(mouseY - getHeight());
-                setScaling(true);
-            }
-        }
-
         if (mouseButton == 1) {
             if (MouseUtility.isHovering(getX(), getY(), getWidth(), 20, mouseX, mouseY)) {
                 setExpanded(!isExpanded());
             }
         }
 
+        if (mouseButton == 0) {
+            if (MouseUtility.isHovering(getX(), getY(), getWidth() , 20, mouseX, mouseY)) {
+                setDraggingX(mouseX - getX());
+                setDraggingY(mouseY - getY());
+                setDragging(true);
+                return false;
+            }
+
+            if (MouseUtility.isHovering(getX() + getWidth() - 20, getY() + getHeight() - 20, 20, 20, mouseX, mouseY)) {
+                setScalingWidth(mouseX - getWidth());
+                setScalingHeight(mouseY - getHeight());
+                setScaling(true);
+                return false;
+            }
+        }
+
         if (isExpanded()) {
+            if (isDragging() || isScaling() ) return false;
             for (AbstractModulePanel element : elements) {
                 switch (element.getPanelType()) {
                     case MODULE_GROUP_HEADER -> {
@@ -160,13 +165,27 @@ public class ModuleList extends AbstractModulePanel {
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int state) {
+        if (state == 0){
+            if (isDragging()) {
+                setDragging(false);
+                return false;
+            }
+
+            if (isScaling()){
+                setScaling(false);
+                return false;
+            }
+        }
+        if (MouseUtility.isHovering(getX(), getY(), getWidth() , 20, mouseX, mouseY)) {
+            return false;
+        }
+
+
 
         if (isExpanded()) {
             for (AbstractModulePanel element : elements) {
                 switch (element.getPanelType()) {
-                    case MODULE_GROUP_HEADER -> {
-                        element.mouseReleased(mouseX, mouseY, state);
-                    }
+                    case MODULE_GROUP_HEADER -> element.mouseReleased(mouseX, mouseY, state);
 
                     case MODULE_BUTTON -> {
                         if (element.mouseReleased(mouseX, mouseY, state)) {
@@ -180,16 +199,6 @@ public class ModuleList extends AbstractModulePanel {
                         }
                     }
                 }
-            }
-        }
-
-        if (state == 0){
-            if (isDragging()) {
-                setDragging(false);
-            }
-
-            if (isScaling()){
-                setScaling(false);
             }
         }
 
