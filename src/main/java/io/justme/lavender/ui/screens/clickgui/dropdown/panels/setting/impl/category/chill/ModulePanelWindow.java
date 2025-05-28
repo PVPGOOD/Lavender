@@ -1,7 +1,6 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category.chill;
 
 import io.justme.lavender.La;
-import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category.AbstractCategory;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category.AbstractComponent;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category.CategoryType;
@@ -26,11 +25,11 @@ public class ModulePanelWindow extends AbstractCategory {
 
     public ModulePanelWindow() {
         setName("ModulePanelWindow");
-        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.SETTING,false));
-        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.ELEMENT,false));
-        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.SKIN,false));
-        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.THEME,false));
-        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.ABOUT,false));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.SETTING,true));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.ELEMENT,true));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.SKIN,true));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.THEME,true));
+        getCategoryComponents().add(new CategoryButtonComponent(CategoryType.ABOUT,true));
 
     }
 
@@ -52,27 +51,29 @@ public class ModulePanelWindow extends AbstractCategory {
                 8,
                 new Color(243, 237, 247));
 
-        FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        var fontDrawer = La.getINSTANCE().getFontManager().getSFBold16();
         fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1,new Color(129, 57, 80,128).getRGB());
 
+        int height1 = 22;
         for (AbstractComponent categoryComponents : getCategoryComponents()) {
             categoryComponents.setX(getX() + 4);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY + 15);
             categoryComponents.setWidth(getWidth() - 8);
-            categoryComponents.setHeight(22);
+
+            categoryComponents.setHeight(height1);
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
-            categoryComponentsIntervalY += 22;
+            categoryComponentsIntervalY += height1;
         }
 
 
-        setHeight(categoryComponentsIntervalY + 15);
+        setHeight(categoryComponentsIntervalY + height1);
         setRequestInterval(categoryComponentsIntervalY);
     }
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AbstractComponent categoryComponents : getCategoryComponents()) {
             if (categoryComponents.isHover(mouseX,mouseY)) {
-//                La.getINSTANCE().getClickScreen().setCurrentCategory(categoryComponents.getAbstractCategory());
+                La.getINSTANCE().getDropScreen().setCurrentCategory(categoryComponents.getAbstractCategory());
 
             }
         }

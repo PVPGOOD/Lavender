@@ -31,8 +31,6 @@ public class SettingPanel extends AbstractPanelUI {
 
     @Override
     public void initGui() {
-        setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
-
         for (AbstractSetting setting : getSettings()) {
             setting.initGui();
         }
@@ -42,15 +40,15 @@ public class SettingPanel extends AbstractPanelUI {
 
     public void initializeDimensions() {
         setScaledResolution(new ScaledResolution(Minecraft.getMinecraft()));
-        setWidth(700);
-        setHeight(500);
+        setWidth(520);
+        setHeight(450);
         setX(getScaledResolution().getScaledWidth() / 2f - getWidth() / 2f);
         setY(getScaledResolution().getScaledHeight() / 2f - getHeight() / 2f);
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),25,new Color(253, 248, 255));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),20,new Color(253, 248, 255));
 
         var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
 
@@ -72,10 +70,8 @@ public class SettingPanel extends AbstractPanelUI {
             setting.drawScreen(mouseX, mouseY, partialTicks);
         }
 
-        setWidth(700);
-        setHeight(500);
-        setX(getScaledResolution().getScaledWidth() /2f - getWidth() /2f);
-        setY(getScaledResolution().getScaledHeight() / 2f - getHeight() / 2f);
+
+        initializeDimensions();
     }
 
     @Override
