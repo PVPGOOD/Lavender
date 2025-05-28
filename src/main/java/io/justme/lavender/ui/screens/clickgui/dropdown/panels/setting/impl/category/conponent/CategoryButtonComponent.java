@@ -42,15 +42,16 @@ public class CategoryButtonComponent extends AbstractComponent {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-//        int alpha = ((int)(getCategory() == La.getINSTANCE().getClickScreen().getCurrentCategory() ? 255 : getCategoryTypeBackgroundAlpha().getValue()));
-        var alpha = 255;
+        int alpha = ((int)(getCategory() == La.getINSTANCE().getDropScreen().getCurrentCategory() ? 255 : getCategoryTypeBackgroundAlpha().getValue()));
+//        var alpha = 255;
 
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),14,new Color(232, 222, 248,alpha));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),12,new Color(232, 222, 248,alpha));
 
-        FontDrawer fontManager = La.getINSTANCE().getFontManager().getPingFang_Medium22();
+
+        FontDrawer fontManager = La.getINSTANCE().getFontManager().getPingFang_Medium20();
         fontManager.drawString(getCategory().getName(),
                 getX() + (getWidth() /2f) - (fontManager.getStringWidth(getCategory().getName()) /2f),
-                getY() + (getHeight() / 4),
+                getY() + (getHeight() / 2f) - (fontManager.getHeight() / 2f) + 4,
                 new Color(129, 57, 80,255).getRGB());
 
         if (isNeededIcon()) {
@@ -62,6 +63,11 @@ public class CategoryButtonComponent extends AbstractComponent {
                     12,
                     new Color(129, 57, 80,255));
         }
+
+        getCategoryTypeBackgroundAlpha().animate(isHover(mouseX, mouseY) ?
+                128 : 16, 0.1f);
+
+        getCategoryTypeBackgroundAlpha().update();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category;
 
+import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 //有点多余 有空再整理代码(如果主动开源的话? 2025/5/26 16:45 XD)
 public abstract class AbstractComponent {
 
+    private final Animation categoryTypeBackgroundAlpha = new Animation(16);
     public CategoryType abstractCategory;
 
     public AbstractComponent(CategoryType abstractCategory) {

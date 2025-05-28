@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.navbar.NavBarPanel;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.SettingPanel;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category.CategoryType;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
@@ -19,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Setter
 public class DropScreen extends GuiScreen {
 
+    private CategoryType currentCategory = CategoryType.SETTING;
     private CopyOnWriteArrayList<AbstractPanelUI> abstractPanelUIS = new CopyOnWriteArrayList<>();
     private SettingPanel settingPanel = new SettingPanel();
     private NavBarPanel navBarPanel = new NavBarPanel();

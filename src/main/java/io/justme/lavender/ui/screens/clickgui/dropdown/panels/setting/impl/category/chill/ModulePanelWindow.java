@@ -59,9 +59,9 @@ public class ModulePanelWindow extends AbstractCategory {
             categoryComponents.setX(getX() + 4);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY + 15);
             categoryComponents.setWidth(getWidth() - 8);
-            categoryComponents.setHeight(26);
+            categoryComponents.setHeight(22);
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
-            categoryComponentsIntervalY += 35;
+            categoryComponentsIntervalY += 22;
         }
 
 
