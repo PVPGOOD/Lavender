@@ -5,6 +5,7 @@ import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.impl.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.impl.ModuleGroupHeader;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
+import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -57,68 +58,74 @@ public class ModuleList extends AbstractModulePanel {
 
     private float lastHeight = 300;
     private Animation scrollAnimation = new Animation();
+    private Animation scaleAnimation = new Animation(1);
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 15, new Color(0xF8F2FA));
+            OGLUtility.scale(getX() + getWidth()/2f,getY() + getHeight()/2f,getScaleAnimation().getValue(),() -> {
+            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 15, new Color(0xF8F2FA));
 
-        setScrollOffset(getScrollAnimation().getValue());
-        AtomicInteger intervalY = new AtomicInteger();
-        var initY = 40;
+            setScrollOffset(getScrollAnimation().getValue());
+            AtomicInteger intervalY = new AtomicInteger();
+            var initY = 40;
 
-        for (AbstractModulePanel element : elements) {
-            switch (element.getPanelType()) {
-                case MODULE_GROUP_HEADER -> {
-                    element.setExpanded(isExpanded());
-                    element.setX(getX());
-                    element.setY(getY());
-                    element.setHeight(30);
-                    element.setWidth(getWidth());
-                    element.drawScreen(mouseX, mouseY, partialTicks);
-                }
-            }
-        }
-
-        ScissorUtility.scissor(getX(),getY() + initY - 10,getWidth(),getHeight() - initY - 3, () -> {
             for (AbstractModulePanel element : elements) {
                 switch (element.getPanelType()) {
-                    case MODULE_BUTTON -> {
-                        element.setX(getX() + 5);
-                        element.setY(getY() + initY + intervalY.get() + ScrollOffset);
-                        element.setWidth(getWidth() - 10);
+                    case MODULE_GROUP_HEADER -> {
+                        element.setExpanded(isExpanded());
+                        element.setX(getX());
+                        element.setY(getY());
+                        element.setHeight(30);
+                        element.setWidth(getWidth());
                         element.drawScreen(mouseX, mouseY, partialTicks);
-                        intervalY.addAndGet((int) (32 + element.getRequestHeight()));
                     }
                 }
             }
-        });
 
-        if (isDragging()) {
-            setX(mouseX - getDraggingX());
-            setY(mouseY - getDraggingY());
-        }
+            ScissorUtility.scissor(getX(), getY() + initY - 10, getWidth(), getHeight() - initY - 3, () -> {
+                for (AbstractModulePanel element : elements) {
+                    switch (element.getPanelType()) {
+                        case MODULE_BUTTON -> {
+                            element.setX(getX() + 5);
+                            element.setY(getY() + initY + intervalY.get() + ScrollOffset);
+                            element.setWidth(getWidth() - 10);
+                            element.drawScreen(mouseX, mouseY, partialTicks);
+                            intervalY.addAndGet((int) (32 + element.getRequestHeight()));
+                        }
+                    }
+                }
+            });
 
-        if (isScaling()) {
-            getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 35,0.1f);
+            if (isDragging()) {
+                setX(mouseX - getDraggingX());
+                setY(mouseY - getDraggingY());
+            }
+
+            if (isScaling()) {
+                getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 35, 0.1f);
 //            setWidth(mouseX - getScalingWidth());
 //            setHeight(mouseY - getScalingHeight());
 
-            setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 120), 180));
+                setWidth(Math.min(Math.max(mouseX - getScalingWidth(), 120), 180));
 
-            setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 120), 650));
-            getExpandedHeightAnimation().setToValue(getHeight());
-            setLastHeight(getHeight());
-        } else {
-            getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 30,0.1f,Easings.QUART_OUT);
-            setHeight(getExpandedHeightAnimation().getValue());
-        }
+                setHeight(Math.min(Math.max(mouseY - getScalingHeight(), 120), 650));
+                getExpandedHeightAnimation().setToValue(getHeight());
+                setLastHeight(getHeight());
+            } else {
+                getExpandedHeightAnimation().animate(isExpanded() ? getLastHeight() : 30, 0.1f, Easings.QUART_OUT);
+                setHeight(getExpandedHeightAnimation().getValue());
+            }
 
 
-        getExpandedHeightAnimation().update();
-        setMouseX(mouseX);
-        setMouseY(mouseY);
-        setMaxScroll(Math.max(0, intervalY.get() + initY - getHeight()));
+            getExpandedHeightAnimation().update();
+            setMouseX(mouseX);
+            setMouseY(mouseY);
+            setMaxScroll(Math.max(0, intervalY.get() + initY - getHeight()));
 
-        getScrollAnimation().update();
+            getScrollAnimation().update();
+
+            getScaleAnimation().animate(La.getINSTANCE().getDropScreen().getSettingPanel().isShowing() ? 0.8f : 1 ,0.1f,Easings.BACK_OUT);
+            getScaleAnimation().update();
+        });
     }
 
     @Override

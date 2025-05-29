@@ -21,6 +21,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Setter
 public class SettingPanel extends AbstractPanelUI {
 
+    private boolean showing = false;
     private ScaledResolution scaledResolution;
     private CopyOnWriteArrayList<AbstractSetting> settings = new CopyOnWriteArrayList<>();
 

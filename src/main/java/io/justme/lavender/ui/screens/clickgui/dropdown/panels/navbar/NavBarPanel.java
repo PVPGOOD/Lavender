@@ -108,8 +108,10 @@ public class NavBarPanel extends AbstractPanelUI {
 
                                 var settingPanel = dropScreen.getSettingPanel();
                                 if (dropScreen.getAbstractPanelUIS().contains(settingPanel)) {
+                                    settingPanel.setShowing(false);
                                     dropScreen.getAbstractPanelUIS().remove(settingPanel);
                                 } else {
+                                    settingPanel.setShowing(true);
                                     dropScreen.getAbstractPanelUIS().add(settingPanel);
                                     settingPanel.initializeDimensions();
                                 }

@@ -330,7 +330,6 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
                     var velocity = ((Velocity) La.getINSTANCE().getModuleManager().getModuleByName("Velocity"));
 
-
                     entity.setVelocity(
                             (double)packetIn.getMotionX() / 8000 * (velocity.getX_position().getValue() / 100),
                             (double)packetIn.getMotionY() / 8000 * (velocity.getY_position().getValue() / 100),
