@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.category;
 
 import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;

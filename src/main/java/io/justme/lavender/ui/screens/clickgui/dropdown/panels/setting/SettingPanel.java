@@ -2,7 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting;
 
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category.CategoryPanel;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.category.CategoryPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;

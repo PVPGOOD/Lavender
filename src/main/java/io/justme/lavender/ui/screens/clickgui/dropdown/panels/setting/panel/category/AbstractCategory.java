@@ -1,4 +1,4 @@
-package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.impl.category;
+package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.category;
 
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.ModulePanel;
