@@ -28,9 +28,9 @@ public class DropScreen extends GuiScreen {
 
 
     public DropScreen() {
-        getAbstractPanelUIS().add(getSettingPanel());
         getAbstractPanelUIS().add(getNavBarPanel());
         getAbstractPanelUIS().add(getModulePanel());
+        getAbstractPanelUIS().add(getSettingPanel());
     }
 
     @Override
