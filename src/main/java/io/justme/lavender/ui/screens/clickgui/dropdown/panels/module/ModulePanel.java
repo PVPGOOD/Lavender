@@ -20,6 +20,7 @@ public class ModulePanel extends AbstractPanelUI {
     private final CopyOnWriteArrayList<AbstractModulePanel> elements = new CopyOnWriteArrayList<>();
 
     public ModulePanel() {
+        setShowing(true);
         getElements().add(new ModuleList(CategoryType.FIGHT));
         getElements().add(new ModuleList(CategoryType.MOVEMENTS));
         getElements().add(new ModuleList(CategoryType.PLAYER));

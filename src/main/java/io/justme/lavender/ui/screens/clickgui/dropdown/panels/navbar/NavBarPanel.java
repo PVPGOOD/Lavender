@@ -32,6 +32,7 @@ public class NavBarPanel extends AbstractPanelUI {
     private ArrayList<AbstractNavBar> elements = new ArrayList<>();
 
     public NavBarPanel() {
+        setShowing(true);
         getElements().add(new NavHamburgerButton());
 
         getElements().add(new NavSettingButton(NavSettingButtonType.SETTING_BUTTON));
@@ -107,14 +108,11 @@ public class NavBarPanel extends AbstractPanelUI {
                                 var dropScreen = La.getINSTANCE().getDropScreen();
 
                                 var settingPanel = dropScreen.getSettingPanel();
-                                if (dropScreen.getAbstractPanelUIS().contains(settingPanel)) {
-                                    settingPanel.setShowing(false);
-                                    dropScreen.getAbstractPanelUIS().remove(settingPanel);
-                                } else {
-                                    settingPanel.setShowing(true);
-                                    dropScreen.getAbstractPanelUIS().add(settingPanel);
+
+                                if (!settingPanel.isShowing()) {
                                     settingPanel.initializeDimensions();
                                 }
+                                settingPanel.setShowing(!settingPanel.isShowing());
                             }
 
                         }

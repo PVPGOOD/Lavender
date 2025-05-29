@@ -28,6 +28,7 @@ public class DropScreen extends GuiScreen {
 
 
     public DropScreen() {
+        getAbstractPanelUIS().add(getSettingPanel());
         getAbstractPanelUIS().add(getNavBarPanel());
         getAbstractPanelUIS().add(getModulePanel());
     }
@@ -35,6 +36,7 @@ public class DropScreen extends GuiScreen {
     @Override
     public void initGui() {
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+
             abstractPanelUI.initGui();
         }
 
@@ -47,6 +49,8 @@ public class DropScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            if (!abstractPanelUI.isShowing()) continue;
+
             abstractPanelUI.drawScreen(mouseX, mouseY, partialTicks);
         }
 
@@ -60,8 +64,9 @@ public class DropScreen extends GuiScreen {
     public void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
 
-
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            if (!abstractPanelUI.isShowing()) continue;
+
             abstractPanelUI.keyTyped(typedChar, keyCode);
         }
     }
@@ -70,6 +75,8 @@ public class DropScreen extends GuiScreen {
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            if (!abstractPanelUI.isShowing()) continue;
+
             abstractPanelUI.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
@@ -80,6 +87,8 @@ public class DropScreen extends GuiScreen {
     public void mouseReleased(int mouseX, int mouseY, int state) {
 
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            if (!abstractPanelUI.isShowing()) continue;
+
             abstractPanelUI.mouseReleased(mouseX, mouseY, state);
         }
 
@@ -105,6 +114,8 @@ public class DropScreen extends GuiScreen {
     @Override
     public void handleMouseInput() throws IOException {
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            if (!getSettingPanel().isShowing()) continue;
+
             abstractPanelUI.handleMouseInput();
         }
         super.handleMouseInput();

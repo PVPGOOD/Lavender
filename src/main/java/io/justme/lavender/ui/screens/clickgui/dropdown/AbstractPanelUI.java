@@ -15,6 +15,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractPanelUI {
 
+    public boolean showing;
     public float x,y,width,height;
 
     public boolean isHover(int mouseX, int mouseY) {

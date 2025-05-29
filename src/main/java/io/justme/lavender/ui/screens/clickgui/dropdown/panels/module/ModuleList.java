@@ -130,6 +130,7 @@ public class ModuleList extends AbstractModulePanel {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        if (La.getINSTANCE().getDropScreen().getSettingPanel().isShowing()) return false;
 
         if (mouseButton == 1) {
             if (MouseUtility.isHovering(getX(), getY(), getWidth(), 20, mouseX, mouseY)) {
@@ -172,6 +173,8 @@ public class ModuleList extends AbstractModulePanel {
 
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int state) {
+        if (La.getINSTANCE().getDropScreen().getSettingPanel().isShowing()) return false;
+
         if (state == 0){
             if (isDragging()) {
                 setDragging(false);
