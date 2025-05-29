@@ -6,5 +6,8 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting;
  **/
 public enum SettingType {
     CATEGORY_PANEL,
-    MAIN_PANEL,
+    PREFERENCE_PANEL,
+    ELEMENT_PANEL,
+    SKIN_PANEL,
+    ABOUT_PANEL,
 }

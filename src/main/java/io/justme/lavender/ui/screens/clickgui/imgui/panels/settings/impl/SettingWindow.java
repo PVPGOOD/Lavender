@@ -1,13 +1,13 @@
 package io.justme.lavender.ui.screens.clickgui.imgui.panels.settings.impl;
 
 import io.justme.lavender.La;
+import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.ComBoxComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.ModeComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SliderComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SwitchComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.settings.AbstractSetting;
-import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
@@ -40,18 +40,21 @@ public class SettingWindow extends AbstractSetting {
     public SettingWindow(SettingType settingType) {
         super(settingType);
 
-        //有settingType -> key get values
-        var settingManager = La.getINSTANCE().getSettingManager();
-        var settingHashMap = settingManager.getSettingTypeHashMap();
+//        我操我什么时候写这个了失忆了 2025/5/29
 
-        for (var entry : settingHashMap.entrySet()) {
-            if (entry.getKey().equals(settingType)) {
-                var settings = entry.getValue();
-                for (DefaultValue<?> setting : settings) {
-                    getValueComponents().add(getComponent(setting));
-                }
-            }
-        }
+
+        //有settingType -> key get values
+//        var settingManager = La.getINSTANCE().getSettingManager();
+//        var settingHashMap = settingManager.getSettingTypeHashMap();
+//
+//        for (var entry : settingHashMap.entrySet()) {
+//            if (entry.getKey().equals(settingType)) {
+//                var settings = entry.getValue();
+//                for (DefaultValue<?> setting : settings) {
+//                    getValueComponents().add(getComponent(setting));
+//                }
+//            }
+//        }
     }
 
     @Override

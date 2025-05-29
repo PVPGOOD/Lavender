@@ -114,7 +114,7 @@ public class DropScreen extends GuiScreen {
     @Override
     public void handleMouseInput() throws IOException {
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
-            if (!getSettingPanel().isShowing()) continue;
+            if (!abstractPanelUI.isShowing()) continue;
 
             abstractPanelUI.handleMouseInput();
         }

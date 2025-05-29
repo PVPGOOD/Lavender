@@ -8,8 +8,8 @@ import lombok.Getter;
  **/
 @Getter
 public enum SettingType {
-    GLOBAL_SETTING("Global Setting"),
-    RENDERING("Rendering");
+    GLOBAL_SETTING("常用"),
+    RENDERING("后期渲染");
 
     private final String name;
 

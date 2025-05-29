@@ -3,6 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting;
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.AbstractPanelUI;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.category.CategoryPanel;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.PreferencePanel;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class SettingPanel extends AbstractPanelUI {
     public SettingPanel() {
         setShowing(false);
         getSettings().add(new CategoryPanel(SettingType.CATEGORY_PANEL));
+        getSettings().add(new PreferencePanel(SettingType.PREFERENCE_PANEL));
     }
 
     @Override
@@ -56,21 +58,32 @@ public class SettingPanel extends AbstractPanelUI {
 //        font.drawString("Setting Panel", getX() + 10, getY() + 10, new Color(29, 27, 32, 191).getRGB());
         int abstractComponentInitY = 30;
         int categoryWidth = 115;
+
+        var initMainPanel_Height = 5;
+        var initMainPanel_Width = 3;
         for (AbstractSetting setting : getSettings()) {
 
-            switch (setting.getType()) {
-                case CATEGORY_PANEL -> {
-                    setting.setX(getX());
-                    setting.setY(getY());
-                    setting.setWidth(categoryWidth);
-                    setting.setHeight(getHeight());
-                    setting.drawScreen(mouseX, mouseY, partialTicks);
+            if (setting.getType() == SettingType.CATEGORY_PANEL) {
+                setting.setX(getX());
+                setting.setY(getY());
+                setting.setWidth(categoryWidth);
+                setting.setHeight(getHeight());
+                setting.drawScreen(mouseX, mouseY, partialTicks);
+            }
+
+            switch (La.getINSTANCE().getDropScreen().getCurrentCategory()) {
+                case SETTING -> {
+                    if (setting.getType() == SettingType.PREFERENCE_PANEL) {
+                        setting.setX(getX() + categoryWidth + initMainPanel_Width);
+                        setting.setY(getY() + initMainPanel_Height);
+                        setting.setWidth(getWidth() - categoryWidth - initMainPanel_Width - 5);
+                        setting.setHeight(getHeight() - initMainPanel_Height * 2);
+                        setting.drawScreen(mouseX, mouseY, partialTicks);
+                    }
                 }
             }
 
-            setting.drawScreen(mouseX, mouseY, partialTicks);
         }
-
 
         initializeDimensions();
     }
