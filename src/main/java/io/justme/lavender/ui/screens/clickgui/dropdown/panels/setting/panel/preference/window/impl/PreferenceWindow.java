@@ -125,7 +125,7 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
 
         //line
 
-        RenderUtility.drawRect(getX(), getY() + getHeight() + initY,getWidth(),.5f,new Color(0xFFE8DEF8, true));
+        RenderUtility.drawRect(getX() + 55, getY() + getHeight() + initY + 7,getWidth() - 55 * 2,.5f,new Color(0xCCEEE5FC, true));
 
 
         setHeight(intervalY.get());

@@ -6,6 +6,7 @@ import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.SettingTyp
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window.AbstractPreferenceWindow;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window.impl.PreferenceWindow;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
@@ -55,7 +56,7 @@ public class PreferencePanel extends AbstractSetting {
     private Animation scrollAnimation = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),25, new Color(0xF8F2FD));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15, new Color(0xF8F2FD));
 
         var groupInterval = new AtomicInteger();
         int initY = 10;
@@ -63,24 +64,25 @@ public class PreferencePanel extends AbstractSetting {
         int rightSide = 10;
 
         setScrollOffset(getScrollAnimation().getValue());
+        ScissorUtility.scissor(getX(),getY(),getWidth(),getHeight(), () -> {
+            for (AbstractPreferenceWindow abstractPreferenceWindow : getAbstractPreferenceWindows()) {
+                abstractPreferenceWindow.setX(getX() + leftSide);
+                float y1 = getY() + initY + groupInterval.get() + 15;
 
-        for (AbstractPreferenceWindow abstractPreferenceWindow : getAbstractPreferenceWindows()) {
-            abstractPreferenceWindow.setX(getX() + leftSide);
-            float y1 = getY() + initY + groupInterval.get() + 15;
+                if (abstractPreferenceWindow.getPositionYAnimation() == null) {
+                    abstractPreferenceWindow.setPositionYAnimation(new Animation(y1));
+                }
 
-            if (abstractPreferenceWindow.getPositionYAnimation() == null) {
-                abstractPreferenceWindow.setPositionYAnimation(new Animation(y1));
+                abstractPreferenceWindow.setY(abstractPreferenceWindow.getPositionYAnimation().getValue() + ScrollOffset);
+                abstractPreferenceWindow.setWidth(getWidth() - rightSide);
+
+                abstractPreferenceWindow.drawScreen(mouseX, mouseY, partialTicks);
+                groupInterval.addAndGet((int) (abstractPreferenceWindow.getHeight() + 15));
+
+                abstractPreferenceWindow.getPositionYAnimation().animate(y1,.05f);
+                abstractPreferenceWindow.getPositionYAnimation().update();
             }
-
-            abstractPreferenceWindow.setY(abstractPreferenceWindow.getPositionYAnimation().getValue() + ScrollOffset);
-            abstractPreferenceWindow.setWidth(getWidth() - rightSide);
-
-            abstractPreferenceWindow.drawScreen(mouseX, mouseY, partialTicks);
-            groupInterval.addAndGet((int) (abstractPreferenceWindow.getHeight() + 10));
-
-            abstractPreferenceWindow.getPositionYAnimation().animate(y1,.05f);
-            abstractPreferenceWindow.getPositionYAnimation().update();
-        }
+        });
 
         setMouseX(mouseX);
         setMouseY(mouseY);
