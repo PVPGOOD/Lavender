@@ -111,6 +111,8 @@ public class SettingPanel extends AbstractPanelUI {
 
     @Override
     public void handleMouseInput() throws IOException {
-
+        for (AbstractSetting setting : getSettings()) {
+            setting.handleMouseInput();
+        }
     }
 }

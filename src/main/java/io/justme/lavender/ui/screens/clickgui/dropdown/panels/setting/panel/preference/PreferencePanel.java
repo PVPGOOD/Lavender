@@ -7,12 +7,15 @@ import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.pref
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window.impl.PreferenceWindow;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
+import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author JustMe.
@@ -21,6 +24,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Getter
 @Setter
 public class PreferencePanel extends AbstractSetting {
+
+    private int mouseX,mouseY;
+    private float ScrollOffset = 0;
+    private float maxScroll = 0;
 
     private CopyOnWriteArrayList<AbstractPreferenceWindow> abstractPreferenceWindows = new CopyOnWriteArrayList<>();
 
@@ -44,35 +51,42 @@ public class PreferencePanel extends AbstractSetting {
         }
     }
 
+    private float lastHeight = 300;
+    private Animation scrollAnimation = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),25, new Color(0xF8F2FD));
 
-        var groupInterval = 0;
-
+        var groupInterval = new AtomicInteger();
         int initY = 10;
         int leftSide = 3;
         int rightSide = 10;
 
+        setScrollOffset(getScrollAnimation().getValue());
+
         for (AbstractPreferenceWindow abstractPreferenceWindow : getAbstractPreferenceWindows()) {
             abstractPreferenceWindow.setX(getX() + leftSide);
-            float y1 = getY() + initY + groupInterval + 15;
+            float y1 = getY() + initY + groupInterval.get() + 15;
 
             if (abstractPreferenceWindow.getPositionYAnimation() == null) {
                 abstractPreferenceWindow.setPositionYAnimation(new Animation(y1));
             }
 
-            abstractPreferenceWindow.setY(abstractPreferenceWindow.getPositionYAnimation().getValue());
+            abstractPreferenceWindow.setY(abstractPreferenceWindow.getPositionYAnimation().getValue() + ScrollOffset);
             abstractPreferenceWindow.setWidth(getWidth() - rightSide);
 
             abstractPreferenceWindow.drawScreen(mouseX, mouseY, partialTicks);
-            groupInterval += (int) (abstractPreferenceWindow.getHeight() + 10);
-
-            RenderUtility.drawRect(getX(), y1,getWidth(),.8f,new Color(0x80E8DEF8, true));
+            groupInterval.addAndGet((int) (abstractPreferenceWindow.getHeight() + 10));
 
             abstractPreferenceWindow.getPositionYAnimation().animate(y1,.05f);
             abstractPreferenceWindow.getPositionYAnimation().update();
         }
+
+        setMouseX(mouseX);
+        setMouseY(mouseY);
+
+        setMaxScroll(getHeight());
+        getScrollAnimation().update();
     }
 
     @Override
@@ -100,7 +114,14 @@ public class PreferencePanel extends AbstractSetting {
 
     @Override
     public void handleMouseInput() throws IOException {
-
+        if (isHover(getMouseX(),getMouseY())) {
+            int scroll = Mouse.getEventDWheel();
+            if (scroll != 0) {
+                float targetOffset = ScrollOffset + scroll * 50;
+                targetOffset = Math.max(-maxScroll, Math.min(0, targetOffset));
+                scrollAnimation.animate(targetOffset, 0.1f, Easings.QUAD_OUT);
+            }
+        }
     }
 
 }

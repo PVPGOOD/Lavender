@@ -5,11 +5,13 @@ import io.justme.lavender.setting.SettingPreferenceType;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.component.vaule.AbstractSettingComponent;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.component.vaule.impl.*;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window.AbstractPreferenceWindow;
+import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -120,6 +122,11 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
                 }
             }
         }
+
+        //line
+
+        RenderUtility.drawRect(getX(), getY() + getHeight() + initY,getWidth(),.5f,new Color(0xFFE8DEF8, true));
+
 
         setHeight(intervalY.get());
     }
