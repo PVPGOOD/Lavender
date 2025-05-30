@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * @author JustMe.
@@ -65,32 +67,36 @@ public class SettingManager {
             new NumberValue("阴影强度", 5, 1, 10, 1 , () -> getNotificationValue().getValue());
 
     //暂时用不到
-//    private final HashMap<SettingType, List<DefaultValue<?>>> settingTypeHashMap = new LinkedHashMap<>();
+    private final HashMap<SettingPreferenceType, ArrayList<DefaultValue<?>>> settingList = new LinkedHashMap<>();
 
-    private final ArrayList<DefaultValue<?>> settingList = new ArrayList<>();
+//    private final ArrayList<DefaultValue<?>> settingList = new ArrayList<>();
 
     public void onInitialization() {
-        getSettingList().add(getDebugValue());
-        getSettingList().add(getEnableDiscordRPCValue());
+        add(getDebugValue(),SettingPreferenceType.DEBUG);
+        add(getEnableDiscordRPCValue(),SettingPreferenceType.DISCORD_RPC);
 
-        getSettingList().add(getNotificationValue());
-        getSettingList().add(getNotificationMultiValue());
-        getSettingList().add(getNotificationAliveValue());
+        add(getNotificationValue(),SettingPreferenceType.NOTIFICATION);
+        add(getNotificationMultiValue(),SettingPreferenceType.NOTIFICATION);
+        add(getNotificationAliveValue(),SettingPreferenceType.NOTIFICATION);
 
-        getSettingList().add(getGameEndValue());
-        getSettingList().add(getGameEndMultiValue());
+        add(getGameEndValue(),SettingPreferenceType.GAME_END);
+        add(getGameEndMultiValue(),SettingPreferenceType.GAME_END);
 
-        getSettingList().add(getTeamsCheck());
-        getSettingList().add(getTeamsCheckMultiValue());
+        add(getTeamsCheck(),SettingPreferenceType.TEAMS_CHECK);
+        add(getTeamsCheckMultiValue(),SettingPreferenceType.TEAMS_CHECK);
 
-        getSettingList().add(getAntiBotCheck());
-        getSettingList().add(getAntibotCheckModeValue());
-        getSettingList().add(getAntiBotCheckMultiValue());
+        add(getAntiBotCheck(),SettingPreferenceType.ANTI_BOT_CHECK);
+        add(getAntibotCheckModeValue(),SettingPreferenceType.ANTI_BOT_CHECK);
+        add(getAntiBotCheckMultiValue(),SettingPreferenceType.ANTI_BOT_CHECK);
 
-        getSettingList().add(getPostRenderingValue());
-        getSettingList().add(getPostRenderingMultiValue());
-        getSettingList().add(getBlurStrange());
-        getSettingList().add(getShadow());
+        add(getPostRenderingValue(),SettingPreferenceType.POST_RENDERING);
+        add(getPostRenderingMultiValue(),SettingPreferenceType.POST_RENDERING);
+        add(getBlurStrange(),SettingPreferenceType.POST_RENDERING);
+        add(getShadow(),SettingPreferenceType.POST_RENDERING);
         //设置类型
+    }
+
+    private void add(DefaultValue<?> value, SettingPreferenceType type) {
+        getSettingList().computeIfAbsent(type, k -> new ArrayList<>()).add(value);
     }
 }
