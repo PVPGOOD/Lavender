@@ -7,5 +7,6 @@ package io.justme.lavender.configs;
 public enum ConfigsEnum {
     CONFIG,
     ELEMENTS,
-    ACCOUNTS
+    ACCOUNTS,
+    PREFERENCE,
 }
