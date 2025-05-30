@@ -22,12 +22,11 @@ public class SettingManager {
 
     //设置
     private final BoolValue debugValue = new BoolValue("信息调试", false);
-    //discord rpc
-    private final BoolValue enableDiscordRPCValue = new BoolValue("Discord RPC", true);
 
     private final BoolValue notificationValue = new BoolValue("通知", true);
     private final MultiBoolValue notificationMultiValue = new MultiBoolValue("通知设置", () -> getNotificationValue().getValue(),
             new BoolValue("启用通知 声音", true, () -> getNotificationValue().getValue()),
+            new BoolValue("开启模块时 推送通知", true, () -> getNotificationValue().getValue()),
             new BoolValue("第一次链接服务器时提醒当前账户ID", true, () -> getNotificationValue().getValue())
     );
     private final NumberValue notificationAliveValue = new NumberValue("通知 存活时间(毫秒)", 500, 10, 1000, 10 , () -> getNotificationValue().getValue());
@@ -73,7 +72,6 @@ public class SettingManager {
 
     public void onInitialization() {
         add(getDebugValue(),SettingPreferenceType.DEBUG);
-        add(getEnableDiscordRPCValue(),SettingPreferenceType.DISCORD_RPC);
 
         add(getNotificationValue(),SettingPreferenceType.NOTIFICATION);
         add(getNotificationMultiValue(),SettingPreferenceType.NOTIFICATION);

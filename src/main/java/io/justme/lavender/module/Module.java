@@ -1,13 +1,14 @@
 package io.justme.lavender.module;
 
 import io.justme.lavender.La;
+import io.justme.lavender.ui.screens.notifacation.NotificationsEnum;
 import io.justme.lavender.utility.interfaces.IMinecraft;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,8 +43,21 @@ public class Module implements IMinecraft {
         this.toggle = enable;
 
         if (enable){
+            if (La.getINSTANCE().getSettingManager().getNotificationValue().getValue()) {
+                if (La.getINSTANCE().getSettingManager().getNotificationMultiValue().find("开启模块时 推送通知").getValue()) {
+                    La.getINSTANCE().getNotificationsManager().push(
+                            name, String.format("Was %s enabled", EnumChatFormatting.GREEN,EnumChatFormatting.RESET), NotificationsEnum.SUCCESS, 1000,false);
+                }
+            }
             onEnable();
         } else {
+            if (La.getINSTANCE().getSettingManager().getNotificationValue().getValue()) {
+                if (La.getINSTANCE().getSettingManager().getNotificationMultiValue().find("开启模块时 推送通知").getValue()) {
+                    La.getINSTANCE().getNotificationsManager().push(
+                            name, String.format("Was %s disabled %s",EnumChatFormatting.RED,EnumChatFormatting.RESET), NotificationsEnum.SUCCESS, 1000,false);
+                }
+            }
+
             onDisable();
         }
     }

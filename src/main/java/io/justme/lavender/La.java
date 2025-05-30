@@ -111,12 +111,14 @@ public class La {
     }
 
     public void print(String message) {
+        if (!getSettingManager().getDebugValue().getValue()) return;
 
         String str = String.format(EnumChatFormatting.DARK_RED + "[%s]" + EnumChatFormatting.GRAY+ ":" + EnumChatFormatting.WHITE +" %s", getLa(),message);
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(str));
     }
 
     public void print(String message,String suffix) {
+        if (!getSettingManager().getDebugValue().getValue()) return;
 
         String str = String.format(EnumChatFormatting.DARK_RED + "[%s]" + EnumChatFormatting.GRAY+ ":" + EnumChatFormatting.WHITE +" %s", suffix,message);
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(str));
@@ -124,7 +126,7 @@ public class La {
 
     @EventTarget
     public void on2D(Event2DRender event2DRender) {
-        if (getSettingManager().getNotification().getValue()) {
+        if (getSettingManager().getNotificationValue().getValue()) {
             getElementsManager().getNotificationElement().draw(event2DRender.getPartialTicks(), getMouseX(),getMouseY());
         }
 

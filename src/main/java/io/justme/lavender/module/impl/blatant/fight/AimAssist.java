@@ -1,5 +1,6 @@
 package io.justme.lavender.module.impl.blatant.fight;
 
+import io.justme.lavender.La;
 import io.justme.lavender.events.player.EventMotionUpdate;
 import io.justme.lavender.module.Category;
 import io.justme.lavender.module.Module;
@@ -121,9 +122,23 @@ public class AimAssist extends Module {
 
         for (Entity entity : mc.theWorld.loadedEntityList) {
             if (entity instanceof EntityPlayer && entity != mc.thePlayer && entity.isEntityAlive()) {
-                if (ValidEntityUtility.isOnSameTeam((EntityLivingBase) entity)) continue;
+                var settingManager = La.getINSTANCE().getSettingManager();
+                if (settingManager.getTeamsCheck().getValue()) {
+                    if (settingManager.getTeamsCheckMultiValue().find("AimAssist").getValue()) {
+                        if (ValidEntityUtility.isOnSameTeam((EntityLivingBase) entity)) continue;
+                    }
+                }
+
+                if (settingManager.getAntiBotCheck().getValue()) {
+                    if (settingManager.getAntiBotCheckMultiValue().find("AimAssist").getValue()) {
+
+                        if (!ValidEntityUtility.getTablist().contains(entity.getName())) {
+                            continue;
+                        }
+                    }
+                }
+
                 if (notInFov(entity)) continue;
-                if (!ValidEntityUtility.getTablist().contains(entity.getName())) continue;
                 double distance = mc.thePlayer.getDistanceToEntity(entity);
                 if (distance < closestDistance) {
                     closestDistance = distance;
