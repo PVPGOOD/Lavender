@@ -2,13 +2,14 @@ package io.justme.lavender.ui.screens.clickgui.imgui.panels.popup;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
+import io.justme.lavender.module.Module;
+import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.ComBoxComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.ModeComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SliderComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SwitchComponent;
-import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
-import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.scrollbar.ScrollbarComponent;
+import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -23,7 +24,7 @@ import io.justme.lavender.value.impl.MultiBoolValue;
 import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
-import io.justme.lavender.module.Module;
+import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
@@ -210,7 +211,7 @@ public class PopupPanel extends AbstractPanel {
     public void handleMouseInput() throws IOException {
 
         if (isHover(getMouseX(),getMouseY())) {
-            int scroll = MouseUtility.getScroll();
+            int scroll = Mouse.getDWheel();
             if (scroll != 0) {
                 float targetOffset = ScrollOffset + scroll * 100;
                 targetOffset = Math.max(-maxScroll, Math.min(0, targetOffset));

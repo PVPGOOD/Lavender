@@ -13,6 +13,7 @@ import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
 import lombok.Setter;
+import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
@@ -229,7 +230,7 @@ public class ModuleList extends AbstractModulePanel {
         for (AbstractModulePanel element : elements) {
 
             if (isHover(getMouseX(),getMouseY())) {
-                int scroll = MouseUtility.getScroll();
+                int scroll = Mouse.getEventDWheel();
                 if (scroll != 0) {
                     float targetOffset = ScrollOffset + scroll * 50;
                     targetOffset = Math.max(-maxScroll, Math.min(0, targetOffset));
