@@ -3,7 +3,7 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.pre
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.component.vaule.AbstractSettingComponent;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.component.vaule.SettingComponentType;
-import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.component.vaule.impl.chill.SelectionBoxChill;
+import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.component.vaule.impl.chill.selection.SelectionBoxChill;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.impl.BoolValue;

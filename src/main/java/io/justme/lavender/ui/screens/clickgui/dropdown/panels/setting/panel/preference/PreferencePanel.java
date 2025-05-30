@@ -68,7 +68,7 @@ public class PreferencePanel extends AbstractSetting {
             abstractPreferenceWindow.drawScreen(mouseX, mouseY, partialTicks);
             groupInterval += (int) (abstractPreferenceWindow.getHeight() + 10);
 
-            RenderUtility.drawRect(getX(), y1,getWidth(),.8f,new Color(0xCCE8DEF8, true));
+            RenderUtility.drawRect(getX(), y1,getWidth(),.8f,new Color(0x80E8DEF8, true));
 
             abstractPreferenceWindow.getPositionYAnimation().animate(y1,.05f);
             abstractPreferenceWindow.getPositionYAnimation().update();
