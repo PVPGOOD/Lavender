@@ -13,10 +13,13 @@ import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjglx.input.Mouse;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -62,12 +65,18 @@ public class ModuleList extends AbstractModulePanel {
     private Animation scaleAnimation = new Animation(1);
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-            OGLUtility.scale(getX() + getWidth()/2f,getY() + getHeight()/2f,getScaleAnimation().getValue(),() -> {
+        float scale = getScaleAnimation().getValue();
+        float centerX = getX() + getWidth()/2f;
+        float centerY = getY() + getHeight()/2f;
+        var initY = 40;
+        int[] offset = ScissorUtility.getScaleOffset(centerX, centerY - getY() + initY * 2 + 15, scale);
+
+        OGLUtility.scale(centerX, centerY, scale, () -> {
             RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 15, new Color(0xF8F2FA));
 
             setScrollOffset(getScrollAnimation().getValue());
             AtomicInteger intervalY = new AtomicInteger();
-            var initY = 40;
+
 
             for (AbstractModulePanel element : elements) {
                 switch (element.getPanelType()) {
@@ -82,16 +91,20 @@ public class ModuleList extends AbstractModulePanel {
                 }
             }
 
-            ScissorUtility.scissor(getX(), getY() + initY - 10, getWidth(), getHeight() - initY - 3, () -> {
+            ScissorUtility.scissor(
+                    getX(),
+                    getY() + initY - 10,
+                    getWidth(),
+                    getHeight() - initY - 3,
+                    offset[0] / (float) new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor(),
+                    offset[1] / (float) new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor(), () -> {
                 for (AbstractModulePanel element : elements) {
-                    switch (element.getPanelType()) {
-                        case MODULE_BUTTON -> {
-                            element.setX(getX() + 5);
-                            element.setY(getY() + initY + intervalY.get() + ScrollOffset);
-                            element.setWidth(getWidth() - 10);
-                            element.drawScreen(mouseX, mouseY, partialTicks);
-                            intervalY.addAndGet((int) (32 + element.getRequestHeight()));
-                        }
+                    if (Objects.requireNonNull(element.getPanelType()) == ModulePanelType.MODULE_BUTTON) {
+                        element.setX(getX() + 5);
+                        element.setY(getY() + initY + intervalY.get() + ScrollOffset);
+                        element.setWidth(getWidth() - 10);
+                        element.drawScreen(mouseX, mouseY, partialTicks);
+                        intervalY.addAndGet((int) (32 + element.getRequestHeight()));
                     }
                 }
             });
