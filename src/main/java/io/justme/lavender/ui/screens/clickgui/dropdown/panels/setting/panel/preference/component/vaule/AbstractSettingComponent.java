@@ -2,6 +2,7 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.pre
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
+import io.justme.lavender.value.DefaultValue;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractSettingComponent {
 
+    private DefaultValue<?> option;
     private float descriptionX,descriptionY, descriptionWidth, descriptionHeight;
     public float x,y,width,height;
     private FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Heavy18();

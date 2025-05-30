@@ -52,9 +52,13 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
 
         //值
         var intervalY = new AtomicInteger();
-        var initY = 8;
+        var initY = 6;
         var initX = 5;
         for (AbstractSettingComponent abstractOptionComponent : getValueComponents()) {
+            if (!abstractOptionComponent.getOption().isAvailable()) {
+                continue;
+            }
+
             switch (abstractOptionComponent.getModuleComponentType()) {
                 case MODE -> {
                     abstractOptionComponent.setX(getX() + initX + 5);
@@ -122,8 +126,12 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
 
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (AbstractSettingComponent valueComponent : getValueComponents()) {
-            valueComponent.mouseClicked(mouseX, mouseY, mouseButton);
+        for (AbstractSettingComponent abstractSettingComponent : getValueComponents()) {
+            if (!abstractSettingComponent.getOption().isAvailable()) {
+                continue;
+            }
+
+            abstractSettingComponent.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
         return false;
@@ -132,8 +140,12 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
     @Override
     public boolean mouseReleased(int mouseX, int mouseY, int state) {
 
-        for (AbstractSettingComponent valueComponent : getValueComponents()) {
-            valueComponent.mouseReleased(mouseX, mouseY, state);
+        for (AbstractSettingComponent abstractSettingComponent : getValueComponents()) {
+            if (!abstractSettingComponent.getOption().isAvailable()) {
+                continue;
+            }
+
+            abstractSettingComponent.mouseReleased(mouseX, mouseY, state);
         }
 
         return false;
@@ -157,19 +169,23 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
             switchComponent.setOption((BoolValue) setting);
             switchComponent.afterAddOption();
             component = switchComponent;
+            component.setOption(setting);
         } else if (setting instanceof MultiBoolValue) {
             SelectionComponent selectionComponent = new SelectionComponent();
             selectionComponent.setOption((MultiBoolValue) setting);
             selectionComponent.afterAddOption();
             component = selectionComponent;
+            component.setOption(setting);
         } else if (setting instanceof NumberValue) {
             var sliderComponent = new SliderComponent();
             sliderComponent.setOption((NumberValue) setting);
             component = sliderComponent;
+
         } else if (setting instanceof NumberRangeValue) {
             var sliderRangeComponent = new SliderRangeComponent();
             sliderRangeComponent.setOption((NumberRangeValue) setting);
             component = sliderRangeComponent;
+            component.setOption(setting);
         }
 
         else if (setting instanceof ModeValue) {
@@ -177,6 +193,7 @@ public class PreferenceWindow extends AbstractPreferenceWindow {
             modeComponent.setOption((ModeValue) setting);
             modeComponent.afterAddOption();
             component = modeComponent;
+            component.setOption(setting);
         }
 
 
