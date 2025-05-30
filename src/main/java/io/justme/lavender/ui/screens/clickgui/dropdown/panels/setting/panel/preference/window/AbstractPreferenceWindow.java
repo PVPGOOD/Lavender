@@ -1,6 +1,7 @@
 package io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window;
 
 import io.justme.lavender.setting.SettingPreferenceType;
+import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 @Setter
 public abstract class AbstractPreferenceWindow {
 
+    private Animation positionYAnimation;
     public float x,y,width,height;
     private SettingPreferenceType type;
 

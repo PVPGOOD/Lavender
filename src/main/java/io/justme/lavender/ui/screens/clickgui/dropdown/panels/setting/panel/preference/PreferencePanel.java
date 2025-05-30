@@ -6,6 +6,7 @@ import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.SettingTyp
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window.AbstractPreferenceWindow;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.setting.panel.preference.window.impl.PreferenceWindow;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.math.animation.Animation;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,15 +57,22 @@ public class PreferencePanel extends AbstractSetting {
         for (AbstractPreferenceWindow abstractPreferenceWindow : getAbstractPreferenceWindows()) {
             abstractPreferenceWindow.setX(getX() + leftSide);
             float y1 = getY() + initY + groupInterval + 15;
-            abstractPreferenceWindow.setY(y1);
+
+            if (abstractPreferenceWindow.getPositionYAnimation() == null) {
+                abstractPreferenceWindow.setPositionYAnimation(new Animation(y1));
+            }
+
+            abstractPreferenceWindow.setY(abstractPreferenceWindow.getPositionYAnimation().getValue());
             abstractPreferenceWindow.setWidth(getWidth() - rightSide);
 
             abstractPreferenceWindow.drawScreen(mouseX, mouseY, partialTicks);
             groupInterval += (int) (abstractPreferenceWindow.getHeight() + 10);
 
             RenderUtility.drawRect(getX(), y1,getWidth(),.8f,new Color(0xCCE8DEF8, true));
-        }
 
+            abstractPreferenceWindow.getPositionYAnimation().animate(y1,.05f);
+            abstractPreferenceWindow.getPositionYAnimation().update();
+        }
     }
 
     @Override
