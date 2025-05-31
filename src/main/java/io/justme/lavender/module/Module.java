@@ -39,25 +39,41 @@ public class Module implements IMinecraft {
         this.toggle = true;
     }
 
+    public void setStatus(boolean enable, boolean pushNotification) {
+        this.toggle = enable;
+
+        boolean notify = La.getINSTANCE().getSettingManager().getNotificationValue().getValue()
+                && pushNotification
+                && La.getINSTANCE().getSettingManager().getNotificationMultiValue().find("开启模块时 推送通知").getValue();
+
+        boolean playSound = La.getINSTANCE().getSettingManager().getNotificationValue().getValue()
+                && La.getINSTANCE().getSettingManager().getNotificationMultiValue().find("启用通知 声音").getValue();
+
+        if (notify) {
+            String status = enable ? "was enabled" : "was disabled";
+            EnumChatFormatting color = enable ? EnumChatFormatting.GREEN : EnumChatFormatting.RED;
+            La.getINSTANCE().getNotificationsManager().push(
+                    "Module Manager",
+                    String.format("%s %s %s %s", color, name, EnumChatFormatting.RESET, status),
+                    NotificationsEnum.SUCCESS,
+                    1000,
+                    playSound
+            );
+        }
+
+        if (enable) {
+            onEnable();
+        } else {
+            onDisable();
+        }
+    }
+
     public void setStatus(boolean enable){
         this.toggle = enable;
 
         if (enable){
-            if (La.getINSTANCE().getSettingManager().getNotificationValue().getValue()) {
-                if (La.getINSTANCE().getSettingManager().getNotificationMultiValue().find("开启模块时 推送通知").getValue()) {
-                    La.getINSTANCE().getNotificationsManager().push(
-                            name, String.format("Was %s enabled", EnumChatFormatting.GREEN,EnumChatFormatting.RESET), NotificationsEnum.SUCCESS, 1000,false);
-                }
-            }
             onEnable();
         } else {
-            if (La.getINSTANCE().getSettingManager().getNotificationValue().getValue()) {
-                if (La.getINSTANCE().getSettingManager().getNotificationMultiValue().find("开启模块时 推送通知").getValue()) {
-                    La.getINSTANCE().getNotificationsManager().push(
-                            name, String.format("Was %s disabled %s",EnumChatFormatting.RED,EnumChatFormatting.RESET), NotificationsEnum.SUCCESS, 1000,false);
-                }
-            }
-
             onDisable();
         }
     }

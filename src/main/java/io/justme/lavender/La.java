@@ -136,7 +136,7 @@ public class La {
     @EventTarget
     public void onKey(EventKey event) {
         for (Module module : moduleManager.getElements()) {
-            if (module.key == event.getKeyCode()) module.setStatus(!module.isToggle());
+            if (module.key == event.getKeyCode()) module.setStatus(!module.isToggle(),true);
         }
 
         if (event.getKeyCode() == Keyboard.KEY_L) {
