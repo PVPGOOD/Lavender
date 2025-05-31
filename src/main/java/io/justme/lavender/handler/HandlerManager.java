@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.handler.impl.BlinkHandler;
 import io.justme.lavender.handler.impl.RotationHandler;
 import io.justme.lavender.handler.impl.ServerHandler;
+import io.justme.lavender.handler.impl.autodisable.AutoDisableHandler;
 import io.justme.lavender.handler.impl.backtracker.BanTrackerHandler;
 import io.justme.lavender.handler.impl.hack.HackDetectionHandler;
 import io.justme.lavender.utility.interfaces.Manager;
@@ -25,6 +26,7 @@ public class HandlerManager extends Manager<AbstractHandler> {
     private RotationHandler rotationHandler = new RotationHandler();
     private BanTrackerHandler banTrackerHandler = new BanTrackerHandler();
     private HackDetectionHandler hackDetectionHandler = new HackDetectionHandler();
+    private AutoDisableHandler autoDisableHandler = new AutoDisableHandler();
 
     public HandlerManager() {
 
@@ -33,7 +35,8 @@ public class HandlerManager extends Manager<AbstractHandler> {
                 getServerHandler(),
                 getRotationHandler(),
                 getHackDetectionHandler(),
-                getBanTrackerHandler()
+                getBanTrackerHandler(),
+                getAutoDisableHandler()
         ));
 
         for (AbstractHandler element : getElements()) {

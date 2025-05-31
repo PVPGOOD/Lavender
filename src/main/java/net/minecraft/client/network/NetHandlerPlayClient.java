@@ -1314,6 +1314,20 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
                 return;
         }
 
+        if (s != null) {
+
+            EventGameEnd event = null;
+            switch (s) {
+                case "§6§lVICTORY!§r", "§6§l胜利！§r" -> event = new EventGameEnd(EventGameEnd.GameEndType.VICTORY);
+                case "§c§lDEFEAT!", "§c§l失败！§r" -> event = new EventGameEnd(EventGameEnd.GameEndType.DEFEAT);
+            }
+
+            if (event != null) {
+                La.getINSTANCE().getEventManager().call(event);
+            }
+        }
+
+
         this.gameController.ingameGUI.displayTitle(s, s1, packetIn.getFadeInTime(), packetIn.getDisplayTime(), packetIn.getFadeOutTime());
     }
 

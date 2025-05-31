@@ -36,7 +36,9 @@ public class SettingManager {
             new BoolValue("KillAura", true, () -> getGameEndValue().getValue()),
             new BoolValue("Speed", true, () -> getGameEndValue().getValue()),
             new BoolValue("Scaffold", true, () -> getGameEndValue().getValue()),
-            new BoolValue("InvManager", true, () -> getGameEndValue().getValue()));
+            new BoolValue("SafeWalk", true, () -> getGameEndValue().getValue()),
+            new BoolValue("ChestStealer", true, () -> getGameEndValue().getValue()),
+            new BoolValue("InventoryCleaner", true, () -> getGameEndValue().getValue()));
 
     //teams
     private final BoolValue teamsCheck = new BoolValue("队伍检测", true);
