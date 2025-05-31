@@ -20,7 +20,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Setter
 public class DropScreen extends GuiScreen {
 
+    private boolean keybinding = false;
     private CategoryType currentCategory = CategoryType.SETTING;
+
     private CopyOnWriteArrayList<AbstractPanelUI> abstractPanelUIS = new CopyOnWriteArrayList<>();
     private SettingPanel settingPanel = new SettingPanel();
     private NavBarPanel navBarPanel = new NavBarPanel();
@@ -62,9 +64,32 @@ public class DropScreen extends GuiScreen {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
-
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+            if (keyCode == 1)
+            {
+                if (abstractPanelUI instanceof SettingPanel) {
+                    if (abstractPanelUI.isShowing()) {
+                        abstractPanelUI.setShowing(false);
+                        continue;
+                    } else {
+                        this.mc.displayGuiScreen(null);
+
+                        if (this.mc.currentScreen == null)
+                        {
+                            this.mc.setIngameFocus();
+                        }
+                    }
+                }
+
+                if (abstractPanelUI instanceof ModulePanel) {
+                    if (isKeybinding()) {
+                        setKeybinding(false);
+                        continue;
+                    }
+                }
+            }
+
+
             if (!abstractPanelUI.isShowing()) continue;
 
             abstractPanelUI.keyTyped(typedChar, keyCode);
