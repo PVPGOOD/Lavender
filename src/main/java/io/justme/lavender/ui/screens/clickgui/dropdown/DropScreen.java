@@ -65,19 +65,18 @@ public class DropScreen extends GuiScreen {
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
         for (AbstractPanelUI abstractPanelUI : getAbstractPanelUIS()) {
+
+
+            if (!abstractPanelUI.isShowing()) continue;
+
+            abstractPanelUI.keyTyped(typedChar, keyCode);
+
             if (keyCode == 1)
             {
                 if (abstractPanelUI instanceof SettingPanel) {
                     if (abstractPanelUI.isShowing()) {
                         abstractPanelUI.setShowing(false);
                         continue;
-                    } else {
-                        this.mc.displayGuiScreen(null);
-
-                        if (this.mc.currentScreen == null)
-                        {
-                            this.mc.setIngameFocus();
-                        }
                     }
                 }
 
@@ -87,12 +86,14 @@ public class DropScreen extends GuiScreen {
                         continue;
                     }
                 }
+
+                this.mc.displayGuiScreen(null);
+
+                if (this.mc.currentScreen == null)
+                {
+                    this.mc.setIngameFocus();
+                }
             }
-
-
-            if (!abstractPanelUI.isShowing()) continue;
-
-            abstractPanelUI.keyTyped(typedChar, keyCode);
         }
     }
 

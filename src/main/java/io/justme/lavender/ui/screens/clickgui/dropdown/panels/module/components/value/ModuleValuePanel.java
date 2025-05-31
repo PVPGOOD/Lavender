@@ -2,8 +2,8 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components
 
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.impl.*;
-import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
 import io.justme.lavender.value.impl.*;
@@ -158,7 +158,9 @@ public class ModuleValuePanel extends AbstractModuleValue {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-
+        for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
+            abstractOptionComponent.keyTyped(typedChar, keyCode);
+        }
     }
 
     @Override

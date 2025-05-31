@@ -3,7 +3,6 @@ package io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components
 import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.dropdown.panels.module.components.value.ModuleComponentType;
-
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -108,7 +107,10 @@ public class SliderComponent extends AbstractOptionComponent {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-
+        if (keyCode == 1) {
+            setDragging(false);
+            setRealDragging(false);
+        }
     }
 
     @Override

@@ -128,6 +128,10 @@ public class ModuleButton extends AbstractModulePanel {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
+        for (ModuleValuePanel valuePanel : getValuePanels()) {
+            valuePanel.keyTyped(typedChar, keyCode);
+        }
+
         for (AbstractKeybind keybind : getKeybinds()) {
             keybind.keyTyped(typedChar,keyCode);
         }
