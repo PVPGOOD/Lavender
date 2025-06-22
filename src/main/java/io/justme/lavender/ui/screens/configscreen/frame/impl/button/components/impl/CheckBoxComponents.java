@@ -2,14 +2,13 @@ package io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.ComponentsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 
 import java.awt.*;
 import java.io.IOException;
@@ -40,8 +39,8 @@ public class CheckBoxComponents extends AbstractComponents {
 
         var hovering = MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY);
 
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),6,new Color(253, 147, 189, hovering ? 255 : 200));
-        getFontRenderer().drawString(getName(),getX() + (getWidth() /2f) - (getFontRenderer().getStringWidth(getName()) /2f), getY() + (getFontRenderer().getHeight() / 2f - 4),new Color(255,255,255).getRGB());
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),10,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CONFIG_UI_SMAIL_BUTTON));
+        getFontRenderer().drawString(getName(),getX() + (getWidth() /2f) - (getFontRenderer().getStringWidth(getName()) /2f), getY() + (getFontRenderer().getHeight() / 2f - 4),new Color(50, 47, 53).getRGB());
 
         setWidth(55);
         setHeight(20);

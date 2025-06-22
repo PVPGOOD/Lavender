@@ -65,7 +65,11 @@ public class ThemeColor {
         DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_BUTTON_FONT, new Color(137, 154, 192, 255));
 
         DARK_COLORS.put(ThemeColorEnum.COMPONENT_SCROLLBAR_BACKGROUND, new Color(40, 40, 50));
-        DARK_COLORS.put(ThemeColorEnum.COMPONENT_SCROLLBAR_THUMB, new Color(103, 84, 150));
+        DARK_COLORS.put(ThemeColorEnum.COMPONENT_SCROLLBAR_THUMB, new Color(50, 56, 70));
+
+        DARK_COLORS.put(ThemeColorEnum.CONFIG_UI_BUTTON_SELECT, new Color(17, 19, 26));
+        DARK_COLORS.put(ThemeColorEnum.CONFIG_UI_BUTTON_UNSELECT, new Color(30, 34, 44));
+        DARK_COLORS.put(ThemeColorEnum.CONFIG_UI_SMAIL_BUTTON, new Color(137, 154, 192));
     }
 
 

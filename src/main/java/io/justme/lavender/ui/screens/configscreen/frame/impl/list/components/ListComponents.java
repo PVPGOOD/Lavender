@@ -2,12 +2,14 @@ package io.justme.lavender.ui.screens.configscreen.frame.impl.list.components;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.AbstractComponents;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.components.ComponentsEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.awt.*;
 import java.io.IOException;
 
@@ -35,8 +37,8 @@ public class ListComponents extends AbstractComponents {
         var hovering = MouseUtility.isHovering(getX(),getY(),getWidth(),getHeight(),mouseX,mouseY);
 
 
-        Color select = new Color(253, 147, 189);
-        Color unselect = new Color(255, 187, 213,hovering ? 235 : 200);
+        var select = La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CONFIG_UI_BUTTON_SELECT);
+        var unselect = La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CONFIG_UI_BUTTON_UNSELECT);
         Color finalColor = getName().equalsIgnoreCase(La.getINSTANCE().getConfigScreen().getSelectConfig()) ? select : unselect;
 
         RenderUtility.drawRoundRect(
@@ -46,7 +48,7 @@ public class ListComponents extends AbstractComponents {
                 getHeight(),
                 16,finalColor);
 
-        getFontRenderer().drawString(getName(),getX() + (getWidth() /2f) - (getFontRenderer().getStringWidth(getName()) /2f), getY() + (getFontRenderer().getHeight() / 2f - 4),new Color(255,255,255).getRGB());
+        getFontRenderer().drawString(getName(),getX() + (getWidth() /2f) - (getFontRenderer().getStringWidth(getName()) /2f), getY() + (getFontRenderer().getHeight() / 2f - 4),new Color(137, 154, 192).getRGB());
 
     }
 
