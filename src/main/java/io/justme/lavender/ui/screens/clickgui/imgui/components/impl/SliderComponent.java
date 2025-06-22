@@ -23,8 +23,9 @@ import java.io.IOException;
 @Setter
 public class SliderComponent extends AbstractOptionComponent {
 
-    private NumberValue option = new NumberValue("slider",2,2,10f,1);
+    private NumberValue option;
     private boolean dragging;
+    private boolean realDragging;
 
     public SliderComponent() {
         this.componentType = ComponentType.SLIDER;
@@ -38,17 +39,24 @@ public class SliderComponent extends AbstractOptionComponent {
     private Animation sliderAnimations = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX(),getDescriptionY(), La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
+        var font = La.getINSTANCE().getFontManager().getPingFang_Medium18();
+        font.drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() , La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
+
         float inc = getOption().getIncrement();
         float max = getOption().getMax();
         float min = getOption().getMin();
         float value = getOption().getValue();
         float posX = getX();
         float longValue = getX() - (getX() - getWidth());
+
         getSliderAnimations().animate((longValue * (value - min) / (max - min)),0.1F, Easings.LINEAR);
-        // 背景
+
+        //背景
         RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_BACKGROUND));
-        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FILLED));
+
+        //值
+        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FILLED));
+
         if (isDragging()) {
             float valAbs = mouseX - (posX);
             float percent = calculatePercentage(valAbs, longValue, value, max);
@@ -56,23 +64,34 @@ public class SliderComponent extends AbstractOptionComponent {
             getOption().setValue(val);
         }
 
-        // 滑块
+        //点
         int size = 6;
         RenderUtility.drawRoundRectWithOutline(posX + getSliderAnimations().getValue() - size,
-                getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_KNOB),La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_OUTLINE));
-        getFontDrawer().drawString(getOption().getValue().toString(),posX + getSliderAnimations().getValue() - size,
-                getY() + getHeight()/2f + 3,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
-        if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
+                getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_KNOB),La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_OUTLINE));
+
+        var values = getOption().getValue() + " / " + getOption().getMax();
+        // 绘制当前值
+        font.drawString(String.valueOf(getOption().getValue()),
+                posX + getWidth() / 2f - font.getStringWidth(getOption().getValue() + " (" + getOption().getMax() + ")") / 2f,
+                getY() + getHeight() + 6, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
+
+        font.drawString(" (" + getOption().getMax() + ")",
+                posX + getWidth() / 2f - font.getStringWidth(getOption().getValue() + " (" + getOption().getMax() + ")") / 2f + font.getStringWidth(String.valueOf(getOption().getValue())),
+                getY() + getHeight() + 6, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
+        if (MouseUtility.isHovering(posX, getY(), getWidth(), getHeight(),mouseX,mouseY) && Mouse.isButtonDown(0) && isRealDragging()) {
             setDragging(true);
         }
-        setWidth(100);
+
+        setWidth(95);
         setHeight(5);
         getSliderAnimations().update();
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-
+        if (MouseUtility.isHovering(getX(), getY(), getWidth(), getHeight(),mouseX,mouseY)) {
+            setRealDragging(true);
+        }
     }
 
     @Override
@@ -80,6 +99,7 @@ public class SliderComponent extends AbstractOptionComponent {
         switch (state) {
             case 0:
                 setDragging(false);
+                setRealDragging(false);
                 break;
         }
     }
@@ -87,7 +107,10 @@ public class SliderComponent extends AbstractOptionComponent {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-
+        if (keyCode == 1) {
+            setDragging(false);
+            setRealDragging(false);
+        }
     }
 
     @Override
