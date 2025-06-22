@@ -39,26 +39,26 @@ public class CategoryPanel extends AbstractPanel {
         for (AbstractCategory categoryComponents : getCategoryComponents()) {
             requestInterval += (int) categoryComponents.getRequestInterval() + 25;
         }
-        var categoryInitY = 25;
-        int initX = 4;
-        RenderUtility.drawRoundRect(getX() + initX/2f, getY() + categoryComponentsInterval + categoryInitY - 3, getWidth() - initX, requestInterval, 10, new Color(26, 28, 38));
-
+        var interval = 25;
+        RenderUtility.drawRoundRect(getX(), getY() + categoryComponentsInterval + interval - 3, getWidth(), requestInterval, 10, new Color(26, 28, 38));
+        var initialXOffset = 2;
+        var initialYOffset = 10;
         //分类图标
         //模块分类
         requestInterval = 0;
         for (AbstractCategory categoryComponents : getCategoryComponents()) {
             switch (categoryComponents.getName()) {
                 case "ModulePanelWindow" -> {
-                    categoryComponents.setX(getX() + initX);
+                    categoryComponents.setX(getX() + initialXOffset);
                     categoryComponents.setY(getY() + categoryComponentsInterval);
-                    categoryComponents.setWidth(getWidth() - initX * 2);
+                    categoryComponents.setWidth(getWidth() - initialXOffset * 2);
                     requestInterval += (int) categoryComponents.getRequestInterval();
                 }
 
                 case "OtherCategoryPanel" -> {
-                    categoryComponents.setX(getX() + initX);
-                    categoryComponents.setY(getY() + categoryComponentsInterval + requestInterval + categoryInitY);
-                    categoryComponents.setWidth(getWidth() - initX * 2);
+                    categoryComponents.setX(getX() + initialXOffset);
+                    categoryComponents.setY(getY() + categoryComponentsInterval + requestInterval + interval);
+                    categoryComponents.setWidth(getWidth() - initialXOffset * 2);
                     requestInterval += (int) categoryComponents.getRequestInterval();
                 }
             }

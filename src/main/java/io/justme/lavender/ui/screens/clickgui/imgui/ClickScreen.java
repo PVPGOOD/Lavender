@@ -103,9 +103,9 @@ public class ClickScreen extends GuiScreen  {
 
             if (abstractPanel.getName().equals("CategoryPanel")) {
                 int initCategoryPanelY = abstractComponentInitY - 10;
-                abstractPanel.setX(getX());
+                abstractPanel.setX(getX() + initialXOffset);
                 abstractPanel.setY(getY() - abstractComponentInitY + initCategoryPanelY);
-                abstractPanel.setWidth(categoryWidth);
+                abstractPanel.setWidth(categoryWidth - initialXOffset * 2);
                 abstractPanel.setHeight(getHeight());
                 abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
             }

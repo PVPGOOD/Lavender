@@ -55,12 +55,14 @@ public class ModulePanelWindow extends AbstractCategory {
                 La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_BACKGROUND));
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_FONT).getRGB());
+        var initialXOffset = 4;
+        var initialYOffset = 10;
+        fontDrawer.drawString("Category",getX() + initialXOffset,getY() + categoryComponentsInitY + 1, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_FONT).getRGB());
 
         for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
-            categoryComponents.setX(getX() + 4);
+            categoryComponents.setX(getX() + initialXOffset);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY + 15);
-            categoryComponents.setWidth(105);
+            categoryComponents.setWidth(getWidth() - initialXOffset * 2);
             categoryComponents.setHeight(22);
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
             categoryComponentsIntervalY += 25;

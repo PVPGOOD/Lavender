@@ -6,6 +6,7 @@ import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsC
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.panel.category.CategoryButtonComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.AbstractCategory;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,13 +55,14 @@ public class OtherCategoryPanel extends AbstractCategory {
                 new Color(17, 19, 26));
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-        fontDrawer.drawString("Other",getX() + 4,getY() + categoryComponentsInitY + 1,new Color(137, 154, 192, 255).getRGB());
+        fontDrawer.drawString("Other",getX() + 4,getY() + categoryComponentsInitY + 1,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_OTHER_BUTTON_FONT).getRGB());
 
-
+        var initialXOffset = 4;
+        var initialYOffset = 10;
         for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
-            categoryComponents.setX(getX() + 4);
+            categoryComponents.setX(getX() + initialXOffset);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY + 15);
-            categoryComponents.setWidth(105);
+            categoryComponents.setWidth(getWidth() - initialXOffset * 2);
             categoryComponents.setHeight(22);
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
             categoryComponentsIntervalY += 25;

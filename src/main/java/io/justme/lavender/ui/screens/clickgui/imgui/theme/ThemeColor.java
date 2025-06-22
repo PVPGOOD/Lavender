@@ -59,6 +59,7 @@ public class ThemeColor {
 
         DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_BACKGROUND, new Color(17, 19, 26));
         DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_FONT, new Color(137, 154, 192, 255));
+        DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_OTHER_BUTTON_FONT, new Color(137, 154, 192, 255));
         DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_BUTTON_TOGGLE_ON, new Color(30, 34, 44, 255));
         DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_BUTTON_TOGGLE_OFF, new Color(17, 19, 26, 255));
         DARK_COLORS.put(ThemeColorEnum.PANEL_MODULE_BUTTON_FONT, new Color(137, 154, 192, 255));
