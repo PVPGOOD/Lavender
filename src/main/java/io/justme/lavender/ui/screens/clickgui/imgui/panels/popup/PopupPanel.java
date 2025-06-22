@@ -12,8 +12,8 @@ import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.scrollbar.Sc
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
-import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
+import io.justme.lavender.utility.gl.ScissorUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
@@ -62,7 +62,7 @@ public class PopupPanel extends AbstractPanel {
             getValueComponents().add(component);
         }
 
-        setWidth(200);
+        setWidth(230);
         setHeight(250);
     }
 
@@ -103,7 +103,7 @@ public class PopupPanel extends AbstractPanel {
         int leftSide = 10;
         int initY = 30;
 
-        OGLUtility.scissor(getX(),getY() + initY + 5,animationWidth,animationHeight - initY - 4,()->{
+        ScissorUtility.scissor(getX() + 4,getY() + initY - 5,animationWidth,animationHeight - initY + 5,()->{
             for (AbstractOptionComponent abstractOptionComponent : getValueComponents()) {
                 switch (abstractOptionComponent.getComponentType()) {
                     case MODE -> {
@@ -118,7 +118,7 @@ public class PopupPanel extends AbstractPanel {
                     }
 
                     case COMBOX -> {
-                        abstractOptionComponent.setX(getX() + getWidth() /2f - abstractOptionComponent.getWidth() /2f);
+                        abstractOptionComponent.setX(getX() + getWidth() /2f -  abstractOptionComponent.getWidth() /2f);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
@@ -130,7 +130,7 @@ public class PopupPanel extends AbstractPanel {
                     }
 
                     case SLIDER -> {
-                        abstractOptionComponent.setX(getX() + getWidth() - abstractOptionComponent.getWidth() - rightSide);
+                        abstractOptionComponent.setX(getX() + abstractOptionComponent.getWidth() + rightSide);
                         abstractOptionComponent.setY(getY() + intervalY.get() + initY + ScrollOffset + 15);
 
                         abstractOptionComponent.setDescriptionX(getX() + leftSide);
@@ -138,7 +138,7 @@ public class PopupPanel extends AbstractPanel {
 
                         abstractOptionComponent.drawScreen(mouseX,mouseY,partialTicks);
 
-                        intervalY.addAndGet(28);
+                        intervalY.addAndGet(25);
                     }
 
                     case SWITCH -> {
@@ -183,7 +183,7 @@ public class PopupPanel extends AbstractPanel {
 
         getScrollbarComponent().setWidth(3);
         getScrollbarComponent().setHeight(250);
-        getScrollbarComponent().setX(getX() + getWidth() - getScrollbarComponent().getWidth());
+        getScrollbarComponent().setX(getX() + getWidth() - getScrollbarComponent().getWidth() - 2);
         getScrollbarComponent().setY(getY() + initY);
 
         getScrollbarComponent().setScrollOffset(getScrollOffset());
