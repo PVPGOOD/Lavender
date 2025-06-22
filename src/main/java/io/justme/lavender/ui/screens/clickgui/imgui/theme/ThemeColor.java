@@ -17,6 +17,11 @@ public class ThemeColor {
         DARK_COLORS.put(ThemeColorEnum.PANEL_POPUP_TOGGLE_OFF, new Color(17, 19, 26, 255));
         DARK_COLORS.put(ThemeColorEnum.PANEL_POPUP_HIGHLIGHT, new Color(129, 57, 80,255));
         DARK_COLORS.put(ThemeColorEnum.PANEL_POPUPCOMBOBOX_MASK, new Color(0,0,0,64));
+
+        DARK_COLORS.put(ThemeColorEnum.PANEL_USERINFO_BACKGROUND, new Color(17, 19, 26, 255));
+        DARK_COLORS.put(ThemeColorEnum.PANEL_USERINFO_TITLE_FONT, new Color(137, 154, 192, 255));
+
+
         DARK_COLORS.put(ThemeColorEnum.COMPONENT_CHECKBOX_FONT, new Color(0x899AC0));
         DARK_COLORS.put(ThemeColorEnum.COMPONENT_CHECKBOX_CHECKED, new Color(103, 84, 150, 255));
         DARK_COLORS.put(ThemeColorEnum.COMPONENT_CHECKBOX_UNCHECKED, new Color(255, 187, 213, 0));

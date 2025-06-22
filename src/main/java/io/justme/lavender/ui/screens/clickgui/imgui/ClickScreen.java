@@ -8,6 +8,7 @@ import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.popup.PopupPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.settings.SettingPanel;
+import io.justme.lavender.ui.screens.clickgui.imgui.panels.userinfo.UserInfoPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -38,6 +39,7 @@ public class ClickScreen extends GuiScreen  {
     private ModulePanel modulePanel = new ModulePanel();
     private CategoryPanel categoryPanel = new CategoryPanel();
     private SettingPanel settingPanel = new SettingPanel();
+    private UserInfoPanel userInfoPanel = new UserInfoPanel();
 
     public ClickScreen() {
         setX(10);
@@ -56,6 +58,7 @@ public class ClickScreen extends GuiScreen  {
             getAbstractPanels().add(getCategoryPanel());
             getAbstractPanels().add(getModulePanel());
             getAbstractPanels().add(getSettingPanel());
+            getAbstractPanels().add(getUserInfoPanel());
             getModulePanel().FirstAddonModule();
         }
 
@@ -86,8 +89,11 @@ public class ClickScreen extends GuiScreen  {
 
 
 
-        int abstractComponentInitY = 0;
-        int categoryWidth = 120;
+        var abstractComponentInitY = 15;
+        var categoryWidth = 120;
+
+        var initialXOffset = 4;
+        var initialYOffset = 4;
 
         if (getAbstractPanels().contains(getCategoryPanel()) && getAbstractPanels().contains(getModulePanel())) {
             RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CLICKSCREEN_BACKGROUND));
@@ -96,14 +102,19 @@ public class ClickScreen extends GuiScreen  {
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
 
             if (abstractPanel.getName().equals("CategoryPanel")) {
-                abstractPanel.setX(getX());
                 int initCategoryPanelY = abstractComponentInitY - 10;
+                abstractPanel.setX(getX());
                 abstractPanel.setY(getY() - abstractComponentInitY + initCategoryPanelY);
                 abstractPanel.setWidth(categoryWidth);
                 abstractPanel.setHeight(getHeight());
                 abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
+            }
 
-
+            if (abstractPanel.getName().equals("UserInfoPanel")) {
+                abstractPanel.setX(getX() + initialXOffset);
+                abstractPanel.setY(getY() + getHeight() - abstractPanel.getHeight() - initialYOffset);
+                abstractPanel.setWidth(categoryWidth - initialXOffset * 2);
+                abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
             }
 
             if (getCurrentCategory() == CategoryType.MISC ||
