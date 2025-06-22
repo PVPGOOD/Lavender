@@ -11,6 +11,7 @@ import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SwitchCompon
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.scrollbar.ScrollbarComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.chill.ModuleButton;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
@@ -81,7 +82,7 @@ public class PopupPanel extends AbstractPanel {
         float animationWidth = isScaling() ? getWidth() : getAnimationWidth().getValue();
 
         Color color = getModule().getName().equalsIgnoreCase("clickgui") ?
-                new Color(255,255,255) : getModule().isToggle() ? new Color(30, 34, 44, 255) : new Color(17, 19, 26, 255);
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_POPUP_TEXT) : getModule().isToggle() ? La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_POPUP_TOGGLE_ON) : La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_POPUP_TOGGLE_OFF);
 
 
         RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
@@ -93,7 +94,7 @@ public class PopupPanel extends AbstractPanel {
         fontDrawer.drawString(getModule().getName(),
                 getX() + animationWidth/2f - (fontDrawer.getStringWidth(getModule().getName()) /2f),
                 getY() + 3,
-                new Color(129, 57, 80,255).getRGB());
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_POPUP_HIGHLIGHT).getRGB());
 
         //值
         AtomicInteger intervalY = new AtomicInteger();

@@ -4,11 +4,11 @@ import io.justme.lavender.La;
 import io.justme.lavender.setting.SettingType;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.settings.impl.SettingWindow;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -38,7 +38,7 @@ public class SettingPanel extends AbstractPanel {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         var titleHeight = 55;
-        RenderUtility.drawRoundRectWithCustomRounded(getX(),getY(),getWidth(),titleHeight, new Color(255, 228, 238),0,0,15,15);
+        RenderUtility.drawRoundRectWithCustomRounded(getX(),getY(),getWidth(),titleHeight, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_SETTING_TITLE),0,0,15,15);
 
         var intervalY = titleHeight + 5;
         for (AbstractSetting abstractSetting : getAbstractSettings()) {
@@ -50,7 +50,7 @@ public class SettingPanel extends AbstractPanel {
         }
 
         var fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Bold22();
-        fontDrawer.drawString("设置 ",getX() + 10,getY() + 10,new Color(129, 57, 80,128).getRGB());
+        fontDrawer.drawString("设置 ",getX() + 10,getY() + 10,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_SETTING_TITLE_FONT).getRGB());
 
     }
 

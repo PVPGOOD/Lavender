@@ -2,16 +2,16 @@ package io.justme.lavender.ui.screens.clickgui.imgui.components.impl;
 
 import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
+import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.ComponentType;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
-import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.popup.PopupComBox;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.value.impl.MultiBoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -36,12 +36,14 @@ public class ComBoxComponent extends AbstractOptionComponent {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(215, 198, 215, 255));
+        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_COMBOBOX_BACKGROUND),
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_COMBOBOX_OUTLINE));
         FontDrawer fontDrawer = getFontDrawer();
         fontDrawer.drawString(getOption().getName() ,
                 getX() + getWidth() /2f - fontDrawer.getStringWidth(getOption().getName()) /2f,
                 getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,
-                new Color(129, 57, 80).getRGB());
+                La.getINSTANCE().getTheme().getColor(io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum.COMPONENT_COMBOBOX_FONT).getRGB());
 
         setWidth(100);
         setHeight(25);

@@ -1,8 +1,7 @@
 package io.justme.lavender.ui.screens.configscreen;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
-import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -13,9 +12,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -79,7 +76,7 @@ public class ConfigScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),16,La.getINSTANCE().getClickScreen().getClickGuiColor());
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),16,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CLICKSCREEN_BACKGROUND));
 
         for (AbstractConfigFrame frame : getAbstractConfigFrames()) {
 //

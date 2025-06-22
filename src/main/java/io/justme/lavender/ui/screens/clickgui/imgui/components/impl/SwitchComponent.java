@@ -1,8 +1,10 @@
 package io.justme.lavender.ui.screens.clickgui.imgui.components.impl;
 
+import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -10,7 +12,6 @@ import io.justme.lavender.value.impl.BoolValue;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -42,14 +43,8 @@ public class SwitchComponent extends AbstractOptionComponent {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontDrawer fontDrawer = getFontDrawer();
-        fontDrawer.drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0x899AC0).getRGB());
-
-        //背景
-
-//        new Color(30, 34, 44, 255) : new Color(17, 19, 26, 255)
-        Color enabledColor = new Color(30, 34, 44, 255);
-        Color disabledColor = new Color(30, 34, 44, 255 );
-
+        fontDrawer.drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SWITCH_FONT).getRGB());
+        // 背景
         RenderUtility.drawRoundRectWithOutline(
                 getX(),
                 getY(),
@@ -57,8 +52,9 @@ public class SwitchComponent extends AbstractOptionComponent {
                 getHeight(),
                 8,
                 0.6f,
-                getOption().getValue() ? enabledColor : new Color(0x899AC0), getOption().getValue() ? enabledColor : new Color(137, 154, 192, 255));
-        //点
+                getOption().getValue() ? La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SWITCH_ON) : La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SWITCH_OFF),
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SWITCH_OUTLINE));
+        // 点
         OGLUtility.scale(getX() + getAnimation().getValue() + getWidth() /2f,getY() + getHeight() /2f,getScaleAnimation().getValue(), () -> {
             RenderUtility.drawRoundRect(
                     getX() + getAnimation().getValue(),
@@ -66,12 +62,10 @@ public class SwitchComponent extends AbstractOptionComponent {
                     10,
                     10,
                     5,
-                    getOption().getValue() ? new Color(255,255,255) : disabledColor);
+                    La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SWITCH_KNOB));
         });
-
         getScaleAnimation().update();
         getAnimation().update();
-
         setWidth(28);
         setHeight(16);
     }

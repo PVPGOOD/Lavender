@@ -1,7 +1,9 @@
 package io.justme.lavender.ui.screens.clickgui.imgui.components.impl;
 
+import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -11,7 +13,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.lwjglx.input.Mouse;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -37,23 +38,17 @@ public class SliderComponent extends AbstractOptionComponent {
     private Animation sliderAnimations = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0x899AC0).getRGB());
-
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX(),getDescriptionY(), La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
         float inc = getOption().getIncrement();
         float max = getOption().getMax();
         float min = getOption().getMin();
         float value = getOption().getValue();
         float posX = getX();
         float longValue = getX() - (getX() - getWidth());
-
         getSliderAnimations().animate((longValue * (value - min) / (max - min)),0.1F, Easings.LINEAR);
-
-        //背景
-        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, new Color(26, 28, 38));
-
-        //值
-        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,new Color(11, 14, 21, 255));
-
+        // 背景
+        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_BACKGROUND));
+        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FILLED));
         if (isDragging()) {
             float valAbs = mouseX - (posX);
             float percent = calculatePercentage(valAbs, longValue, value, max);
@@ -61,18 +56,15 @@ public class SliderComponent extends AbstractOptionComponent {
             getOption().setValue(val);
         }
 
-        //点
+        // 滑块
         int size = 6;
         RenderUtility.drawRoundRectWithOutline(posX + getSliderAnimations().getValue() - size,
-                getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f,new Color(255, 255, 255,255),new Color(0,0,0,64));
-
+                getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_KNOB),La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_OUTLINE));
         getFontDrawer().drawString(getOption().getValue().toString(),posX + getSliderAnimations().getValue() - size,
-                getY() + getHeight()/2f + 3,new Color(137, 154, 192).getRGB());
-
+                getY() + getHeight()/2f + 3,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SLIDER_FONT).getRGB());
         if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
             setDragging(true);
         }
-
         setWidth(100);
         setHeight(5);
         getSliderAnimations().update();

@@ -14,6 +14,7 @@ import io.justme.lavender.setting.SettingManager;
 import io.justme.lavender.ui.elements.ElementsManager;
 import io.justme.lavender.ui.screens.clickgui.dropdown.DropScreen;
 import io.justme.lavender.ui.screens.clickgui.imgui.ClickScreen;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.Theme;
 import io.justme.lavender.ui.screens.configscreen.ConfigScreen;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.button.ConfigButtonFrame;
 import io.justme.lavender.ui.screens.configscreen.frame.impl.list.ConfigListFrame;
@@ -52,12 +53,14 @@ public class La {
     private AsyncVersionSlider asyncVersionSlider;
     @Setter
     private UserConnection userConnection;
+
     //screen
     private ClickScreen clickScreen;
     private DropScreen dropScreen;
 
     private ConfigListFrame configListFrame;
     private ConfigButtonFrame configButtonFrame;
+    private Theme theme;
     private ConfigScreen configScreen;
 
     private NotificationsManager notificationsManager;
@@ -90,9 +93,13 @@ public class La {
         settingManager.onInitialization();
 
         //clickgui
+        theme = new Theme();
+        theme.initialize();
+
         clickScreen = new ClickScreen();
         configListFrame = new ConfigListFrame();
         configButtonFrame = new ConfigButtonFrame();
+
         configScreen = new ConfigScreen();
         //dropScreen
         dropScreen = new DropScreen();

@@ -6,11 +6,11 @@ import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsC
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.panel.category.CategoryButtonComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.AbstractCategory;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -52,10 +52,10 @@ public class ModulePanelWindow extends AbstractCategory {
                 getWidth(),
                 getHeight(),
                 8,
-                new Color(17, 19, 26));
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_BACKGROUND));
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1,new Color(137, 154, 192, 255).getRGB());
+        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_FONT).getRGB());
 
         for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
             categoryComponents.setX(getX() + 4);

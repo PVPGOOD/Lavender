@@ -8,13 +8,13 @@ import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.ModulePanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.popup.PopupPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.settings.SettingPanel;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -31,7 +31,6 @@ public class ClickScreen extends GuiScreen  {
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling;
     private CategoryType currentCategory = CategoryType.FIGHT;
-    private Color clickGuiColor = new Color(22, 24, 33);
 
     private final CopyOnWriteArrayList<AbstractPanel> abstractPanels = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<AbstractControlsComponent> modulePanelComponent = new CopyOnWriteArrayList<>();
@@ -71,6 +70,8 @@ public class ClickScreen extends GuiScreen  {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        La.getINSTANCE().getTheme().initialize();
+
 
         if (isDragging()) {
             setX(mouseX - getDraggingX());
@@ -89,7 +90,7 @@ public class ClickScreen extends GuiScreen  {
         int categoryWidth = 120;
 
         if (getAbstractPanels().contains(getCategoryPanel()) && getAbstractPanels().contains(getModulePanel())) {
-            RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(22, 24, 33));
+            RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CLICKSCREEN_BACKGROUND));
         }
 
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {

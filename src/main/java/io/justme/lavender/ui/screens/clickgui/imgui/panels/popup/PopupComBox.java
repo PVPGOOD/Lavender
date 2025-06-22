@@ -1,9 +1,10 @@
 package io.justme.lavender.ui.screens.clickgui.imgui.panels.popup;
 
 import io.justme.lavender.La;
-import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.chill.ComBoxChill;
+import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.value.impl.BoolValue;
@@ -13,7 +14,6 @@ import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -61,8 +61,8 @@ public class PopupComBox extends AbstractPanel {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRect(0,0, getScaledResolution().getScaledWidth(), getScaledResolution().getScaledHeight(), new Color(0,0,0,64));
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),10, La.getINSTANCE().getClickScreen().getClickGuiColor());
+        RenderUtility.drawRect(0,0, getScaledResolution().getScaledWidth(), getScaledResolution().getScaledHeight(), La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_POPUP_HIGHLIGHT));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),10, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.CLICKSCREEN_BACKGROUND));
 
         int intervalY = 0;
         for (AbstractControlsComponent components : getCheckBoxChill()) {

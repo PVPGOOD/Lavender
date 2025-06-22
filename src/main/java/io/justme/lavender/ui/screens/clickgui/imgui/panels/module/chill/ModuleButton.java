@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.module.Module;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -11,7 +12,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -40,14 +40,14 @@ public class ModuleButton extends AbstractControlsComponent {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         OGLUtility.scale(getX() + getWidth() / 2f, getY() + getHeight() / 2f, getPopUpAnimation().getValue(), () -> {
-            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 12, getModule().isToggle() ? new Color(30, 34, 44, 255) : new Color(17, 19, 26, 255));
+            RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 12, getModule().isToggle() ? La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_BUTTON_TOGGLE_ON) : La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_BUTTON_TOGGLE_OFF));
 
             FontDrawer fontManager = La.getINSTANCE().getFontManager().getPingFang_Medium22();
 
             fontManager.drawString(getModule().getName(),
                     getX() + getWidth() / 2f - (fontManager.getStringWidth(getModule().getName()) / 2f),
                     getY() + getHeight() / 2f - (fontManager.getHeight() / 2f) + 5,
-                    new Color(137, 154, 192, 255).getRGB());
+                    La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULE_BUTTON_FONT).getRGB());
         });
 
         getPopUpAnimation().update();

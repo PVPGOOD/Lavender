@@ -4,6 +4,7 @@ import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.ComponentType;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
@@ -41,7 +42,7 @@ public class CheckboxComponent extends AbstractOptionComponent {
     private final FontDrawer checkMark14 = La.getINSTANCE().getFontManager().getCheckMark14();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0x899AC0).getRGB());
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,La.getINSTANCE().getTheme().getColor(io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum.COMPONENT_CHECKBOX_FONT).getRGB());
 
         RenderUtility.drawRoundRectWithOutline(
                 getX(),
@@ -50,16 +51,16 @@ public class CheckboxComponent extends AbstractOptionComponent {
                 getHeight(),
                 2,
                 0.6f,
-                getOption().getValue() ? new Color(103, 84, 150, 255) : new Color(255, 187, 213, 0) ,new Color(0, 0,0,150));
+                getOption().getValue() ? La.getINSTANCE().getTheme().getColor(io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum.COMPONENT_CHECKBOX_CHECKED) : La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_CHECKBOX_UNCHECKED) ,La.getINSTANCE().getTheme().getColor(io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum.COMPONENT_CHECKBOX_OUTLINE));
 
         if (getOption().getValue()) {
-            getCheckMark14().drawString("a", getX() + 1.8f, getY() + getHeight() /2f - 3.8f, new Color(255, 255, 255).getRGB());
+            getCheckMark14().drawString("a", getX() + 1.8f, getY() + getHeight() /2f - 3.8f, La.getINSTANCE().getTheme().getColor(io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum.COMPONENT_CHECKBOX_MARK).getRGB());
         }
 
         int alpha = ((int)(getAnimation().getValue()));
         int size = 5;
         if (isHover(mouseX,mouseY)) {
-            RenderUtility.drawRoundRect(getX() - size,getY() - size,getWidth() + size * 2 ,getHeight() + size * 2,9,new Color(0,0,0,28));
+            RenderUtility.drawRoundRect(getX() - size,getY() - size,getWidth() + size * 2 ,getHeight() + size * 2,9,La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_CHECKBOX_MARK));
         }
 
         //点

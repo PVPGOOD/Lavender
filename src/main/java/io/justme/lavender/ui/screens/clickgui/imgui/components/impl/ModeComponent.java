@@ -1,16 +1,17 @@
 package io.justme.lavender.ui.screens.clickgui.imgui.components.impl;
 
+import io.justme.lavender.La;
 import io.justme.lavender.fonts.FontDrawer;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractOptionComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.ComponentType;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.chill.ModeChill;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.value.impl.ModeValue;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -45,12 +46,31 @@ public class ModeComponent extends AbstractOptionComponent {
     private float interval = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(11, 14, 21, 255),new Color(30, 34, 44, 255));
+        RenderUtility.drawRoundRectWithOutline(
+            getX(),
+            getY(),
+            getWidth(),
+            getHeight(),
+            12,
+            1,
+            La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_MODE_BACKGROUND),
+            La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_MODE_OUTLINE)
+        );
 //        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(255, 212, 255, 255));
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(137, 154, 192, 255).getRGB());
+        getFontDrawer().drawString(
+            getOption().getName(),
+            getDescriptionX() + 2,
+            getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,
+            La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_MODE_FONT).getRGB()
+        );
 
         FontDrawer fontDrawer = getFontDrawer();
-        fontDrawer.drawString(getOption().getValue() ,getX() + 10   ,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());
+        fontDrawer.drawString(
+            getOption().getValue(),
+            getX() + 10,
+            getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,
+            La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_COMBOBOX_FONT).getRGB()
+        );
 
         float optionInterval = 8;
 
@@ -58,12 +78,15 @@ public class ModeComponent extends AbstractOptionComponent {
 
             //背景
             RenderUtility.drawRoundRectWithOutline(
-                    getX(),
-                    getY() + getHeight() + 1,
-                    getWidth(),
-                    getHeight() + getInterval() - 8,
-                    10,1,new Color(255, 230, 241, 255),
-                    new Color(255, 223, 236, 255));
+                getX(),
+                getY() + getHeight() + 1,
+                getWidth(),
+                getHeight() + getInterval() - 8,
+                10,
+                1,
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_MODE_DROPDOWN_BACKGROUND),
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_MODE_DROPDOWN_OUTLINE)
+            );
 
             for (AbstractOptionComponent chill : getModeChill()) {
                 chill.setX(getX() + 4);

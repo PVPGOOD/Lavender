@@ -6,12 +6,12 @@ import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsC
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.popup.PopupPanel;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjglx.input.Mouse;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -46,7 +46,7 @@ public class ModulePanel extends AbstractPanel {
     private Module lastModule;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 14, new Color(0x0B0E15));
+        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 14, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_MODULEPANEL_BACKGROUND));
 
         int intervalX = 0;
         int intervalY = 0;

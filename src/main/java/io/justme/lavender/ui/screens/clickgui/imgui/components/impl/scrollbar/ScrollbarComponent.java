@@ -1,11 +1,12 @@
 package io.justme.lavender.ui.screens.clickgui.imgui.components.impl.scrollbar;
 
+import io.justme.lavender.La;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -35,8 +36,8 @@ public class ScrollbarComponent extends AbstractControlsComponent {
         setSliderY((-getScrollOffset() / (getContentHeight() - getViewHeight()) * (getBackgroundHeight() - getSliderHeight())));
 
         if ((getViewHeight() < getContentHeight() - 10)) {
-           RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getBackgroundHeight(), 2, new Color(255, 255, 255));
-           RenderUtility.drawRoundRect(getX(), getY() + getSliderY(), getWidth(), getSliderHeight(), 2, new Color(255, 197, 240));
+           RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getBackgroundHeight(), 2, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SCROLLBAR_BACKGROUND));
+           RenderUtility.drawRoundRect(getX(), getY() + getSliderY(), getWidth(), getSliderHeight(), 2,  La.getINSTANCE().getTheme().getColor(ThemeColorEnum.COMPONENT_SCROLLBAR_THUMB));
         }
     }
 

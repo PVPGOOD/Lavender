@@ -8,6 +8,7 @@ import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.ModeComponen
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SliderComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.impl.SwitchComponent;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.settings.AbstractSetting;
+import io.justme.lavender.ui.screens.clickgui.imgui.theme.ThemeColorEnum;
 import io.justme.lavender.utility.gl.RenderUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.value.DefaultValue;
@@ -18,7 +19,6 @@ import io.justme.lavender.value.impl.NumberValue;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,14 +66,14 @@ public class SettingWindow extends AbstractSetting {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(), 5, new Color(255, 228, 238));
+        RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(), 5, La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_SETTING_TITLE));
 
         var fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Regular18();
 
         fontDrawer.drawString(getSettingType().getName(),
                 getX() + 10,
                 getY() + 10,
-                new Color(129, 57, 80,255).getRGB());
+                La.getINSTANCE().getTheme().getColor(ThemeColorEnum.PANEL_POPUP_HIGHLIGHT).getRGB());
 
         //值
         AtomicInteger intervalY = new AtomicInteger();
