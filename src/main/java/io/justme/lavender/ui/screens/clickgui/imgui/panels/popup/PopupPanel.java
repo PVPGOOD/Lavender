@@ -13,7 +13,6 @@ import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.utility.gl.OGLUtility;
 import io.justme.lavender.utility.gl.RenderUtility;
-import io.justme.lavender.utility.gl.shader.interfaces.Shader;
 import io.justme.lavender.utility.math.MouseUtility;
 import io.justme.lavender.utility.math.animation.Animation;
 import io.justme.lavender.utility.math.animation.util.Easings;
@@ -82,11 +81,10 @@ public class PopupPanel extends AbstractPanel {
         float animationWidth = isScaling() ? getWidth() : getAnimationWidth().getValue();
 
         Color color = getModule().getName().equalsIgnoreCase("clickgui") ?
-                new Color(255,255,255) : getModule().isToggle() ? new Color(La.getINSTANCE().getClickScreen().getClickGuiColor().getRGB()) :  new Color(201, 201, 201, 255);
+                new Color(255,255,255) : getModule().isToggle() ? new Color(30, 34, 44, 255) : new Color(17, 19, 26, 255);
 
-        Shader.bloom.run(()-> {
-            RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
-        });
+
+        RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
         RenderUtility.drawRoundRect(getX(),getY(),animationWidth,animationHeight,10,color);
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium22();

@@ -2,8 +2,8 @@ package io.justme.lavender.ui.screens.clickgui.imgui.panels.module;
 
 import io.justme.lavender.La;
 import io.justme.lavender.module.Module;
-import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.chill.ModuleButton;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.popup.PopupPanel;
 import io.justme.lavender.utility.gl.RenderUtility;
@@ -46,7 +46,7 @@ public class ModulePanel extends AbstractPanel {
     private Module lastModule;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 14, new Color(0xFFE9F0));
+        RenderUtility.drawRoundRect(getX(), getY(), getWidth(), getHeight(), 14, new Color(0x0B0E15));
 
         int intervalX = 0;
         int intervalY = 0;

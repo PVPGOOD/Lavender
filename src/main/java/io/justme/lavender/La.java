@@ -144,7 +144,7 @@ public class La {
         }
 
         if (event.getKeyCode() == Keyboard.KEY_RSHIFT){
-            Minecraft.getMinecraft().displayGuiScreen(dropScreen);
+            Minecraft.getMinecraft().displayGuiScreen(getClickScreen());
         }
 
         if (event.getKeyCode() == Keyboard.KEY_P) {

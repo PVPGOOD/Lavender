@@ -1,9 +1,8 @@
 package io.justme.lavender.ui.screens.clickgui.imgui;
 
 import io.justme.lavender.La;
-import io.justme.lavender.fonts.FontDrawer;
-import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.components.AbstractControlsComponent;
+import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.CategoryType;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.module.ModulePanel;
@@ -32,7 +31,7 @@ public class ClickScreen extends GuiScreen  {
     private float draggingX,draggingY,scalingWidth, scalingHeight;
     private boolean dragging,scaling;
     private CategoryType currentCategory = CategoryType.FIGHT;
-    private Color clickGuiColor = new Color(255, 240, 245);
+    private Color clickGuiColor = new Color(22, 24, 33);
 
     private final CopyOnWriteArrayList<AbstractPanel> abstractPanels = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<AbstractControlsComponent> modulePanelComponent = new CopyOnWriteArrayList<>();
@@ -86,25 +85,24 @@ public class ClickScreen extends GuiScreen  {
 
 
 
-        int abstractComponentInitY = 30;
+        int abstractComponentInitY = 0;
         int categoryWidth = 120;
 
         if (getAbstractPanels().contains(getCategoryPanel()) && getAbstractPanels().contains(getModulePanel())) {
-            RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(255, 240, 245));
-            //横线
-//            RenderUtility.drawRoundRect(getX(),getY() + abstractComponentInitY,getWidth(),0.5f,1,new Color(255, 232, 238));
-            FontDrawer fontManager = La.getINSTANCE().getFontManager().getSFBold18();
-            fontManager.drawString("My_Project",getX() + 5,getY() + 5,new Color(255,255,255).getRGB());
+            RenderUtility.drawRoundRect(getX(),getY(),getWidth(),getHeight(),15,new Color(22, 24, 33));
         }
 
         for (AbstractPanel abstractPanel : La.getINSTANCE().getClickScreen().getAbstractPanels()) {
 
             if (abstractPanel.getName().equals("CategoryPanel")) {
                 abstractPanel.setX(getX());
-                abstractPanel.setY(getY() + abstractComponentInitY);
+                int initCategoryPanelY = abstractComponentInitY - 10;
+                abstractPanel.setY(getY() - abstractComponentInitY + initCategoryPanelY);
                 abstractPanel.setWidth(categoryWidth);
-                abstractPanel.setHeight(getHeight() - abstractComponentInitY);
+                abstractPanel.setHeight(getHeight());
                 abstractPanel.drawScreen(mouseX, mouseY, partialTicks);
+
+
             }
 
             if (getCurrentCategory() == CategoryType.MISC ||

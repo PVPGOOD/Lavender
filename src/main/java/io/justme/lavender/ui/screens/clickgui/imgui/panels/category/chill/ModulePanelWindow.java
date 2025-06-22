@@ -52,20 +52,20 @@ public class ModulePanelWindow extends AbstractCategory {
                 getWidth(),
                 getHeight(),
                 8,
-                new Color(255, 228, 238));
+                new Color(17, 19, 26));
 
         FontDrawer fontDrawer = La.getINSTANCE().getFontManager().getPingFang_Medium18();
-        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1,new Color(129, 57, 80,128).getRGB());
+        fontDrawer.drawString("Category",getX() + 4,getY() + categoryComponentsInitY + 1,new Color(137, 154, 192, 255).getRGB());
 
         for (AbstractControlsComponent categoryComponents : getCategoryComponents()) {
             categoryComponents.setX(getX() + 4);
             categoryComponents.setY(getY() + categoryComponentsIntervalY + categoryComponentsInitY + 15);
             categoryComponents.setWidth(105);
-            categoryComponents.setHeight(26);
+            categoryComponents.setHeight(22);
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
-            categoryComponentsIntervalY += 35;
+            categoryComponentsIntervalY += 25;
+            categoryComponents.getCategoryTypeBackgroundAlpha().update();
         }
-
 
         setHeight(categoryComponentsIntervalY + 15);
         setRequestInterval(categoryComponentsIntervalY);

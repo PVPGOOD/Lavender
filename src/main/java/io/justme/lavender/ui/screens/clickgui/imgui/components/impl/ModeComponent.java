@@ -45,8 +45,9 @@ public class ModeComponent extends AbstractOptionComponent {
     private float interval = 0;
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(255, 212, 255, 255));
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(0,0,0,200).getRGB());
+        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(11, 14, 21, 255),new Color(30, 34, 44, 255));
+//        RenderUtility.drawRoundRectWithOutline(getX(),getY(),getWidth(),getHeight(),12,1,new Color(255, 233, 240, 255),new Color(255, 212, 255, 255));
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX() + 2,getDescriptionY() + getHeight() /2f - getFontDrawer().getHeight() /2f,new Color(137, 154, 192, 255).getRGB());
 
         FontDrawer fontDrawer = getFontDrawer();
         fontDrawer.drawString(getOption().getValue() ,getX() + 10   ,getY() + getHeight()/2f - fontDrawer.getHeight()/2f + 3,new Color(129, 57, 80).getRGB());

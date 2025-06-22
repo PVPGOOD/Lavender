@@ -28,12 +28,12 @@ public class CircleComponent extends AbstractComponent {
                     getWidth() ,
                     getHeight(),
                     7,
-                    new Color(16, 16, 16, 255));
+                    new Color(0, 0, 0, 255));
 
             var name = getModule().getName();
             getFontDrawer().drawString(
                     name, getX() + getWidth()/2f - getFontDrawer().getStringWidth(name)/2f , getY() + getHeight()/2f  - getFontDrawer().getHeight()/2f + 3 ,
-                    ColorUtility.fadeBetween(getIndex(), 10, new Color(255, 65, 72).getRGB(), new Color(123, 113, 255).getRGB()));
+                    ColorUtility.fadeBetween(getIndex(), 10, new Color(255, 0, 0).getRGB(), new Color(255, 255, 255).getRGB()));
 
             setHeight(getFontDrawer().getHeight() /2f + 3);
             setWidth(getFontDrawer().getStringWidth(name));

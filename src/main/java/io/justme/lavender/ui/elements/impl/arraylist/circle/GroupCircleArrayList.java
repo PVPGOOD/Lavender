@@ -116,6 +116,7 @@ public class GroupCircleArrayList extends AbstractElement {
                 elements.setIndex(finalIndex);
                 elements.setFontDrawer(fontRenderer);
                 elements.draw(mouseX, mouseY);
+
             });
 
             intervalX[0] += fontRenderer.getStringWidth(str) + 10;

@@ -42,11 +42,14 @@ public class SwitchComponent extends AbstractOptionComponent {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontDrawer fontDrawer = getFontDrawer();
-        fontDrawer.drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0).getRGB());
+        fontDrawer.drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0x899AC0).getRGB());
 
         //背景
-        Color enabledColor = new Color(255, 198, 215, 255);
-        Color disabledColor = new Color(0x79747E);
+
+//        new Color(30, 34, 44, 255) : new Color(17, 19, 26, 255)
+        Color enabledColor = new Color(30, 34, 44, 255);
+        Color disabledColor = new Color(30, 34, 44, 255 );
+
         RenderUtility.drawRoundRectWithOutline(
                 getX(),
                 getY(),
@@ -54,7 +57,7 @@ public class SwitchComponent extends AbstractOptionComponent {
                 getHeight(),
                 8,
                 0.6f,
-                getOption().getValue() ? enabledColor : new Color(0xE6E0E9), getOption().getValue() ? enabledColor : new Color(0, 0,0,128));
+                getOption().getValue() ? enabledColor : new Color(0x899AC0), getOption().getValue() ? enabledColor : new Color(137, 154, 192, 255));
         //点
         OGLUtility.scale(getX() + getAnimation().getValue() + getWidth() /2f,getY() + getHeight() /2f,getScaleAnimation().getValue(), () -> {
             RenderUtility.drawRoundRect(

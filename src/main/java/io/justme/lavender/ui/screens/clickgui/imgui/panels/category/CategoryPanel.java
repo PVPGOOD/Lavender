@@ -3,8 +3,10 @@ package io.justme.lavender.ui.screens.clickgui.imgui.panels.category;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.AbstractPanel;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.chill.ModulePanelWindow;
 import io.justme.lavender.ui.screens.clickgui.imgui.panels.category.chill.OtherCategoryPanel;
+import io.justme.lavender.utility.gl.RenderUtility;
 import lombok.Getter;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,31 +34,37 @@ public class CategoryPanel extends AbstractPanel {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         //背景
+        int categoryComponentsInterval = 0;
+        int requestInterval = 5;
+        for (AbstractCategory categoryComponents : getCategoryComponents()) {
+            requestInterval += (int) categoryComponents.getRequestInterval() + 25;
+        }
+        var categoryInitY = 25;
+        int initX = 4;
+        RenderUtility.drawRoundRect(getX() + initX/2f, getY() + categoryComponentsInterval + categoryInitY - 3, getWidth() - initX, requestInterval, 10, new Color(26, 28, 38));
 
         //分类图标
         //模块分类
-        int categoryComponentsInitY = 0;
-        var requestInterval = 0;
+        requestInterval = 0;
         for (AbstractCategory categoryComponents : getCategoryComponents()) {
-
             switch (categoryComponents.getName()) {
                 case "ModulePanelWindow" -> {
-                    categoryComponents.setX(getX() + 4);
-                    categoryComponents.setY(getY() + categoryComponentsInitY);
-                    categoryComponents.setWidth(getWidth() - 8);
+                    categoryComponents.setX(getX() + initX);
+                    categoryComponents.setY(getY() + categoryComponentsInterval);
+                    categoryComponents.setWidth(getWidth() - initX * 2);
                     requestInterval += (int) categoryComponents.getRequestInterval();
                 }
 
                 case "OtherCategoryPanel" -> {
-                    categoryComponents.setX(getX() + 4);
-                    categoryComponents.setY(getY() + categoryComponentsInitY + requestInterval + 25);
-                    categoryComponents.setWidth(getWidth() - 8);
+                    categoryComponents.setX(getX() + initX);
+                    categoryComponents.setY(getY() + categoryComponentsInterval + requestInterval + categoryInitY);
+                    categoryComponents.setWidth(getWidth() - initX * 2);
+                    requestInterval += (int) categoryComponents.getRequestInterval();
                 }
             }
 
             categoryComponents.drawScreen(mouseX, mouseY, partialTicks);
         }
-
     }
 
     @Override

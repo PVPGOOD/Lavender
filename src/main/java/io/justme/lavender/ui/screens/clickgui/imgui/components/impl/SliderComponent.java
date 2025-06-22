@@ -37,7 +37,7 @@ public class SliderComponent extends AbstractOptionComponent {
     private Animation sliderAnimations = new Animation();
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        getFontDrawer().drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0).getRGB());
+        getFontDrawer().drawString(getOption().getName(),getDescriptionX(),getDescriptionY(),new Color(0x899AC0).getRGB());
 
         float inc = getOption().getIncrement();
         float max = getOption().getMax();
@@ -49,10 +49,10 @@ public class SliderComponent extends AbstractOptionComponent {
         getSliderAnimations().animate((longValue * (value - min) / (max - min)),0.1F, Easings.LINEAR);
 
         //背景
-        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, new Color(125, 131, 136));
+        RenderUtility.drawRoundRect( posX, getY(), getWidth(), getHeight(), 3, new Color(26, 28, 38));
 
         //值
-        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,new Color(255, 233, 240, 255));
+        RenderUtility.drawRoundRect(posX, getY(), getSliderAnimations().getValue(), getHeight(), 3,new Color(11, 14, 21, 255));
 
         if (isDragging()) {
             float valAbs = mouseX - (posX);
@@ -67,7 +67,7 @@ public class SliderComponent extends AbstractOptionComponent {
                 getY() + getHeight()/2f - size, size * 2, size * 2, 6, 0.5f,new Color(255, 255, 255,255),new Color(0,0,0,64));
 
         getFontDrawer().drawString(getOption().getValue().toString(),posX + getSliderAnimations().getValue() - size,
-                getY() + getHeight()/2f + 3,new Color(0,0,0).getRGB());
+                getY() + getHeight()/2f + 3,new Color(137, 154, 192).getRGB());
 
         if (MouseUtility.isHovering( posX, getY(), getWidth(), getHeight(),mouseX,mouseY)&& Mouse.isButtonDown(0)) {
             setDragging(true);
